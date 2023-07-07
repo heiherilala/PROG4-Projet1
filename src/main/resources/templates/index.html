@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset = "ISO-8859-1" />
+    <link href = "css/styles.css" rel = "stylesheet"/>
+    <title>Employee Management</title>
+</head>
+<body>
+<h2>Add Employee</h2>
+<form th:action="@{/addEmployee}" th:object="${newEmployee}" method="post">
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" th:field="*{firstName}" required><br>
+
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" th:field="*{lastName}" required><br>
+
+    <label for="birthDate">Birth Date:</label>
+    <input type="date" id="birthDate" th:field="*{birthDate}" required><br>
+
+    <button type="submit">Add Employee</button>
+</form>
+
+<h2>Employees</h2>
+<table>
+    <thead>
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Birth Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="employee : ${employees}">
+        <td th:text="${employee.firstName}"></td>
+        <td th:text="${employee.lastName}"></td>
+        <td th:text="${employee.birthDate}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
