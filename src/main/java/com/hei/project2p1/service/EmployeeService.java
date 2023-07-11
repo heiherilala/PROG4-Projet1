@@ -32,6 +32,9 @@ public class EmployeeService {
     public List<Employee> getEmployeesFromDB() {
         return employeeRepository.findAll();
     }
+    public Employee getEmployeeById(String id){
+        return employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Employee with id"+ id + "not found."));
+    }
 
     @Transactional
     public Employee save(Employee employee) {

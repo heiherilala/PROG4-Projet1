@@ -30,7 +30,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="employee : ${employees}">
+    <tr th:each="employee : ${employees}" th:href="@{/employee/{id}/details(id=${employee.id})}">
         <td th:text="${employee.firstName}"></td>
         <td th:text="${employee.lastName}"></td>
         <td th:text="${employee.birthDate}"></td>

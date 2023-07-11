@@ -28,6 +28,16 @@ import java.util.List;
         return "index";
     }
 
+    @GetMapping(value = "/employees/{id}/details")
+    public String details(HttpSession session, Model model, @PathVariable("id") String id) {
+        Employee employee = employeeService.getEmployeeById(id);
+        EmployeeUI employeeUI = employeeMapper.toUI(employee);
+        session.setAttribute("employee", employeeUI);
+        model.addAttribute("employee",employeeUI);
+        model.addAttribute("newEmployee", employeeMapper.toUI(new Employee()));
+        return "employee_details";
+    }
+
     @PostMapping("/addEmployee")
     public String addEmployee(@ModelAttribute("newEmployee") EmployeeUI employeeUI, HttpSession session) {
         employeeService.save(employeeMapper.toDomain(employeeUI));
