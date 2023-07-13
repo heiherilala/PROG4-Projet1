@@ -7,7 +7,7 @@
 </head>
 <body>
 <h2>Add Employee</h2>
-<form th:action="@{/addEmployee}" th:object="${newEmployee}" method="post">
+<form th:action="@{/add-employee}" th:object="${newEmployee}" method="post">
     <label for="firstName">First Name:</label>
     <input type="text" id="firstName" th:field="*{firstName}" required><br>
 
@@ -30,10 +30,13 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="employee : ${employees}" th:href="@{/employee/{id}/details(id=${employee.id})}">
+    <tr th:each="employee : ${employees}" >
         <td th:text="${employee.firstName}"></td>
         <td th:text="${employee.lastName}"></td>
         <td th:text="${employee.birthDate}"></td>
+        <td>
+        <a th:href="@{/employees/{id}/details(id=${employee.id})}">Details</a>
+        </td>
     </tr>
     </tbody>
 </table>

@@ -38,7 +38,7 @@ import java.util.List;
         return "employee_details";
     }
 
-    @PostMapping("/addEmployee")
+    @PostMapping("/add-employee")
     public String addEmployee(@ModelAttribute("newEmployee") EmployeeUI employeeUI, HttpSession session) {
         employeeService.save(employeeMapper.toDomain(employeeUI));
         List<Employee> employees = employeeService.getEmployeesFromDB();
@@ -46,4 +46,6 @@ import java.util.List;
         session.setAttribute("employees", employeeUIS);
         return "redirect:/";
     }
-    }
+
+
+}
