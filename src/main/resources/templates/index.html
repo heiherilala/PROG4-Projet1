@@ -25,6 +25,12 @@
         <td>
         <a th:href="@{/employees/{id}/details(id=${employee.id})}">Details</a>
         </td>
+        <td>
+            <form th:action="@{/modifyEmployee}" method="post">
+                <input type="hidden" name="employeeId" th:value="${employee.id}">
+                <button type="submit">Modify</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>

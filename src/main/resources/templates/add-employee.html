@@ -7,7 +7,7 @@
 </head>
 <body>
 <h2>Add Employee</h2>
-<form th:action="@{/add-employee}" th:object="${newEmployee}" method="post" enctype="multipart/form-data">
+<form th:action="@{/submitEmployee}" th:object="${newEmployee}" method="post" enctype="multipart/form-data">
     <label for="photo">First Name:</label>
     <input type="file" id="photo" accept="image/*" th:field="*{photo}"><br>
 
@@ -19,8 +19,12 @@
 
     <label for="birthDate">Birth Date:</label>
     <input type="date" id="birthDate" th:field="*{birthDate}" required><br>
-
-    <button type="submit">Add Employee</button>
+    <th:block th:if="${newEmployee.id != null}">
+        <button type="submit">Modify</button>
+    </th:block>
+    <th:block th:unless="${newEmployee.id != null}">
+        <button type="submit">Add</button>
+    </th:block>
 </form>
 
     </tbody>

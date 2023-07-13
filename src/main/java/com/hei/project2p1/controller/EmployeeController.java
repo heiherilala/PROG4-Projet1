@@ -35,6 +35,11 @@ import java.util.List;
         model.addAttribute("newEmployee", employeeMapper.toUI(new Employee()));
         return "add-employee";
     }
+    @GetMapping(value = "/modify-employee")
+    public String modifyEmployeePage(HttpSession session, Model model, @ModelAttribute("newEmployee") EmployeeUI employeeUI) {
+        model.addAttribute("newEmployee",employeeUI);
+        return "add-employee";
+    }
     @GetMapping(value = "/employees/{id}/details")
     public String details(HttpSession session, Model model, @PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
@@ -45,7 +50,7 @@ import java.util.List;
         return "employee_details";
     }
 
-    @PostMapping("/add-employee")
+    @PostMapping("/submitEmployee")
     public String addEmployee(@ModelAttribute("newEmployee") CreateEmployeeUI createEmployeeUI, HttpSession session) throws IOException {
         employeeService.save(employeeMapper.toDomain(createEmployeeUI));
         List<Employee> employees = employeeService.getEmployeesFromDB();
@@ -54,5 +59,10 @@ import java.util.List;
         return "redirect:/";
     }
 
-
+    @PostMapping("/modifyEmployee")
+    public String modifyEmployee(@RequestParam("employeeId") String employeeIndex, Model model) {
+            Employee employee = employeeService.getEmployeeById(employeeIndex);
+            model.addAttribute("newEmployee", employeeMapper.toUI(employee));
+        return "redirect:/modify-employee";
+    }
 }

@@ -6,7 +6,7 @@
 </head>
 <body>
     <h2>Employee details</h2>
-    <p>Photo: <span th:text="${employee.photo}"></span></p>
+    <img th:src="'data:image/png;base64,' + ${employee.photo}" alt="Aucune image">
     <p>First Name: <span th:text="${employee.firstName}"></span></p>
     <p>Last Name: <span th:text="${employee.lastName}"></span></p>
     <p>Birth Date: <span th:text="${employee.birthDate}"></span></p>
