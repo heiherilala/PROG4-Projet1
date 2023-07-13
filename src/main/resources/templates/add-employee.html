@@ -7,7 +7,10 @@
 </head>
 <body>
 <h2>Add Employee</h2>
-<form th:action="@{/add-employee}" th:object="${newEmployee}" method="post">
+<form th:action="@{/add-employee}" th:object="${newEmployee}" method="post" enctype="multipart/form-data">
+    <label for="photo">First Name:</label>
+    <input type="file" id="photo" accept="image/*" th:field="*{photo}"><br>
+
     <label for="firstName">First Name:</label>
     <input type="text" id="firstName" th:field="*{firstName}" required><br>
 

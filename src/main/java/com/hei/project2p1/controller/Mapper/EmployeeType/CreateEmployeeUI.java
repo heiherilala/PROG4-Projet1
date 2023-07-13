@@ -7,11 +7,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder
-public class EmployeeUI {
+public class CreateEmployeeUI {
     private String id;
     private String registrationNo;
     private String firstName;
     private String lastName;
     private String birthDate;
-    private String photo;
+    private MultipartFile photo;
 }

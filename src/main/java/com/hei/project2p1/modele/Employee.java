@@ -1,9 +1,6 @@
 package com.hei.project2p1.modele;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,5 +21,7 @@ public class Employee {
     private String firstName;
     private String lastName;
     private LocalDate birthDate;
+    @Lob
+    @Column//(columnDefinition = "varchar(max)")
     private String photo;
 }
