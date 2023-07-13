@@ -28,6 +28,11 @@ import java.util.List;
         return "index";
     }
 
+    @GetMapping(value = "/add-new-employee")
+    public String addNewEmplyee(HttpSession session, Model model) {
+        model.addAttribute("newEmployee", employeeMapper.toUI(new Employee()));
+        return "add-employee";
+    }
     @GetMapping(value = "/employees/{id}/details")
     public String details(HttpSession session, Model model, @PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
