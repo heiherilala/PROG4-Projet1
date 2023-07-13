@@ -24,8 +24,9 @@ import java.util.List;
 @AllArgsConstructor
     public class EmployeeController {
     private final EmployeeMapper employeeMapper;
-     private final EmployeeService employeeService;
+    private final EmployeeService employeeService;
     private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
+
     @GetMapping(value = "/")
     public String index(HttpSession session, Model model) {
         List<Employee> employees = employeeService.getEmployeesFromDB();
@@ -37,10 +38,11 @@ import java.util.List;
     }
 
     @GetMapping(value = "/add-new-employee")
-    public String addNewEmployee(HttpSession session, Model model ) {
+    public String addNewEmployee(HttpSession session, Model model) {
         model.addAttribute("newEmployee", employeeMapper.toUI(new Employee()));
         return "add-employee";
     }
+
     @GetMapping(value = "/employees/{id}/edit")
     public String modifyEmployeePage(HttpSession session, Model model, @PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
@@ -52,9 +54,9 @@ import java.util.List;
         model.addAttribute("lastName", employee.getLastName());
         model.addAttribute("birthDate", employee.getBirthDate());
         model.addAttribute("photoString", employee.getPhoto());
-        model.addAttribute("photo", createEmployeeUI.getPhoto());
         return "modify-employee";
     }
+
     @GetMapping(value = "/employees/{id}/details")
     public String details(HttpSession session, Model model, @PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
@@ -66,12 +68,6 @@ import java.util.List;
 
     @PostMapping("/submitEmployee")
     public String addEmployee(@ModelAttribute("newEmployee") CreateEmployeeUI createEmployeeUI, HttpSession session) throws IOException {
-        logger.info("id : "+ createEmployeeUI.getId());
-        logger.info("id : "+ createEmployeeUI.getFirstName());
-        logger.info("id : "+ createEmployeeUI.getLastName());
-        logger.info("id : "+ createEmployeeUI.getBirthDate());
-        logger.info("id : "+ createEmployeeUI.getRegistrationNo());
-        logger.info("id : "+ createEmployeeUI.getPhoto());
         employeeService.save(employeeMapper.toDomain(createEmployeeUI));
         return "redirect:/";
     }
@@ -94,26 +90,21 @@ import java.util.List;
                 .lastName(lastName)
                 .registrationNo(regNo)
                 .birthDate(String.valueOf(birthDate))
-                .photo(photoFile.getOriginalFilename().isEmpty()?photoString:employeeMapper.MultipartImageToString(photoFile))
+                .photo(photoFile.getOriginalFilename().isEmpty() ? photoString : employeeMapper.MultipartImageToString(photoFile))
                 .build();
 
-        logger.info("Update photo: "+ employeeMapper.MultipartImageToString(photoFile));
-        logger.info("Update photo: "+ createEmployeeUI.getPhoto());
-        logger.info("id param : "+ id);
-        logger.info("id : "+  employeeId);
-        logger.info("fname : "+ firstName);
-        logger.info("lname : "+ lastName);
-        logger.info("bdate : "+ birthDate);
-        logger.info("regNo : "+ regNo);
+        logger.info("Update photo: " + employeeMapper.MultipartImageToString(photoFile));
+        logger.info("Update photo: " + createEmployeeUI.getPhoto());
+        logger.info("id param : " + id);
+        logger.info("id : " + employeeId);
+        logger.info("fname : " + firstName);
+        logger.info("lname : " + lastName);
+        logger.info("bdate : " + birthDate);
+        logger.info("regNo : " + regNo);
         // logger.info("Photo String : "+ photoString);
-        logger.info("Photo File : "+ (photoFile.getOriginalFilename()));
+        logger.info("Photo File : " + (photoFile.getOriginalFilename()));
+
         employeeService.save(employeeMapper.toDomain(createEmployeeUI));
         return "redirect:/";
-    }
-    @PostMapping("/modifyCurrentEmployee")
-    public String modifyCurrentEmployee(@RequestParam("employeeId") String employeeIndex, Model model) {
-            Employee employee = employeeService.getEmployeeById(employeeIndex);
-            model.addAttribute("newEmployee", employeeMapper.toUI(employee));
-        return "redirect:/modify-employee";
     }
 }

@@ -28,12 +28,6 @@
         <td>
             <a th:href="@{/employees/{id}/edit(id=${employee.id})}">Edit</a>
         </td>
-        <td>
-            <form th:action="@{/modifyCurrentEmployee}" method="post">
-                <input type="hidden" name="employeeId" th:value="${employee.id}">
-                <button type="submit">Modify</button>
-            </form>
-        </td>
 
     </tr>
     </tbody>
