@@ -25,6 +25,18 @@ public class EmployeeMapper {
                 .build();
     }
 
+    public Employee toDomain(EmployeeUI createEmployeeUI) {
+        return Employee.builder()
+                .id(createEmployeeUI.getId()==null?null:Integer.parseInt(createEmployeeUI.getId()))
+                .lastName(createEmployeeUI.getLastName())
+                .firstName(createEmployeeUI.getFirstName())
+                .registrationNo(createEmployeeUI.getRegistrationNo())
+                .birthDate(LocalDate.parse(createEmployeeUI.getBirthDate()))
+                .photo(createEmployeeUI.getPhoto())
+                .build();
+    }
+
+
     public List<Employee> toDomain(List<CreateEmployeeUI> createEmployeeUIS) throws IOException {
         List<Employee> employees = new ArrayList<>();
         for (CreateEmployeeUI createEmployeeUI : createEmployeeUIS){

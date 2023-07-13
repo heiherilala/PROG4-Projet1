@@ -8,7 +8,7 @@
 <body>
 <h2>Add Employee</h2>
 <form th:action="@{/submitEmployee}" th:object="${newEmployee}" method="post" enctype="multipart/form-data">
-    <label for="photo">First Name:</label>
+    <label for="photo">Photo:</label>
     <input type="file" id="photo" accept="image/*" th:field="*{photo}"><br>
 
     <label for="firstName">First Name:</label>
@@ -26,6 +26,11 @@
         <button type="submit">Add</button>
     </th:block>
 </form>
+
+<span th:text="${newEmployee.id}"></span>
+<span th:text="${newEmployee.registrationNo}"></span>
+<span th:text="${newEmployee.photo}"></span>
+
 
     </tbody>
 </table>

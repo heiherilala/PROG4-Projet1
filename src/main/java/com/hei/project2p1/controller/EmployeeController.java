@@ -7,11 +7,17 @@ import com.hei.project2p1.modele.Employee;
 import com.hei.project2p1.service.EmployeeService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -19,7 +25,7 @@ import java.util.List;
     public class EmployeeController {
     private final EmployeeMapper employeeMapper;
      private final EmployeeService employeeService;
-
+    private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
     @GetMapping(value = "/")
     public String index(HttpSession session, Model model) {
         List<Employee> employees = employeeService.getEmployeesFromDB();
@@ -35,10 +41,18 @@ import java.util.List;
         model.addAttribute("newEmployee", employeeMapper.toUI(new Employee()));
         return "add-employee";
     }
-    @GetMapping(value = "/modify-employee")
-    public String modifyEmployeePage(HttpSession session, Model model, @ModelAttribute("newEmployee") EmployeeUI employeeUI) {
-        model.addAttribute("newEmployee",employeeUI);
-        return "add-employee";
+    @GetMapping(value = "/employees/{id}/edit")
+    public String modifyEmployeePage(HttpSession session, Model model, @PathVariable("id") String id) {
+        Employee employee = employeeService.getEmployeeById(id);
+        EmployeeUI createEmployeeUI = employeeMapper.toUI(employee);
+        //session.setAttribute("EmployeeToModify", createEmployeeUI);
+        model.addAttribute("employeeId", employee.getId());
+        model.addAttribute("regNo", employee.getRegistrationNo());
+        model.addAttribute("firstName", employee.getFirstName());
+        model.addAttribute("lastName", employee.getLastName());
+        model.addAttribute("birthDate", employee.getBirthDate());
+        model.addAttribute("photoString", employee.getPhoto());
+        return "modify-employee";
     }
     @GetMapping(value = "/employees/{id}/details")
     public String details(HttpSession session, Model model, @PathVariable("id") String id) {
@@ -46,21 +60,54 @@ import java.util.List;
         EmployeeUI createEmployeeUI = employeeMapper.toUI(employee);
         session.setAttribute("employee", createEmployeeUI);
         model.addAttribute("employee", createEmployeeUI);
-        model.addAttribute("newEmployee", employeeMapper.toUI(new Employee()));
         return "employee_details";
     }
 
     @PostMapping("/submitEmployee")
     public String addEmployee(@ModelAttribute("newEmployee") CreateEmployeeUI createEmployeeUI, HttpSession session) throws IOException {
+        logger.info("id : "+ createEmployeeUI.getId());
+        logger.info("id : "+ createEmployeeUI.getFirstName());
+        logger.info("id : "+ createEmployeeUI.getLastName());
+        logger.info("id : "+ createEmployeeUI.getBirthDate());
+        logger.info("id : "+ createEmployeeUI.getRegistrationNo());
+        logger.info("id : "+ createEmployeeUI.getPhoto());
         employeeService.save(employeeMapper.toDomain(createEmployeeUI));
-        List<Employee> employees = employeeService.getEmployeesFromDB();
-        List<EmployeeUI> createEmployeeUIS = employeeMapper.toUI(employees);
-        session.setAttribute("employees", createEmployeeUIS);
         return "redirect:/";
     }
 
     @PostMapping("/modifyEmployee")
-    public String modifyEmployee(@RequestParam("employeeId") String employeeIndex, Model model) {
+    public String mofidyEmployee(
+            HttpSession session,
+            @RequestParam("id") String id,
+            @ModelAttribute("employeeId") String employeeId,
+            @ModelAttribute("firstName") String firstName,
+            @ModelAttribute("lastName") String lastName,
+            @ModelAttribute("photoString") String photoString,
+            @ModelAttribute("birthDate") String birthDate,
+            @ModelAttribute("regNo") String regNo,
+            @ModelAttribute("photo") MultipartFile photo) throws IOException {
+        EmployeeUI createEmployeeUI = EmployeeUI.builder()
+                .id(employeeId)
+                .firstName(firstName)
+                .lastName(lastName)
+                .registrationNo(regNo)
+                .birthDate(String.valueOf(birthDate))
+                .photo(photoString)
+                .build();
+
+        logger.info("id param : "+ id);
+        logger.info("id : "+  employeeId);
+        logger.info("fname : "+ firstName);
+        logger.info("lname : "+ lastName);
+        logger.info("bdate : "+ birthDate);
+        logger.info("regNo : "+ regNo);
+        //logger.info("Photo String : "+ photoString);
+        logger.info("Photo File : "+ Arrays.toString(photo.getBytes()));
+        employeeService.save(employeeMapper.toDomain(createEmployeeUI));
+        return "redirect:/";
+    }
+    @PostMapping("/modifyCurrentEmployee")
+    public String modifyCurrentEmployee(@RequestParam("employeeId") String employeeIndex, Model model) {
             Employee employee = employeeService.getEmployeeById(employeeIndex);
             model.addAttribute("newEmployee", employeeMapper.toUI(employee));
         return "redirect:/modify-employee";

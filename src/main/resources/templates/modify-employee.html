@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset = "ISO-8859-1" />
+    <link href = "css/styles.css" rel = "stylesheet"/>
+    <title>Employee Management</title>
+</head>
+<body>
+<h2>Add Employee</h2>
+<form th:action="@{/modifyEmployee}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="employeeId" th:value="*{employeeId}">
+    <input type="hidden" name="id" th:value="*{employeeId}">
+    <input type="hidden" name="photoString" th:value="*{photoString}">
+    <input type="hidden" name="regNo" th:value="*{regNo}">
+    <label for="firstName">First Name:</label>
+    <input type="text" th:value="${firstName}" id="firstName" name="firstName"/>
+    <label for="lastName">Last Name:</label>
+    <input type="text" th:value="${lastName}" id="lastName" name="lastName"/>
+    <label for="birthDate">Birth date:</label>
+    <input type="date" th:value="${birthDate}" id="birthDate" name="birthDate"/>
+    <label for="photo">First Name:</label>
+    <input type="file" th:value="${firstName}" id="photo" accept="/image/*" name="photo"/>
+    <th:block th:if="${employeeId != null}">
+        <button type="submit">Modify</button>
+    </th:block>
+    <th:block th:unless="${employeeId != null}">
+        <button type="submit">Add</button>
+    </th:block>
+</form>
+
+<span th:text="${employeeId}"></span>
+
+    </tbody>
+</table>
+</body>
+</html>
