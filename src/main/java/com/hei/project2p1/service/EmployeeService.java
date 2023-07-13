@@ -38,21 +38,35 @@ public class EmployeeService {
 
     @Transactional
     public Employee save(Employee employee) {
-        Long last = registrationNoTrackerService.getLastRegistrationNo();
-        Long updatedNo = last + 1;
-        employee.setRegistrationNo(REGISTRATIONPREFIX + (updatedNo));
-        registrationNoTrackerService.updateLastNo(updatedNo);
-        return employeeRepository.save(employee);
+        Employee toSave = autoSetRegNo(employee);
+        return employeeRepository.save(toSave);
     }
 
     @Transactional
     public List<Employee> saveAll(List<Employee> employees) {
+        List<Employee> toSave = autoSetRegNo(employees);
+        return employeeRepository.saveAll(toSave);
+    }
+
+    private Employee autoSetRegNo(Employee employee){
+        if (employee.getRegistrationNo()==null){
+            Long last = registrationNoTrackerService.getLastRegistrationNo();
+            Long updatedNo = last + 1;
+            employee.setRegistrationNo(REGISTRATIONPREFIX + (updatedNo));
+            registrationNoTrackerService.updateLastNo(updatedNo);
+        }
+        return employee;
+    }
+
+    private List<Employee> autoSetRegNo(List<Employee> employeeList){
         Long last = registrationNoTrackerService.getLastRegistrationNo();
-        for (Employee e : employees) {
-            e.setRegistrationNo(REGISTRATIONPREFIX + last);
-            last += 1L;
+        for (Employee e : employeeList){
+            if (e.getRegistrationNo()==null){
+                e.setRegistrationNo(REGISTRATIONPREFIX + last);
+                last += 1L;
+            }
         }
         registrationNoTrackerService.updateLastNo(last);
-        return employeeRepository.saveAll(employees);
+        return employeeList;
     }
 }
