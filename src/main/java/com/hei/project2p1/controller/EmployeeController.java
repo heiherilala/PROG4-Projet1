@@ -44,7 +44,7 @@ import java.util.List;
     @GetMapping(value = "/employees/{id}/edit")
     public String modifyEmployeePage(HttpSession session, Model model, @PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
-        EmployeeUI createEmployeeUI = employeeMapper.toUI(employee);
+        CreateEmployeeUI createEmployeeUI = CreateEmployeeUI.builder().build();
         //session.setAttribute("EmployeeToModify", createEmployeeUI);
         model.addAttribute("employeeId", employee.getId());
         model.addAttribute("regNo", employee.getRegistrationNo());
@@ -52,6 +52,7 @@ import java.util.List;
         model.addAttribute("lastName", employee.getLastName());
         model.addAttribute("birthDate", employee.getBirthDate());
         model.addAttribute("photoString", employee.getPhoto());
+        model.addAttribute("photo", createEmployeeUI.getPhoto());
         return "modify-employee";
     }
     @GetMapping(value = "/employees/{id}/details")
@@ -85,24 +86,27 @@ import java.util.List;
             @ModelAttribute("photoString") String photoString,
             @ModelAttribute("birthDate") String birthDate,
             @ModelAttribute("regNo") String regNo,
-            @ModelAttribute("photo") MultipartFile photo) throws IOException {
+            @RequestParam("photo") MultipartFile photoFile) throws IOException {
+
         EmployeeUI createEmployeeUI = EmployeeUI.builder()
                 .id(employeeId)
                 .firstName(firstName)
                 .lastName(lastName)
                 .registrationNo(regNo)
                 .birthDate(String.valueOf(birthDate))
-                .photo(photoString)
+                .photo(photoFile.getOriginalFilename().isEmpty()?photoString:employeeMapper.MultipartImageToString(photoFile))
                 .build();
 
+        logger.info("Update photo: "+ employeeMapper.MultipartImageToString(photoFile));
+        logger.info("Update photo: "+ createEmployeeUI.getPhoto());
         logger.info("id param : "+ id);
         logger.info("id : "+  employeeId);
         logger.info("fname : "+ firstName);
         logger.info("lname : "+ lastName);
         logger.info("bdate : "+ birthDate);
         logger.info("regNo : "+ regNo);
-        //logger.info("Photo String : "+ photoString);
-        logger.info("Photo File : "+ Arrays.toString(photo.getBytes()));
+        // logger.info("Photo String : "+ photoString);
+        logger.info("Photo File : "+ (photoFile.getOriginalFilename()));
         employeeService.save(employeeMapper.toDomain(createEmployeeUI));
         return "redirect:/";
     }

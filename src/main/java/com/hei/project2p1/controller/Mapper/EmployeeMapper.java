@@ -65,7 +65,7 @@ public class EmployeeMapper {
         return createEmployeeUIS;
     }
 
-    private String MultipartImageToString(MultipartFile multipartFile) throws IOException {
+    public String MultipartImageToString(MultipartFile multipartFile) throws IOException {
         String result;
         try {
             byte[] image = Base64.encodeBase64(multipartFile.getBytes(),true);

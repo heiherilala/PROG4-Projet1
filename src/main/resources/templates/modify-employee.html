@@ -18,8 +18,9 @@
     <input type="text" th:value="${lastName}" id="lastName" name="lastName"/>
     <label for="birthDate">Birth date:</label>
     <input type="date" th:value="${birthDate}" id="birthDate" name="birthDate"/>
-    <label for="photo">First Name:</label>
-    <input type="file" th:value="${firstName}" id="photo" accept="/image/*" name="photo"/>
+
+    <label for="photo">Photo:</label>
+    <input type="file" id="photo" accept="image/*" name="photo"><br>
     <th:block th:if="${employeeId != null}">
         <button type="submit">Modify</button>
     </th:block>
