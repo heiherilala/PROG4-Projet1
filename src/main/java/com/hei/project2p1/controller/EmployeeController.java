@@ -1,6 +1,5 @@
 package com.hei.project2p1.controller;
 
-import com.hei.project2p1.controller.constant.Action;
 import com.hei.project2p1.controller.constant.Url;
 import com.hei.project2p1.controller.mapper.EmployeeMapper;
 import com.hei.project2p1.controller.mapper.employeeType.CreateEmployeeUI;
@@ -26,26 +25,24 @@ import java.util.List;
     private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
     @GetMapping(value = Url.EMPLOYEES_LIST)
-    public String index(HttpSession session, Model model) {
+    public String index( Model model) {
         List<Employee> employees = employeeService.getEmployeesFromDB();
         List<EmployeeUI> createEmployeeUIS = employeeMapper.toUI(employees);
-        session.setAttribute("employees", createEmployeeUIS);
         model.addAttribute("employees", createEmployeeUIS);
         model.addAttribute("newEmployee", employeeMapper.toUI(new Employee()));
         return "index";
     }
 
     @GetMapping(value = Url.EMPLOYEES_ADD)
-    public String addNewEmployee(HttpSession session, Model model) {
+    public String addNewEmployee( Model model) {
         model.addAttribute("newEmployee", employeeMapper.toUI(new Employee()));
         return "add-employee";
     }
 
     @GetMapping(value = Url.EMPLOYEES_UPDATE)
-    public String modifyEmployeePage(HttpSession session, Model model, @PathVariable("id") String id) {
+    public String modifyEmployeePage( Model model, @PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
         CreateEmployeeUI createEmployeeUI = CreateEmployeeUI.builder().build();
-        //session.setAttribute("EmployeeToModify", createEmployeeUI);
         model.addAttribute("employeeId", employee.getId());
         model.addAttribute("regNo", employee.getRegistrationNo());
         model.addAttribute("firstName", employee.getFirstName());
@@ -64,17 +61,14 @@ import java.util.List;
         return "employee_details";
     }
 
-    @PostMapping(Action.ADD_EMPLOYEES)
+    @PostMapping("/addEmployee")
     public String addEmployee(@ModelAttribute("newEmployee") CreateEmployeeUI createEmployeeUI,Model model) {
         employeeService.save(employeeMapper.toDomain(createEmployeeUI));
-        model.addAttribute("actionAddEmployee",Action.ADD_EMPLOYEES);
         return "redirect:"+Url.EMPLOYEES_LIST;
     }
 
-    @PostMapping(Action.MODIFY_EMPLOYEES)
-    public String mofidyEmployee(
-            //HttpSession session,
-            //@RequestParam("id") String id,
+    @PostMapping("/modifyEmployee")
+    public String modifyEmployee(
             @ModelAttribute("employeeId") String employeeId,
             @ModelAttribute("firstName") String firstName,
             @ModelAttribute("lastName") String lastName,
@@ -92,15 +86,6 @@ import java.util.List;
                 .photo(photoFile.getOriginalFilename().isEmpty() ? photoString : employeeMapper.multipartImageToString(photoFile))
                 .build();
 /*
-        logger.info("Update photo: " + employeeMapper.multipartImageToString(photoFile));
-        logger.info("Update photo: " + createEmployeeUI.getPhoto());
-        logger.info("id param : " + id);
-        logger.info("id : " + employeeId);
-        logger.info("fname : " + firstName);
-        logger.info("lname : " + lastName);
-        logger.info("bdate : " + birthDate);
-        logger.info("regNo : " + regNo);
-        // logger.info("Photo String : "+ photoString);
         logger.info("Photo File : " + (photoFile.getOriginalFilename()));
  */
         employeeService.save(employeeMapper.toDomain(createEmployeeUI));
