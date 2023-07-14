@@ -1,5 +1,7 @@
 package com.hei.project2p1.controller;
 
+import com.hei.project2p1.controller.constant.Action;
+import com.hei.project2p1.controller.constant.Url;
 import com.hei.project2p1.controller.mapper.EmployeeMapper;
 import com.hei.project2p1.controller.mapper.employeeType.CreateEmployeeUI;
 import com.hei.project2p1.controller.mapper.employeeType.EmployeeUI;
@@ -14,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -24,7 +25,7 @@ import java.util.List;
     private final EmployeeService employeeService;
     private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
-    @GetMapping(value = "/")
+    @GetMapping(value = Url.EMPLOYEES_LIST)
     public String index(HttpSession session, Model model) {
         List<Employee> employees = employeeService.getEmployeesFromDB();
         List<EmployeeUI> createEmployeeUIS = employeeMapper.toUI(employees);
@@ -34,13 +35,13 @@ import java.util.List;
         return "index";
     }
 
-    @GetMapping(value = "/add-new-employee")
+    @GetMapping(value = Url.EMPLOYEES_ADD)
     public String addNewEmployee(HttpSession session, Model model) {
         model.addAttribute("newEmployee", employeeMapper.toUI(new Employee()));
         return "add-employee";
     }
 
-    @GetMapping(value = "/employees/{id}/edit")
+    @GetMapping(value = Url.EMPLOYEES_UPDATE)
     public String modifyEmployeePage(HttpSession session, Model model, @PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
         CreateEmployeeUI createEmployeeUI = CreateEmployeeUI.builder().build();
@@ -54,7 +55,7 @@ import java.util.List;
         return "modify-employee";
     }
 
-    @GetMapping(value = "/employees/{id}/details")
+    @GetMapping(value = Url.EMPLOYEES_DETAILS)
     public String details(HttpSession session, Model model, @PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
         EmployeeUI createEmployeeUI = employeeMapper.toUI(employee);
@@ -63,23 +64,24 @@ import java.util.List;
         return "employee_details";
     }
 
-    @PostMapping("/submitEmployee")
-    public String addEmployee(@ModelAttribute("newEmployee") CreateEmployeeUI createEmployeeUI, HttpSession session) throws IOException {
+    @PostMapping(Action.ADD_EMPLOYEES)
+    public String addEmployee(@ModelAttribute("newEmployee") CreateEmployeeUI createEmployeeUI,Model model) {
         employeeService.save(employeeMapper.toDomain(createEmployeeUI));
-        return "redirect:/";
+        model.addAttribute("actionAddEmployee",Action.ADD_EMPLOYEES);
+        return "redirect:"+Url.EMPLOYEES_LIST;
     }
 
-    @PostMapping("/modifyEmployee")
+    @PostMapping(Action.MODIFY_EMPLOYEES)
     public String mofidyEmployee(
-            HttpSession session,
-            @RequestParam("id") String id,
+            //HttpSession session,
+            //@RequestParam("id") String id,
             @ModelAttribute("employeeId") String employeeId,
             @ModelAttribute("firstName") String firstName,
             @ModelAttribute("lastName") String lastName,
             @ModelAttribute("photoString") String photoString,
             @ModelAttribute("birthDate") String birthDate,
             @ModelAttribute("regNo") String regNo,
-            @RequestParam("photo") MultipartFile photoFile) throws IOException {
+            @RequestParam("photo") MultipartFile photoFile) {
 
         EmployeeUI createEmployeeUI = EmployeeUI.builder()
                 .id(employeeId)
@@ -89,7 +91,7 @@ import java.util.List;
                 .birthDate(String.valueOf(birthDate))
                 .photo(photoFile.getOriginalFilename().isEmpty() ? photoString : employeeMapper.multipartImageToString(photoFile))
                 .build();
-
+/*
         logger.info("Update photo: " + employeeMapper.multipartImageToString(photoFile));
         logger.info("Update photo: " + createEmployeeUI.getPhoto());
         logger.info("id param : " + id);
@@ -100,8 +102,8 @@ import java.util.List;
         logger.info("regNo : " + regNo);
         // logger.info("Photo String : "+ photoString);
         logger.info("Photo File : " + (photoFile.getOriginalFilename()));
-
+ */
         employeeService.save(employeeMapper.toDomain(createEmployeeUI));
-        return "redirect:/";
+        return "redirect:"+Url.EMPLOYEES_LIST;
     }
 }

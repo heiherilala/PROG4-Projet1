@@ -8,7 +8,7 @@
 <body>
 
 <h2>Employees</h2>
-<a th:href="@{/add-new-employee}">Add new Employee</a>
+<a th:href="@{/employees/add}">Add new Employee</a>
 <table>
     <thead>
     <tr>
@@ -29,7 +29,7 @@
         <a th:href="@{/employees/{id}/details(id=${employee.id})}">Details</a>
         </td>
         <td>
-            <a th:href="@{/employees/{id}/edit(id=${employee.id})}">Edit</a>
+            <a th:href="@{/employees/{id}/update(id=${employee.id})}">Update</a>
         </td>
 
     </tr>
