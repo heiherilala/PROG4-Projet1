@@ -1,7 +1,7 @@
-package com.hei.project2p1.controller.Mapper;
+package com.hei.project2p1.controller.mapper;
 
-import com.hei.project2p1.controller.Mapper.EmployeeType.CreateEmployeeUI;
-import com.hei.project2p1.controller.Mapper.EmployeeType.EmployeeUI;
+import com.hei.project2p1.controller.mapper.employeeType.CreateEmployeeUI;
+import com.hei.project2p1.controller.mapper.employeeType.EmployeeUI;
 import com.hei.project2p1.modele.Employee;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.stereotype.Component;
@@ -14,14 +14,14 @@ import java.util.List;
 
 @Component
 public class EmployeeMapper {
-    public Employee toDomain(CreateEmployeeUI createEmployeeUI) throws IOException {
+    public Employee toDomain(CreateEmployeeUI createEmployeeUI) {
         return Employee.builder()
                 .id(createEmployeeUI.getId()==null?null:Integer.parseInt(createEmployeeUI.getId()))
                 .lastName(createEmployeeUI.getLastName())
                 .firstName(createEmployeeUI.getFirstName())
                 .registrationNo(createEmployeeUI.getRegistrationNo())
                 .birthDate(LocalDate.parse(createEmployeeUI.getBirthDate()))
-                .photo(MultipartImageToString(createEmployeeUI.getPhoto()))
+                .photo(multipartImageToString(createEmployeeUI.getPhoto()))
                 .build();
     }
 
@@ -37,7 +37,7 @@ public class EmployeeMapper {
     }
 
 
-    public List<Employee> toDomain(List<CreateEmployeeUI> createEmployeeUIS) throws IOException {
+    public List<Employee> toDomain(List<CreateEmployeeUI> createEmployeeUIS) {
         List<Employee> employees = new ArrayList<>();
         for (CreateEmployeeUI createEmployeeUI : createEmployeeUIS){
             employees.add(toDomain(createEmployeeUI));
@@ -65,7 +65,7 @@ public class EmployeeMapper {
         return createEmployeeUIS;
     }
 
-    public String MultipartImageToString(MultipartFile multipartFile) throws IOException {
+    public String multipartImageToString(MultipartFile multipartFile) {
         String result;
         try {
             byte[] image = Base64.encodeBase64(multipartFile.getBytes(),true);

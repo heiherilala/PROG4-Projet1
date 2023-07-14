@@ -1,8 +1,7 @@
-package com.hei.project2p1.controller.Mapper.EmployeeType;
+package com.hei.project2p1.controller.mapper.employeeType;
 
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @Data

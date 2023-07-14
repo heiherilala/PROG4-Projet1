@@ -1,8 +1,8 @@
 package com.hei.project2p1.controller;
 
-import com.hei.project2p1.controller.Mapper.EmployeeMapper;
-import com.hei.project2p1.controller.Mapper.EmployeeType.CreateEmployeeUI;
-import com.hei.project2p1.controller.Mapper.EmployeeType.EmployeeUI;
+import com.hei.project2p1.controller.mapper.EmployeeMapper;
+import com.hei.project2p1.controller.mapper.employeeType.CreateEmployeeUI;
+import com.hei.project2p1.controller.mapper.employeeType.EmployeeUI;
 import com.hei.project2p1.modele.Employee;
 import com.hei.project2p1.service.EmployeeService;
 import jakarta.servlet.http.HttpSession;
@@ -14,10 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -90,10 +87,10 @@ import java.util.List;
                 .lastName(lastName)
                 .registrationNo(regNo)
                 .birthDate(String.valueOf(birthDate))
-                .photo(photoFile.getOriginalFilename().isEmpty() ? photoString : employeeMapper.MultipartImageToString(photoFile))
+                .photo(photoFile.getOriginalFilename().isEmpty() ? photoString : employeeMapper.multipartImageToString(photoFile))
                 .build();
 
-        logger.info("Update photo: " + employeeMapper.MultipartImageToString(photoFile));
+        logger.info("Update photo: " + employeeMapper.multipartImageToString(photoFile));
         logger.info("Update photo: " + createEmployeeUI.getPhoto());
         logger.info("id param : " + id);
         logger.info("id : " + employeeId);

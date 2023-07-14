@@ -15,6 +15,7 @@
         <th>First Name</th>
         <th>Last Name</th>
         <th>Birth Date</th>
+        <th>Number</th>
     </tr>
     </thead>
     <tbody>
@@ -22,6 +23,8 @@
         <td th:text="${employee.firstName}"></td>
         <td th:text="${employee.lastName}"></td>
         <td th:text="${employee.birthDate}"></td>
+        <td th:text="${employee.registrationNo}"></td>
+
         <td>
         <a th:href="@{/employees/{id}/details(id=${employee.id})}">Details</a>
         </td>
