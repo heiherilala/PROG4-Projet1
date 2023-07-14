@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity(name = "employee")
@@ -28,7 +29,7 @@ public class Employee {
     private String firstName;
     @NotBlank(message = "lastName mandatory")
     private String lastName;
-    @NotBlank(message = "birthDate mandatory")
+    @NotNull(message = "birthDate mandatory")
     private LocalDate birthDate;
     @Lob
     @Column //(columnDefinition = "varchar(max)")?
