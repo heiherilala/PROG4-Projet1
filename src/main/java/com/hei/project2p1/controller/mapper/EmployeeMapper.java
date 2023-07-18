@@ -22,6 +22,20 @@ public class EmployeeMapper {
                 .registrationNo(createEmployeeUI.getRegistrationNo())
                 .birthDate(LocalDate.parse(createEmployeeUI.getBirthDate()))
                 .photo(multipartImageToString(createEmployeeUI.getPhoto()))
+                .gender(Employee.Gender.valueOf(createEmployeeUI.getGender()))
+                .address(createEmployeeUI.getAddress())
+                .cinIssueDate(LocalDate.parse(createEmployeeUI.getCinIssueDate()))
+                .cinIssuePlace(createEmployeeUI.getCinIssuePlace())
+                .cinNumber(createEmployeeUI.getCinNumber())
+                .cnapsNumber(createEmployeeUI.getCnapsNumber())
+                .function(createEmployeeUI.getFunction())
+                .numberOfChildren(createEmployeeUI.getNumberOfChildren())
+                .socioProfessionalCategory(Employee.SocioProfessionalCategory.valueOf(createEmployeeUI.getSocioProfessionalCategory()))
+                .hiringDate(LocalDate.parse(createEmployeeUI.getHiringDate()))
+                .departureDate(LocalDate.parse(createEmployeeUI.getDepartureDate()))
+                .phones(createEmployeeUI.getPhones())
+                .personalEmail(createEmployeeUI.getPersonalEmail())
+                .professionalEmail(createEmployeeUI.getProfessionalEmail())
                 .build();
     }
 
@@ -33,6 +47,20 @@ public class EmployeeMapper {
                 .registrationNo(createEmployeeUI.getRegistrationNo())
                 .birthDate(LocalDate.parse(createEmployeeUI.getBirthDate()))
                 .photo(createEmployeeUI.getPhoto())
+                .gender(Employee.Gender.valueOf(createEmployeeUI.getGender()))
+                .address(createEmployeeUI.getAddress())
+                .cinIssueDate(LocalDate.parse(createEmployeeUI.getCinIssueDate()))
+                .cinIssuePlace(createEmployeeUI.getCinIssuePlace())
+                .cinNumber(createEmployeeUI.getCinNumber())
+                .cnapsNumber(createEmployeeUI.getCnapsNumber())
+                .function(createEmployeeUI.getFunction())
+                .numberOfChildren(createEmployeeUI.getNumberOfChildren())
+                .socioProfessionalCategory(Employee.SocioProfessionalCategory.valueOf(createEmployeeUI.getSocioProfessionalCategory()))
+                .hiringDate(LocalDate.parse(createEmployeeUI.getHiringDate()))
+                .departureDate(LocalDate.parse(createEmployeeUI.getDepartureDate()))
+                .phones(createEmployeeUI.getPhones())
+                .personalEmail(createEmployeeUI.getPersonalEmail())
+                .professionalEmail(createEmployeeUI.getProfessionalEmail())
                 .build();
     }
 
