@@ -1,7 +1,7 @@
 package com.hei.project2p1.controller.mapper;
 
-import com.hei.project2p1.controller.mapper.employeeType.CreateEmployeeUI;
-import com.hei.project2p1.controller.mapper.employeeType.EmployeeUI;
+import com.hei.project2p1.controller.mapper.employeeType.CreateEmployeeView;
+import com.hei.project2p1.controller.mapper.employeeType.EmployeeView;
 import com.hei.project2p1.modele.Employee;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.stereotype.Component;
@@ -14,68 +14,68 @@ import java.util.List;
 
 @Component
 public class EmployeeMapper {
-    public Employee toDomain(CreateEmployeeUI createEmployeeUI) {
+    public Employee toDomain(CreateEmployeeView createEmployeeView) {
         return Employee.builder()
-                .id(createEmployeeUI.getId()==null?null:Integer.parseInt(createEmployeeUI.getId()))
-                .lastName(createEmployeeUI.getLastName())
-                .firstName(createEmployeeUI.getFirstName())
-                .registrationNo(createEmployeeUI.getRegistrationNo())
-                .birthDate(LocalDate.parse(createEmployeeUI.getBirthDate()))
-                .photo(multipartImageToString(createEmployeeUI.getPhoto()))
-                .gender(Employee.Gender.valueOf(createEmployeeUI.getGender()))
-                .address(createEmployeeUI.getAddress())
-                .cinIssueDate(LocalDate.parse(createEmployeeUI.getCinIssueDate()))
-                .cinIssuePlace(createEmployeeUI.getCinIssuePlace())
-                .cinNumber(createEmployeeUI.getCinNumber())
-                .cnapsNumber(createEmployeeUI.getCnapsNumber())
-                .function(createEmployeeUI.getFunction())
-                .numberOfChildren(createEmployeeUI.getNumberOfChildren())
-                .socioProfessionalCategory(Employee.SocioProfessionalCategory.valueOf(createEmployeeUI.getSocioProfessionalCategory()))
-                .hiringDate(LocalDate.parse(createEmployeeUI.getHiringDate()))
-                .departureDate(LocalDate.parse(createEmployeeUI.getDepartureDate()))
-                .phones(createEmployeeUI.getPhones())
-                .personalEmail(createEmployeeUI.getPersonalEmail())
-                .professionalEmail(createEmployeeUI.getProfessionalEmail())
+                .id(createEmployeeView.getId()==null?null:Integer.parseInt(createEmployeeView.getId()))
+                .lastName(createEmployeeView.getLastName())
+                .firstName(createEmployeeView.getFirstName())
+                .registrationNo(createEmployeeView.getRegistrationNo())
+                .birthDate(LocalDate.parse(createEmployeeView.getBirthDate()))
+                .photo(multipartImageToString(createEmployeeView.getPhoto()))
+                .gender(Employee.Gender.valueOf(createEmployeeView.getGender()))
+                .address(createEmployeeView.getAddress())
+                .cinIssueDate(LocalDate.parse(createEmployeeView.getCinIssueDate()))
+                .cinIssuePlace(createEmployeeView.getCinIssuePlace())
+                .cinNumber(createEmployeeView.getCinNumber())
+                .cnapsNumber(createEmployeeView.getCnapsNumber())
+                .function(createEmployeeView.getFunction())
+                .numberOfChildren(createEmployeeView.getNumberOfChildren())
+                .socioProfessionalCategory(Employee.SocioProfessionalCategory.valueOf(createEmployeeView.getSocioProfessionalCategory()))
+                .hiringDate(LocalDate.parse(createEmployeeView.getHiringDate()))
+                .departureDate(LocalDate.parse(createEmployeeView.getDepartureDate()))
+                .phones(createEmployeeView.getPhones())
+                .personalEmail(createEmployeeView.getPersonalEmail())
+                .professionalEmail(createEmployeeView.getProfessionalEmail())
                 .build();
     }
 
-    public Employee toDomain(EmployeeUI createEmployeeUI) {
+    public Employee toDomain(EmployeeView createEmployeeView) {
         return Employee.builder()
-                .id(createEmployeeUI.getId()==null?null:Integer.parseInt(createEmployeeUI.getId()))
-                .lastName(createEmployeeUI.getLastName())
-                .firstName(createEmployeeUI.getFirstName())
-                .registrationNo(createEmployeeUI.getRegistrationNo())
-                .birthDate(LocalDate.parse(createEmployeeUI.getBirthDate()))
-                .photo(createEmployeeUI.getPhoto())
-                .gender(Employee.Gender.valueOf(createEmployeeUI.getGender()))
-                .address(createEmployeeUI.getAddress())
-                .cinIssueDate(LocalDate.parse(createEmployeeUI.getCinIssueDate()))
-                .cinIssuePlace(createEmployeeUI.getCinIssuePlace())
-                .cinNumber(createEmployeeUI.getCinNumber())
-                .cnapsNumber(createEmployeeUI.getCnapsNumber())
-                .function(createEmployeeUI.getFunction())
-                .numberOfChildren(createEmployeeUI.getNumberOfChildren())
-                .socioProfessionalCategory(Employee.SocioProfessionalCategory.valueOf(createEmployeeUI.getSocioProfessionalCategory()))
-                .hiringDate(LocalDate.parse(createEmployeeUI.getHiringDate()))
-                .departureDate(LocalDate.parse(createEmployeeUI.getDepartureDate()))
-                .phones(createEmployeeUI.getPhones())
-                .personalEmail(createEmployeeUI.getPersonalEmail())
-                .professionalEmail(createEmployeeUI.getProfessionalEmail())
+                .id(createEmployeeView.getId()==null?null:Integer.parseInt(createEmployeeView.getId()))
+                .lastName(createEmployeeView.getLastName())
+                .firstName(createEmployeeView.getFirstName())
+                .registrationNo(createEmployeeView.getRegistrationNo())
+                .birthDate(LocalDate.parse(createEmployeeView.getBirthDate()))
+                .photo(createEmployeeView.getPhoto())
+                .gender(Employee.Gender.valueOf(createEmployeeView.getGender()))
+                .address(createEmployeeView.getAddress())
+                .cinIssueDate(LocalDate.parse(createEmployeeView.getCinIssueDate()))
+                .cinIssuePlace(createEmployeeView.getCinIssuePlace())
+                .cinNumber(createEmployeeView.getCinNumber())
+                .cnapsNumber(createEmployeeView.getCnapsNumber())
+                .function(createEmployeeView.getFunction())
+                .numberOfChildren(createEmployeeView.getNumberOfChildren())
+                .socioProfessionalCategory(Employee.SocioProfessionalCategory.valueOf(createEmployeeView.getSocioProfessionalCategory()))
+                .hiringDate(LocalDate.parse(createEmployeeView.getHiringDate()))
+                .departureDate(LocalDate.parse(createEmployeeView.getDepartureDate()))
+                .phones(createEmployeeView.getPhones())
+                .personalEmail(createEmployeeView.getPersonalEmail())
+                .professionalEmail(createEmployeeView.getProfessionalEmail())
                 .build();
     }
 
 
-    public List<Employee> toDomain(List<CreateEmployeeUI> createEmployeeUIS) {
+    public List<Employee> toDomain(List<CreateEmployeeView> createEmployeeViews) {
         List<Employee> employees = new ArrayList<>();
-        for (CreateEmployeeUI createEmployeeUI : createEmployeeUIS){
-            employees.add(toDomain(createEmployeeUI));
+        for (CreateEmployeeView createEmployeeView : createEmployeeViews){
+            employees.add(toDomain(createEmployeeView));
         }
         return employees;
     }
 
-    public EmployeeUI toUI(Employee employee){
+    public EmployeeView toUI(Employee employee){
 
-        return EmployeeUI.builder()
+        return EmployeeView.builder()
                 .id(String.valueOf(employee.getId()))
                 .firstName(employee.getFirstName())
                 .lastName(employee.getLastName())
@@ -85,12 +85,12 @@ public class EmployeeMapper {
                 .build();
     }
 
-    public List<EmployeeUI> toUI(List<Employee> employees){
-        List<EmployeeUI> createEmployeeUIS = new ArrayList<>();
+    public List<EmployeeView> toUI(List<Employee> employees){
+        List<EmployeeView> createEmployeeViews = new ArrayList<>();
         for (Employee employee: employees){
-            createEmployeeUIS.add(toUI(employee));
+            createEmployeeViews.add(toUI(employee));
         }
-        return createEmployeeUIS;
+        return createEmployeeViews;
     }
 
     public String multipartImageToString(MultipartFile multipartFile) {

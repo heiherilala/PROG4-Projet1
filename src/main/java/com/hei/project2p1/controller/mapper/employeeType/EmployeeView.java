@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class EmployeeUI {
+public class EmployeeView {
     private String id;
     private String registrationNo;
     private String firstName;

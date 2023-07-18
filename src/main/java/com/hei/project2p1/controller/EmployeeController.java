@@ -2,8 +2,8 @@ package com.hei.project2p1.controller;
 
 import com.hei.project2p1.controller.constant.Url;
 import com.hei.project2p1.controller.mapper.EmployeeMapper;
-import com.hei.project2p1.controller.mapper.employeeType.CreateEmployeeUI;
-import com.hei.project2p1.controller.mapper.employeeType.EmployeeUI;
+import com.hei.project2p1.controller.mapper.employeeType.CreateEmployeeView;
+import com.hei.project2p1.controller.mapper.employeeType.EmployeeView;
 import com.hei.project2p1.modele.Employee;
 import com.hei.project2p1.service.EmployeeService;
 import jakarta.servlet.http.HttpSession;
@@ -27,8 +27,8 @@ import java.util.List;
     @GetMapping(value = Url.EMPLOYEES_LIST)
     public String index( Model model) {
         List<Employee> employees = employeeService.getEmployeesFromDB();
-        List<EmployeeUI> createEmployeeUIS = employeeMapper.toUI(employees);
-        model.addAttribute("employees", createEmployeeUIS);
+        List<EmployeeView> createEmployeeViews = employeeMapper.toUI(employees);
+        model.addAttribute("employees", createEmployeeViews);
         model.addAttribute("newEmployee", employeeMapper.toUI(new Employee()));
         return "index";
     }
@@ -42,7 +42,7 @@ import java.util.List;
     @GetMapping(value = Url.EMPLOYEES_UPDATE)
     public String modifyEmployeePage( Model model, @PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
-        CreateEmployeeUI createEmployeeUI = CreateEmployeeUI.builder().build();
+        CreateEmployeeView createEmployeeView = CreateEmployeeView.builder().build();
         model.addAttribute("employeeId", employee.getId());
         model.addAttribute("regNo", employee.getRegistrationNo());
         model.addAttribute("firstName", employee.getFirstName());
@@ -55,15 +55,15 @@ import java.util.List;
     @GetMapping(value = Url.EMPLOYEES_DETAILS)
     public String details(HttpSession session, Model model, @PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
-        EmployeeUI createEmployeeUI = employeeMapper.toUI(employee);
-        session.setAttribute("employee", createEmployeeUI);
-        model.addAttribute("employee", createEmployeeUI);
+        EmployeeView createEmployeeView = employeeMapper.toUI(employee);
+        session.setAttribute("employee", createEmployeeView);
+        model.addAttribute("employee", createEmployeeView);
         return "employee_details";
     }
 
     @PostMapping("/addEmployee")
-    public String addEmployee(@ModelAttribute("newEmployee") CreateEmployeeUI createEmployeeUI,Model model) {
-        employeeService.save(employeeMapper.toDomain(createEmployeeUI));
+    public String addEmployee(@ModelAttribute("newEmployee") CreateEmployeeView createEmployeeView, Model model) {
+        employeeService.save(employeeMapper.toDomain(createEmployeeView));
         return "redirect:"+Url.EMPLOYEES_LIST;
     }
 
@@ -77,7 +77,7 @@ import java.util.List;
             @ModelAttribute("regNo") String regNo,
             @RequestParam("photo") MultipartFile photoFile) {
 
-        EmployeeUI createEmployeeUI = EmployeeUI.builder()
+        EmployeeView createEmployeeView = EmployeeView.builder()
                 .id(employeeId)
                 .firstName(firstName)
                 .lastName(lastName)
@@ -88,7 +88,7 @@ import java.util.List;
 /*
         logger.info("Photo File : " + (photoFile.getOriginalFilename()));
  */
-        employeeService.save(employeeMapper.toDomain(createEmployeeUI));
+        employeeService.save(employeeMapper.toDomain(createEmployeeView));
         return "redirect:"+Url.EMPLOYEES_LIST;
     }
 }
