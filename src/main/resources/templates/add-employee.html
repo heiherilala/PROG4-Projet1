@@ -18,7 +18,36 @@
     <input type="text" id="lastName" th:field="*{lastName}" required><br>
 
     <label for="birthDate">Birth Date:</label>
-    <input type="date" id="birthDate" th:field="*{birthDate}" required><br>
+    <input type="date" id="birthDate" th:field="*{birthDate}" ><br>
+
+    <label for="gender">Gender:</label>
+    <input type="text" id="gender" th:field="*{gender}" ><br>
+    <label for="address">Address:</label>
+    <input type="text" id="address" th:field="*{address}" ><br>
+    <label for="personalEmail">Personal email:</label>
+    <input type="text" id="personalEmail" th:field="*{personalEmail}" ><br>
+    <label for="professionalEmail">Professional email:</label>
+    <input type="text" id="professionalEmail" th:field="*{professionalEmail}" ><br>
+    <label for="cinNumber">Cin number:</label>
+    <input type="text" id="cinNumber" th:field="*{cinNumber}" ><br>
+    <label for="cinIssueDate">Cin issue date:</label>
+    <input type="text" id="cinIssueDate" th:field="*{cinIssueDate}" ><br>
+    <label for="cinIssuePlace">Cin issue place:</label>
+    <input type="text" id="cinIssuePlace" th:field="*{cinIssuePlace}" ><br>
+    <label for="function">Function:</label>
+    <input type="text" id="function" th:field="*{function}" ><br>
+    <label for="numberOfChildren">Child number:</label>
+    <input type="text" id="numberOfChildren" th:field="*{numberOfChildren}" ><br>
+    <label for="hiringDate">Hiring date:</label>
+    <input type="date" id="hiringDate" th:field="*{hiringDate}" ><br>
+    <label for="departureDate">Departure date:</label>
+    <input type="date" id="departureDate" th:field="*{departureDate}" ><br>
+    <label for="socioProfessionalCategory">Socio professional category:</label>
+    <input type="text" id="socioProfessionalCategory" th:field="*{socioProfessionalCategory}" ><br>
+    <label for="cnapsNumber">Cnaps number:</label>
+    <input type="text" id="cnapsNumber" th:field="*{cnapsNumber}" ><br>
+    <label for="phones">Phone:</label>
+    <input type="text" id="phones" th:field="*{phones}" ><br>
     <th:block th:if="${newEmployee.id != null}">
         <button type="submit">Modify</button>
     </th:block>

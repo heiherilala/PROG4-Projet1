@@ -73,7 +73,7 @@ public class EmployeeMapper {
         return employees;
     }
 
-    public EmployeeView toUI(Employee employee){
+    public EmployeeView toView(Employee employee){
 
         return EmployeeView.builder()
                 .id(String.valueOf(employee.getId()))
@@ -85,10 +85,10 @@ public class EmployeeMapper {
                 .build();
     }
 
-    public List<EmployeeView> toUI(List<Employee> employees){
+    public List<EmployeeView> toView(List<Employee> employees){
         List<EmployeeView> createEmployeeViews = new ArrayList<>();
         for (Employee employee: employees){
-            createEmployeeViews.add(toUI(employee));
+            createEmployeeViews.add(toView(employee));
         }
         return createEmployeeViews;
     }

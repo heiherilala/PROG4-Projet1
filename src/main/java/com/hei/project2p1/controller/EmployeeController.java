@@ -12,7 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -27,15 +31,15 @@ import java.util.List;
     @GetMapping(value = Url.EMPLOYEES_LIST)
     public String index( Model model) {
         List<Employee> employees = employeeService.getEmployeesFromDB();
-        List<EmployeeView> createEmployeeViews = employeeMapper.toUI(employees);
+        List<EmployeeView> createEmployeeViews = employeeMapper.toView(employees);
         model.addAttribute("employees", createEmployeeViews);
-        model.addAttribute("newEmployee", employeeMapper.toUI(new Employee()));
+        model.addAttribute("newEmployee", employeeMapper.toView(new Employee()));
         return "index";
     }
 
     @GetMapping(value = Url.EMPLOYEES_ADD)
     public String addNewEmployee( Model model) {
-        model.addAttribute("newEmployee", employeeMapper.toUI(new Employee()));
+        model.addAttribute("newEmployee", employeeMapper.toView(new Employee()));
         return "add-employee";
     }
 
@@ -55,7 +59,7 @@ import java.util.List;
     @GetMapping(value = Url.EMPLOYEES_DETAILS)
     public String details(HttpSession session, Model model, @PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
-        EmployeeView createEmployeeView = employeeMapper.toUI(employee);
+        EmployeeView createEmployeeView = employeeMapper.toView(employee);
         session.setAttribute("employee", createEmployeeView);
         model.addAttribute("employee", createEmployeeView);
         return "employee_details";
