@@ -2,11 +2,11 @@ package com.hei.project2p1.controller;
 
 import com.hei.project2p1.controller.constant.Url;
 import com.hei.project2p1.controller.mapper.EmployeeMapper;
-import com.hei.project2p1.controller.mapper.employeeType.CreateEmployeeView;
-import com.hei.project2p1.controller.mapper.employeeType.EmployeeView;
+import com.hei.project2p1.controller.mapper.modelView.CreateEmployeeView;
+import com.hei.project2p1.controller.mapper.modelView.EmployeeView;
+import com.hei.project2p1.controller.mapper.utils.ConvertInputTypeToDomain;
 import com.hei.project2p1.modele.Employee;
 import com.hei.project2p1.service.EmployeeService;
-import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Controller
 @AllArgsConstructor
@@ -28,6 +30,7 @@ import java.util.List;
     private final EmployeeService employeeService;
     private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
+    //TODO: button to create CSV file
     @GetMapping(value = Url.EMPLOYEES_LIST)
     public String index( Model model) {
         List<Employee> employees = employeeService.getEmployeesFromDB();
@@ -39,12 +42,17 @@ import java.util.List;
 
     @GetMapping(value = Url.EMPLOYEES_ADD)
     public String addNewEmployee( Model model) {
-        model.addAttribute("newEmployee", employeeMapper.toView(new Employee()));
+        List<String> genderList= Stream.of(Employee.Gender.values()).map(Enum::name).toList();
+        model.addAttribute("genders", genderList);
+        List<String> categories = Stream.of(Employee.SocioProfessionalCategory.values()).map(Enum::name).toList();
+        model.addAttribute("categories", categories);
+        model.addAttribute("phones", new ArrayList<>());
+        model.addAttribute("newEmployee", new EmployeeView());
         return "add-employee";
     }
 
     @GetMapping(value = Url.EMPLOYEES_UPDATE)
-    public String modifyEmployeePage( Model model, @PathVariable("id") String id) {
+    public String modifyEmployeePage( Model model, @PathVariable("id") Integer id) {
         Employee employee = employeeService.getEmployeeById(id);
         CreateEmployeeView createEmployeeView = CreateEmployeeView.builder().build();
         model.addAttribute("employeeId", employee.getId());
@@ -57,17 +65,60 @@ import java.util.List;
     }
 
     @GetMapping(value = Url.EMPLOYEES_DETAILS)
-    public String details(HttpSession session, Model model, @PathVariable("id") String id) {
+    public String details(Model model, @PathVariable("id") Integer id) {
         Employee employee = employeeService.getEmployeeById(id);
         EmployeeView createEmployeeView = employeeMapper.toView(employee);
-        session.setAttribute("employee", createEmployeeView);
         model.addAttribute("employee", createEmployeeView);
         return "employee_details";
     }
 
     @PostMapping("/addEmployee")
-    public String addEmployee(@ModelAttribute("newEmployee") CreateEmployeeView createEmployeeView, Model model) {
-        employeeService.save(employeeMapper.toDomain(createEmployeeView));
+    public String addEmployee(
+            @RequestParam("firstName") String firstName,
+            @RequestParam("lastName") String lastName,
+            @RequestParam("birthDate") String birthDate,
+            @RequestParam("photo") MultipartFile photo,
+            @RequestParam("gender") String gender,
+            @RequestParam("phones") List<String> phones,
+            @RequestParam("address") String address,
+            @RequestParam("personalEmail") String personalEmail,
+            @RequestParam("professionalEmail") String professionalEmail,
+            @RequestParam("cinNumber") String cinNumber,
+            @RequestParam("cinIssueDate") String cinIssueDate,
+            @RequestParam("cinIssuePlace") String cinIssuePlace,
+            @RequestParam("function") String function,
+            @RequestParam("numberOfChildren") Integer numberOfChildren,
+            @RequestParam("hiringDate") String hiringDate,
+            @RequestParam("departureDate") String departureDate,
+            @RequestParam("socioProfessionalCategory") String socioProfessionalCategory,
+            @RequestParam("cnapsNumber") String cnapsNumber,
+            Model model
+    ) {
+        String photoTreated = ConvertInputTypeToDomain.multipartImageToString(photo);
+
+        EmployeeView employee = EmployeeView.builder()
+                .firstName(firstName)
+                .lastName(lastName)
+                .birthDate(birthDate)
+                .photo(photoTreated)
+                .gender(gender)
+                .phones(phones==null?new ArrayList<>():phones)
+                .address(address)
+                .personalEmail(personalEmail)
+                .professionalEmail(professionalEmail)
+                .cinNumber(cinNumber)
+                .cinIssueDate(cinIssueDate)
+                .cinIssuePlace(cinIssuePlace)
+                .function(function)
+                .numberOfChildren(numberOfChildren)
+                .hiringDate(hiringDate)
+                .departureDate(departureDate)
+                .socioProfessionalCategory(socioProfessionalCategory)
+                .cnapsNumber(cnapsNumber)
+                .registrationNo(null)
+                .build();
+        //logger.info(employee.toString());
+        employeeService.save(employeeMapper.toDomain(employee));
         return "redirect:"+Url.EMPLOYEES_LIST;
     }
 
@@ -87,11 +138,10 @@ import java.util.List;
                 .lastName(lastName)
                 .registrationNo(regNo)
                 .birthDate(String.valueOf(birthDate))
-                .photo(photoFile.getOriginalFilename().isEmpty() ? photoString : employeeMapper.multipartImageToString(photoFile))
+                .photo(photoFile.getOriginalFilename().isEmpty() ? photoString : ConvertInputTypeToDomain.multipartImageToString(photoFile))
                 .build();
-/*
-        logger.info("Photo File : " + (photoFile.getOriginalFilename()));
- */
+
+        //logger.info("Photo File : " + (photoFile.getOriginalFilename()));
         employeeService.save(employeeMapper.toDomain(createEmployeeView));
         return "redirect:"+Url.EMPLOYEES_LIST;
     }

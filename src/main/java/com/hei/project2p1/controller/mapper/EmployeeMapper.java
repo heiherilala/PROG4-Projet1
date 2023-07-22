@@ -1,16 +1,18 @@
 package com.hei.project2p1.controller.mapper;
 
-import com.hei.project2p1.controller.mapper.employeeType.CreateEmployeeView;
-import com.hei.project2p1.controller.mapper.employeeType.EmployeeView;
+import com.hei.project2p1.controller.mapper.modelView.CreateEmployeeView;
+import com.hei.project2p1.controller.mapper.modelView.EmployeeView;
 import com.hei.project2p1.modele.Employee;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.hei.project2p1.controller.mapper.utils.ConvertInputTypeToDomain.multipartImageToString;
+import static com.hei.project2p1.controller.mapper.utils.ConvertInputTypeToDomain.stringInputOfInteger;
+import static com.hei.project2p1.controller.mapper.utils.ConvertInputTypeToDomain.stringInputOfString;
+import static com.hei.project2p1.controller.mapper.utils.ConvertInputTypeToDomain.stringInputValueToLocalDate;
+import static com.hei.project2p1.controller.mapper.utils.ConvertNullValueToView.valueToView;
 
 @Component
 public class EmployeeMapper {
@@ -20,20 +22,26 @@ public class EmployeeMapper {
                 .lastName(createEmployeeView.getLastName())
                 .firstName(createEmployeeView.getFirstName())
                 .registrationNo(createEmployeeView.getRegistrationNo())
-                .birthDate(LocalDate.parse(createEmployeeView.getBirthDate()))
+                .birthDate(stringInputValueToLocalDate(createEmployeeView.getBirthDate()))
                 .photo(multipartImageToString(createEmployeeView.getPhoto()))
-                .gender(Employee.Gender.valueOf(createEmployeeView.getGender()))
+                .gender(createEmployeeView.getGender().length()>0?
+                        Employee.Gender.valueOf(createEmployeeView.getGender())
+                        :null)
                 .address(createEmployeeView.getAddress())
-                .cinIssueDate(LocalDate.parse(createEmployeeView.getCinIssueDate()))
+                .cinIssueDate(stringInputValueToLocalDate(createEmployeeView.getCinIssueDate()))
                 .cinIssuePlace(createEmployeeView.getCinIssuePlace())
-                .cinNumber(createEmployeeView.getCinNumber())
-                .cnapsNumber(createEmployeeView.getCnapsNumber())
+                .cinNumber(stringInputOfInteger(createEmployeeView.getCinNumber()))
+                .cnapsNumber(stringInputOfInteger(createEmployeeView.getCnapsNumber()))
                 .function(createEmployeeView.getFunction())
                 .numberOfChildren(createEmployeeView.getNumberOfChildren())
-                .socioProfessionalCategory(Employee.SocioProfessionalCategory.valueOf(createEmployeeView.getSocioProfessionalCategory()))
-                .hiringDate(LocalDate.parse(createEmployeeView.getHiringDate()))
-                .departureDate(LocalDate.parse(createEmployeeView.getDepartureDate()))
-                .phones(createEmployeeView.getPhones())
+                .socioProfessionalCategory(createEmployeeView.getSocioProfessionalCategory().length()>0?
+                        Employee.SocioProfessionalCategory.valueOf(createEmployeeView.getSocioProfessionalCategory())
+                        :null)
+                .hiringDate(stringInputValueToLocalDate(createEmployeeView.getHiringDate()))
+                .departureDate(stringInputValueToLocalDate(createEmployeeView.getDepartureDate()))
+                //.phones(createEmployeeView.getPhones()!=null?createEmployeeView.getPhones():List.of())
+                //TODO: FIX PHONES MAPPER
+                .phones(List.of())
                 .personalEmail(createEmployeeView.getPersonalEmail())
                 .professionalEmail(createEmployeeView.getProfessionalEmail())
                 .build();
@@ -41,29 +49,36 @@ public class EmployeeMapper {
 
     public Employee toDomain(EmployeeView createEmployeeView) {
         return Employee.builder()
-                .id(createEmployeeView.getId()==null?null:Integer.parseInt(createEmployeeView.getId()))
-                .lastName(createEmployeeView.getLastName())
+                .registrationNo(createEmployeeView.getRegistrationNo())
+                .id(createEmployeeView.getId()!=null?
+                        Integer.parseInt(createEmployeeView.getId())
+                        :null)
+                .lastName(stringInputOfString(createEmployeeView.getLastName()))
                 .firstName(createEmployeeView.getFirstName())
                 .registrationNo(createEmployeeView.getRegistrationNo())
-                .birthDate(LocalDate.parse(createEmployeeView.getBirthDate()))
+                .birthDate(stringInputValueToLocalDate(createEmployeeView.getBirthDate()))
                 .photo(createEmployeeView.getPhoto())
-                .gender(Employee.Gender.valueOf(createEmployeeView.getGender()))
-                .address(createEmployeeView.getAddress())
-                .cinIssueDate(LocalDate.parse(createEmployeeView.getCinIssueDate()))
-                .cinIssuePlace(createEmployeeView.getCinIssuePlace())
-                .cinNumber(createEmployeeView.getCinNumber())
-                .cnapsNumber(createEmployeeView.getCnapsNumber())
-                .function(createEmployeeView.getFunction())
+                .gender(createEmployeeView.getGender().length()>0?
+                        Employee.Gender.valueOf(createEmployeeView.getGender())
+                        :null)
+                .address(stringInputOfString(createEmployeeView.getAddress()))
+                .cinIssueDate(stringInputValueToLocalDate(createEmployeeView.getCinIssueDate()))
+                .cinIssuePlace(stringInputOfString(createEmployeeView.getCinIssuePlace()))
+                .cinNumber(stringInputOfInteger(createEmployeeView.getCinNumber()))
+                .cnapsNumber(stringInputOfInteger(createEmployeeView.getCnapsNumber()))
+                .function(stringInputOfString(createEmployeeView.getFunction()))
                 .numberOfChildren(createEmployeeView.getNumberOfChildren())
-                .socioProfessionalCategory(Employee.SocioProfessionalCategory.valueOf(createEmployeeView.getSocioProfessionalCategory()))
-                .hiringDate(LocalDate.parse(createEmployeeView.getHiringDate()))
-                .departureDate(LocalDate.parse(createEmployeeView.getDepartureDate()))
-                .phones(createEmployeeView.getPhones())
-                .personalEmail(createEmployeeView.getPersonalEmail())
-                .professionalEmail(createEmployeeView.getProfessionalEmail())
+                .socioProfessionalCategory(createEmployeeView.getSocioProfessionalCategory().length()>0?
+                        Employee.SocioProfessionalCategory.valueOf(createEmployeeView.getSocioProfessionalCategory())
+                        :null)
+                .hiringDate(stringInputValueToLocalDate(createEmployeeView.getHiringDate()))
+                .departureDate(stringInputValueToLocalDate(createEmployeeView.getDepartureDate()))
+                //TODO: FIX PHONES MAPPER
+                .phones(List.of())
+                .personalEmail(stringInputOfString(createEmployeeView.getPersonalEmail()))
+                .professionalEmail(stringInputOfString(createEmployeeView.getProfessionalEmail()))
                 .build();
     }
-
 
     public List<Employee> toDomain(List<CreateEmployeeView> createEmployeeViews) {
         List<Employee> employees = new ArrayList<>();
@@ -79,29 +94,34 @@ public class EmployeeMapper {
                 .id(String.valueOf(employee.getId()))
                 .firstName(employee.getFirstName())
                 .lastName(employee.getLastName())
-                .birthDate(String.valueOf(employee.getBirthDate()))
+                .birthDate(valueToView(employee.getBirthDate()))
                 .registrationNo(employee.getRegistrationNo())
                 .photo(employee.getPhoto())
+                .gender(String.valueOf(employee.getGender()))
+                .address(employee.getAddress())
+                .cinIssueDate(valueToView(employee.getCinIssueDate()))
+                .cinIssuePlace(employee.getCinIssuePlace())
+                .cinNumber(valueToView(employee.getCinNumber()))
+                .cnapsNumber(valueToView(employee.getCnapsNumber()))
+                .function(employee.getFunction())
+                .numberOfChildren(employee.getNumberOfChildren())
+                .socioProfessionalCategory(String.valueOf(employee.getSocioProfessionalCategory()))
+                .hiringDate(valueToView(employee.getHiringDate()))
+                .departureDate(valueToView(employee.getDepartureDate()))
+                //TODO: FIX PHONES MAPPER
+                .phones(List.of())
+                .personalEmail(employee.getPersonalEmail())
+                .professionalEmail(employee.getProfessionalEmail())
                 .build();
     }
 
     public List<EmployeeView> toView(List<Employee> employees){
-        List<EmployeeView> createEmployeeViews = new ArrayList<>();
+        List<EmployeeView> employeeViews = new ArrayList<>();
         for (Employee employee: employees){
-            createEmployeeViews.add(toView(employee));
+            employeeViews.add(toView(employee));
         }
-        return createEmployeeViews;
+        return employeeViews;
     }
 
-    public String multipartImageToString(MultipartFile multipartFile) {
-        String result;
-        try {
-            byte[] image = Base64.encodeBase64(multipartFile.getBytes(),true);
-            result = new String(image);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return result;
-    }
 }
 
