@@ -1,6 +1,5 @@
-package com.hei.project2p1.modele;
+package com.hei.project2p1.model;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,7 +10,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,17 +18,17 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity(name = "employee")
 @Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"registrationNo"},name = "unique_registration_no"),
+        /*@UniqueConstraint(columnNames = {"registrationNo"},name = "unique_registration_no"),
         @UniqueConstraint(columnNames = {"personalEmail"},name = "unique_email"),
         @UniqueConstraint(columnNames = {"professionalEmail"},name = "unique_email"),
         @UniqueConstraint(columnNames = {"cinNumber"},name = "unique_cin_number"),
         @UniqueConstraint(columnNames = {"cnapsNumber"},name = "unique_cnaps_number"),
+         */
 
 })
 @Data
@@ -47,14 +45,14 @@ public class Employee {
     private String firstName;
     @NotBlank(message = "lastName is mandatory")
     private String lastName;
-    @NotNull(message = "birthDate is mandatory")
+    //@NotNull(message = "birthDate is mandatory")
     private LocalDate birthDate;
 
-    @NotNull(message = "Sex is required")
+    //@NotNull(message = "Sex is required")
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "employee")
     private List<Phone> phones;
 
     //@NotBlank(message = "Exact address is required")
@@ -69,7 +67,7 @@ public class Employee {
     private String professionalEmail;
 
     //@NotBlank(message = "CIN number is required")
-    private String cinNumber;
+    private Integer cinNumber;
 
     private LocalDate cinIssueDate;
 
@@ -91,8 +89,9 @@ public class Employee {
     @Enumerated(EnumType.STRING)
     private SocioProfessionalCategory socioProfessionalCategory;
 
+    //TODO: to another DB
     //@NotBlank(message = "CNAPS number is required")
-    private String cnapsNumber;
+    private Integer cnapsNumber;
 
     @Lob //large object
     @Column
@@ -102,6 +101,6 @@ public class Employee {
         H, F
     }
     public enum SocioProfessionalCategory {
-        M1, M2, OS1, OS2, OS3, OP1, OP2, OP3
+        M1, M2, OS1, OS2, OS3, OP1A, OP1B, OP2, OP3
     }
 }
