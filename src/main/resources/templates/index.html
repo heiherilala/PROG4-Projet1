@@ -9,31 +9,66 @@
 
 <h2>Employees</h2>
 <a th:href="@{/employees/add}">Add new Employee</a>
-<table>
-    <thead>
+<h1>Employee List</h1>
+<table class="employee-table">
     <tr>
         <th>First Name</th>
         <th>Last Name</th>
+        <th>Registration Number</th>
         <th>Birth Date</th>
-        <th>Number</th>
+        <th>Photo</th>
+        <th>Gender</th>
+        <th>Phones</th>
+        <th>Address</th>
+        <th>Personal Email</th>
+        <th>Professional Email</th>
+        <th>CIN Number</th>
+        <th>CIN Issue Date</th>
+        <th>CIN Issue Place</th>
+        <th>Function</th>
+        <th>Number of Children</th>
+        <th>Hiring Date</th>
+        <th>Departure Date</th>
+        <th>Socio-Professional Category</th>
+        <th>CNAPS Number</th>
     </tr>
-    </thead>
-    <tbody>
-    <tr th:each="employee : ${employees}" >
-        <td th:text="${employee.firstName}"></td>
-        <td th:text="${employee.lastName}"></td>
-        <td th:text="${employee.birthDate}"></td>
+    <tr th:each="employee : ${employees}">
+        <td>
+            <th:block th:if="${employee.photo.length()>0}">
+                <img th:src="'data:image/png;base64,' + ${employee.photo}" width="100" height="100" alt="Photo">
+            </th:block>
+        </td>
+        <td th:text="${employee.firstName }"></td>
+        <td th:text="${employee.lastName }"></td>
         <td th:text="${employee.registrationNo}"></td>
+        <td th:text="${employee.birthDate}"></td>
+
+        <td th:text="${employee.gender}"></td>
+        <td>
+            <ul>
+                <li th:each="phone : ${employee.phones}" th:text="${phone}"></li>
+            </ul>
+        </td>
+        <td th:text="${employee.address}"></td>
+        <td th:text="${employee.personalEmail}"></td>
+        <td th:text="${employee.professionalEmail}"></td>
+        <td th:text="${employee.cinNumber}"></td>
+        <td th:text="${employee.cinIssueDate}"></td>
+        <td th:text="${employee.cinIssuePlace}"></td>
+        <td th:text="${employee.function}"></td>
+        <td th:text="${employee.numberOfChildren}"></td>
+        <td th:text="${employee.hiringDate}"></td>
+        <td th:text="${employee.departureDate}"></td>
+        <td th:text="${employee.socioProfessionalCategory}"></td>
+        <td th:text="${employee.cnapsNumber}"></td>
 
         <td>
-        <a th:href="@{/employees/{id}/details(id=${employee.id})}">Details</a>
+            <a th:href="@{/employees/{id}/details(id=${employee.id})}">Details</a>
         </td>
         <td>
             <a th:href="@{/employees/{id}/update(id=${employee.id})}">Update</a>
         </td>
-
     </tr>
-    </tbody>
 </table>
 </body>
 </html>
