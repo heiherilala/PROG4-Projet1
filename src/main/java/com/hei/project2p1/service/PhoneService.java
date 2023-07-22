@@ -1,6 +1,6 @@
 package com.hei.project2p1.service;
 
-import com.hei.project2p1.modele.Phone;
+import com.hei.project2p1.model.Phone;
 import com.hei.project2p1.repository.PhoneRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

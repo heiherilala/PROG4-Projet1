@@ -2,7 +2,7 @@ package com.hei.project2p1.controller.mapper;
 
 import com.hei.project2p1.controller.mapper.modelView.CreateEmployeeView;
 import com.hei.project2p1.controller.mapper.modelView.EmployeeView;
-import com.hei.project2p1.modele.Employee;
+import com.hei.project2p1.model.Employee;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

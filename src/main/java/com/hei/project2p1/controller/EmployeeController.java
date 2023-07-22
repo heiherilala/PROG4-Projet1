@@ -5,7 +5,7 @@ import com.hei.project2p1.controller.mapper.EmployeeMapper;
 import com.hei.project2p1.controller.mapper.modelView.CreateEmployeeView;
 import com.hei.project2p1.controller.mapper.modelView.EmployeeView;
 import com.hei.project2p1.controller.mapper.utils.ConvertInputTypeToDomain;
-import com.hei.project2p1.modele.Employee;
+import com.hei.project2p1.model.Employee;
 import com.hei.project2p1.service.EmployeeService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;

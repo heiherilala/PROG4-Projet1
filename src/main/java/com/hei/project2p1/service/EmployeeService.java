@@ -1,6 +1,6 @@
 package com.hei.project2p1.service;
 
-import com.hei.project2p1.modele.Employee;
+import com.hei.project2p1.model.Employee;
 import com.hei.project2p1.repository.EmployeeRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
