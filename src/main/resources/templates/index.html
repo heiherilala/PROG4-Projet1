@@ -10,6 +10,24 @@
 <h2>Employees</h2>
 <a th:href="@{/employees/add}">Add new Employee</a>
 <h1>Employee List</h1>
+<form action="#" th:action="@{/employees}" th:object="${searchForm}" method="get">
+    <label>Search by Last Name:</label>
+    <input type="text" th:field="*{lastName}"/>
+    <label>Search by First Name:</label>
+    <input type="text" th:field="*{firstName}"/>
+    <label>Filter by Gender:</label>
+    <select th:field="*{gender}">
+        <option value="">All</option>
+        <option th:each="genderOption : ${genderList}"
+                th:value="${genderOption}"
+                th:text="${genderOption == 'H' ? 'Male' : (genderOption == 'F' ? 'Female' : 'Unknown')}"></option>
+    </select>
+
+    <label>Search by Function:</label>
+    <input type="text" th:field="*{function}"/>
+    <button type="submit">Search</button>
+</form>
+
 <table class="employee-table">
     <tr>
         <th>First Name</th>
@@ -70,5 +88,7 @@
         </td>
     </tr>
 </table>
+
+
 </body>
 </html>

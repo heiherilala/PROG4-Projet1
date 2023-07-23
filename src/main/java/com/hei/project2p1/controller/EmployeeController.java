@@ -4,6 +4,7 @@ import com.hei.project2p1.controller.constant.Url;
 import com.hei.project2p1.controller.mapper.EmployeeMapper;
 import com.hei.project2p1.controller.mapper.modelView.CreateEmployeeView;
 import com.hei.project2p1.controller.mapper.modelView.EmployeeView;
+import com.hei.project2p1.controller.mapper.modelView.SearchForm;
 import com.hei.project2p1.controller.mapper.utils.ConvertInputTypeToDomain;
 import com.hei.project2p1.model.Employee;
 import com.hei.project2p1.service.EmployeeService;
@@ -32,11 +33,18 @@ import java.util.stream.Stream;
 
     //TODO: button to create CSV file
     @GetMapping(value = Url.EMPLOYEES_LIST)
-    public String index( Model model) {
+    public String index(@RequestParam(required = false, defaultValue = "0") int pageNo,
+                        @RequestParam(required = false, defaultValue = "10") int pageSize,
+                        @RequestParam(required = false, defaultValue = "lastName") String sortBy,
+                        @RequestParam(required = false, defaultValue = "ASC") String sortOrder,
+                        @ModelAttribute("searchForm") SearchForm searchForm, Model model) {
         List<Employee> employees = employeeService.getEmployeesFromDB();
-        List<EmployeeView> createEmployeeViews = employeeMapper.toView(employees);
-        model.addAttribute("employees", createEmployeeViews);
-        model.addAttribute("newEmployee", employeeMapper.toView(new Employee()));
+        List<EmployeeView> employeesView = employeeMapper.toView(employees);
+        List<String> genderList = Stream.of(Employee.Gender.values()).map(Enum::name).toList();
+        model.addAttribute("employees", employeesView);
+        model.addAttribute("searchForm", searchForm);
+        model.addAttribute("genderList", genderList);
+        model.addAttribute("sortField", sortBy);
         return "index";
     }
 
