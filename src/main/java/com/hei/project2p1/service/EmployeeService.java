@@ -1,6 +1,8 @@
 package com.hei.project2p1.service;
 
+import com.hei.project2p1.exception.NotFoundException;
 import com.hei.project2p1.model.Employee;
+import com.hei.project2p1.model.Phone;
 import com.hei.project2p1.repository.EmployeeRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -17,26 +19,31 @@ public class EmployeeService {
 
     private final RegistrationNoTrackerService registrationNoTrackerService;
 
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeRepository repository;
+
+    private final PhoneService phoneService;
 
 
     public List<Employee> getEmployeesFromDB() {
-        return employeeRepository.findAll();
+        return repository.findAll();
     }
     public Employee getEmployeeById(Integer id){
-        return employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Employee with id"+ id + "not found."));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("Employee with id"+ id + "not found."));
     }
 
     @Transactional
-    public Employee save(Employee employee) {
+    public Employee save(Employee employee, List<String> phonesNo) {
         Employee toSave = autoSetRegNo(employee);
-        return employeeRepository.save(toSave);
+        Employee saved = repository.save(toSave);
+        List<Phone> phones = phoneService.addPhonesToEmployee(saved,phonesNo);
+        saved.setPhones(phones);
+        return saved;
     }
 
     @Transactional
     public List<Employee> saveAll(List<Employee> employees) {
         List<Employee> toSave = autoSetRegNo(employees);
-        return employeeRepository.saveAll(toSave);
+        return repository.saveAll(toSave);
     }
 
     private Employee autoSetRegNo(Employee employee){

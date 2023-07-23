@@ -1,5 +1,6 @@
 package com.hei.project2p1.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -29,7 +30,6 @@ import java.util.List;
         @UniqueConstraint(columnNames = {"cinNumber"},name = "unique_cin_number"),
         @UniqueConstraint(columnNames = {"cnapsNumber"},name = "unique_cnaps_number"),
          */
-
 })
 @Data
 @NoArgsConstructor
@@ -52,7 +52,7 @@ public class Employee {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @OneToMany(mappedBy = "employee")
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     private List<Phone> phones;
 
     //@NotBlank(message = "Exact address is required")

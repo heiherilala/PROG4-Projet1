@@ -118,7 +118,7 @@ import java.util.stream.Stream;
                 .registrationNo(null)
                 .build();
         //logger.info(employee.toString());
-        employeeService.save(employeeMapper.toDomain(employee));
+        employeeService.save(employeeMapper.toDomain(employee), employee.getPhones());
         return "redirect:"+Url.EMPLOYEES_LIST;
     }
 
@@ -142,7 +142,7 @@ import java.util.stream.Stream;
                 .build();
 
         //logger.info("Photo File : " + (photoFile.getOriginalFilename()));
-        employeeService.save(employeeMapper.toDomain(createEmployeeView));
+        employeeService.save(employeeMapper.toDomain(createEmployeeView), createEmployeeView.getPhones());
         return "redirect:"+Url.EMPLOYEES_LIST;
     }
 }

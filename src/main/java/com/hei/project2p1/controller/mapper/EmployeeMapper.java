@@ -3,6 +3,7 @@ package com.hei.project2p1.controller.mapper;
 import com.hei.project2p1.controller.mapper.modelView.CreateEmployeeView;
 import com.hei.project2p1.controller.mapper.modelView.EmployeeView;
 import com.hei.project2p1.model.Employee;
+import com.hei.project2p1.model.Phone;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -48,8 +49,8 @@ public class EmployeeMapper {
     }
 
     public Employee toDomain(EmployeeView createEmployeeView) {
+
         return Employee.builder()
-                .registrationNo(createEmployeeView.getRegistrationNo())
                 .id(createEmployeeView.getId()!=null?
                         Integer.parseInt(createEmployeeView.getId())
                         :null)
@@ -109,7 +110,7 @@ public class EmployeeMapper {
                 .hiringDate(valueToView(employee.getHiringDate()))
                 .departureDate(valueToView(employee.getDepartureDate()))
                 //TODO: FIX PHONES MAPPER
-                .phones(List.of())
+                .phones(employee.getPhones()==null?List.of():employee.getPhones().stream().map(Phone::getNumber).toList())
                 .personalEmail(employee.getPersonalEmail())
                 .professionalEmail(employee.getProfessionalEmail())
                 .build();
