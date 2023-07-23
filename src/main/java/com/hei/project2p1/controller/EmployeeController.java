@@ -45,6 +45,9 @@ import java.util.stream.Stream;
         model.addAttribute("searchForm", searchForm);
         model.addAttribute("genderList", genderList);
         model.addAttribute("sortField", sortBy);
+        model.addAttribute("sortOrder", sortOrder);
+        //logger.info("------------ sortBy: " +sortBy);
+        //logger.info("------------ sortOrder: " +sortOrder);
         return "index";
     }
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset = "ISO-8859-1" />
+    <meta charset = "UTF-8" />
     <link href = "css/styles.css" rel = "stylesheet"/>
     <title>Employee Management</title>
 </head>
@@ -30,12 +30,15 @@
 
 <table class="employee-table">
     <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
+        <th><a th:href="@{/employees(sortBy='firstName',sortOrder=${sortField eq 'firstName' and sortOrder eq 'ASC' ? 'DESC' : 'ASC'})}"
+               th:text="${sortField eq 'firstName' ? (sortOrder eq 'ASC' ? 'First Name ▲' : 'First Name ▼') : 'First Name'}"></a></th>
+        <th><a th:href="@{/employees(sortBy='lastName',sortOrder=${sortField eq 'lastName' and sortOrder eq 'ASC' ? 'DESC' : 'ASC'})}"
+               th:text="${sortField eq 'lastName' ? (sortOrder eq 'ASC' ? 'Last Name ▲' : 'Last Name ▼') : 'Last Name'}"></a></th>
         <th>Registration Number</th>
         <th>Birth Date</th>
         <th>Photo</th>
-        <th>Gender</th>
+        <th><a th:href="@{/employees(sortBy='gender',sortOrder=${sortField eq 'gender' and sortOrder eq 'ASC' ? 'DESC' : 'ASC'})}"
+               th:text="${sortField eq 'gender' ? (sortOrder eq 'ASC' ? 'Gender ▲' : 'Gender ▼') : 'Gender'}"></a></th>
         <th>Phones</th>
         <th>Address</th>
         <th>Personal Email</th>
@@ -43,12 +46,15 @@
         <th>CIN Number</th>
         <th>CIN Issue Date</th>
         <th>CIN Issue Place</th>
-        <th>Function</th>
+        <th><a th:href="@{/employees(sortBy='function',sortOrder=${sortField eq 'function' and sortOrder eq 'ASC' ? 'DESC' : 'ASC'})}"
+               th:text="${sortField eq 'function' ? (sortOrder eq 'ASC' ? 'Function ▲' : 'Function ▼') : 'Function'}"></a></th>
         <th>Number of Children</th>
         <th>Hiring Date</th>
         <th>Departure Date</th>
         <th>Socio-Professional Category</th>
         <th>CNAPS Number</th>
+        <th>Details</th>
+        <th>Update</th>
     </tr>
     <tr th:each="employee : ${employees}">
         <td>
