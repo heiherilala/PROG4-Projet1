@@ -4,8 +4,13 @@ import com.hei.project2p1.exception.NotFoundException;
 import com.hei.project2p1.model.Employee;
 import com.hei.project2p1.model.Phone;
 import com.hei.project2p1.repository.EmployeeRepository;
+import com.hei.project2p1.repository.dao.EmployeeDao;
+import com.hei.project2p1.utils.PaginationUtils;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +21,10 @@ public class EmployeeService {
     //TODO: pagination all get
     //TODO: one query native
     private final String REGISTRATION_PREFIX = "EMP";
-
     private final RegistrationNoTrackerService registrationNoTrackerService;
 
     private final EmployeeRepository repository;
-
+    private final EmployeeDao employeeDao;
     private final PhoneService phoneService;
 
 
@@ -29,6 +33,11 @@ public class EmployeeService {
     }
     public Employee getEmployeeById(Integer id){
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Employee with id"+ id + "not found."));
+    }
+
+    public long getTotalPages(int pageSize){
+        double totalCount = repository.count();
+        return PaginationUtils.getTotalPages(totalCount,pageSize);
     }
 
     @Transactional
@@ -66,5 +75,25 @@ public class EmployeeService {
         }
         registrationNoTrackerService.updateLastNo(last);
         return employeeList;
+    }
+
+    public List<Employee> findEmployeesByCriteria(String firstName,
+                                                  String lastName,
+                                                  String function,
+                                                  int pageNo,
+                                                  int pageSize,
+                                                  String sortBy,
+                                                  String sortOrder) {
+
+        Sort.Direction direction = sortOrder.equalsIgnoreCase("DESC") ? Sort.Direction.DESC : Sort.Direction.ASC;
+
+        // Define sorting criteria
+        Sort sort = Sort.by(direction, sortBy);
+
+        // Create a Pageable object for pagination and sorting
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+
+        // Perform the search using the EmployeeRepository
+        return employeeDao.findByCriteria(firstName,lastName,pageable);
     }
 }

@@ -33,14 +33,7 @@ public class PhoneService {
 
     @Transactional
     public List<Phone> savePhones(Employee owner, List<String> toSave) {
-        List<Phone> phoneList = new ArrayList<>();
-        for (String num : toSave){
-            phoneList.add(Phone.builder()
-                    .employee(owner)
-                    .number(num)
-                    .build());
-        }
-        return repository.saveAll(phoneList);
+        return repository.saveAll(addPhonesToEmployee(owner,toSave));
     }
 
     @Transactional

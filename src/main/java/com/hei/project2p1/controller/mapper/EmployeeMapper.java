@@ -41,7 +41,6 @@ public class EmployeeMapper {
                 .hiringDate(stringInputValueToLocalDate(createEmployeeView.getHiringDate()))
                 .departureDate(stringInputValueToLocalDate(createEmployeeView.getDepartureDate()))
                 //.phones(createEmployeeView.getPhones()!=null?createEmployeeView.getPhones():List.of())
-                //TODO: FIX PHONES MAPPER
                 .phones(List.of())
                 .personalEmail(createEmployeeView.getPersonalEmail())
                 .professionalEmail(createEmployeeView.getProfessionalEmail())
@@ -74,7 +73,6 @@ public class EmployeeMapper {
                         :null)
                 .hiringDate(stringInputValueToLocalDate(createEmployeeView.getHiringDate()))
                 .departureDate(stringInputValueToLocalDate(createEmployeeView.getDepartureDate()))
-                //TODO: FIX PHONES MAPPER
                 .phones(List.of())
                 .personalEmail(stringInputOfString(createEmployeeView.getPersonalEmail()))
                 .professionalEmail(stringInputOfString(createEmployeeView.getProfessionalEmail()))
@@ -109,7 +107,6 @@ public class EmployeeMapper {
                 .socioProfessionalCategory(String.valueOf(employee.getSocioProfessionalCategory()))
                 .hiringDate(valueToView(employee.getHiringDate()))
                 .departureDate(valueToView(employee.getDepartureDate()))
-                //TODO: FIX PHONES MAPPER
                 .phones(employee.getPhones()==null?List.of():employee.getPhones().stream().map(Phone::getNumber).toList())
                 .personalEmail(employee.getPersonalEmail())
                 .professionalEmail(employee.getProfessionalEmail())

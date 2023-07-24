@@ -17,4 +17,11 @@ public class PaginationUtils {
             throw new BadRequestException("page size too large, must be less than "+PAGE_SIZE_MAX);
         }
     }
+
+
+    public static long getTotalPages(double totalCount, int pageSize) {
+        if (totalCount==0) return 1;
+        double totalPages = Math.ceil(totalCount / pageSize);
+        return (long) totalPages;
+    }
 }
