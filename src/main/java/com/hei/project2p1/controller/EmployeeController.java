@@ -6,9 +6,14 @@ import com.hei.project2p1.controller.mapper.modelView.EmployeeView;
 import com.hei.project2p1.controller.mapper.utils.ConvertInputTypeToDomain;
 import com.hei.project2p1.model.Employee;
 import com.hei.project2p1.service.EmployeeService;
+import com.hei.project2p1.utils.ObjectToCSVConverter;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -212,4 +217,44 @@ import java.util.stream.Stream;
         employeeService.save(employeeMapper.toDomain(employee), employee.getPhones());
         return "redirect:"+"/employees/"+id+"/details";
     }
+
+    @GetMapping("/exportEmployees")
+    public ResponseEntity<ByteArrayResource> exportEmployeesCsv(@RequestParam(value = "page", defaultValue = "1") int pageNo,
+                                                                @RequestParam(value = "page_size", defaultValue = "10") int pageSize,
+                                                                @RequestParam(value = "sort_by", defaultValue = "lastName") String sortBy,
+                                                                @RequestParam(value = "sort_order", defaultValue = "ASC") String sortOrder,
+                                                                @RequestParam(value = "last_name",required = false, defaultValue = "") String lastName,
+                                                                @RequestParam(value = "first_name",required = false, defaultValue = "") String firstName,
+                                                                @RequestParam(value = "function",required = false, defaultValue = "") String function,
+                                                                @RequestParam(value = "gender",required = false, defaultValue = "") String gender,
+                                                                @RequestParam(value = "entrance_before",required = false) LocalDate entranceDateBefore,
+                                                                @RequestParam(value = "entrance_after",required = false) LocalDate entranceDateAfter,
+                                                                @RequestParam(value = "leave_before",required = false) LocalDate leaveDateBefore,
+                                                                @RequestParam(value = "leave_after",required = false) LocalDate leaveDateAfter){
+
+        List<Employee> employees = employeeService.findEmployeesByCriteria(
+                firstName,
+                lastName,
+                function,
+                gender,
+                entranceDateAfter, entranceDateBefore,
+                leaveDateAfter, leaveDateBefore,
+                pageNo, pageSize, sortBy, sortOrder);
+        List<EmployeeView> employeesView = employeeMapper.toView(employees);
+        logger.info(employeesView.toString());
+        String converted = ObjectToCSVConverter.convertToCSV(employeesView);
+        logger.info("csv: "+ converted);
+        byte[] bytes = converted.getBytes();
+        ByteArrayResource resource = new ByteArrayResource(bytes);
+
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=employees.csv");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.parseMediaType("text/csv"))
+                .body(resource);
+    }
+
 }

@@ -6,8 +6,25 @@
     <title>Employee Management</title>
 </head>
 <body>
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 <h1>Employee List</h1>
+
+<p>Export as CSV</p>
+<form th:action="@{/exportEmployees}" method="get" >
+    <input type="number" name="page" hidden="hidden" id="_page" th:value="${page}"/> <br>
+    <input type="number" name="page_size" hidden="hidden" id="_page_size" th:value="${pageSize}"/> <br>
+    <input type="text" name="sort_by" hidden="hidden" id="_sort_by" th:value="${sortField}"/> <br>
+    <input type="text" name="sort_order" hidden="hidden" id="_sort_order" th:value="${sortOrder}"/> <br>
+    <input type="text" name="last_name" id="_last_name" th:value="${lastName}" hidden="hidden"/> <br>
+    <input type="text" name="first_name" id="_first_name" th:value="${firstName}" hidden="hidden"><br>
+    <input type="text" name="gender" id="_gender" th:value="${gender}" hidden="hidden"><br>
+    <input type="text" name="function" id="_function" th:value="${function}" hidden="hidden"><br>
+    <input type="date" name="entrance_after" id="_entrance_after" th:value="${entrance_after}" hidden="hidden"/>
+    <input type="date" name="entrance_before" id="_entrance_before" th:value="${entrance_before}" hidden="hidden"/> <br>
+    <input type="date" name="leave_after" id="_leave_after" th:value="${leave_after}" hidden="hidden"/>
+    <input type="date" name="leave_before" id="_leave_before" th:value="${leave_before}" hidden="hidden"/> <br>
+    <button type="submit">Export CSV</button>
+</form>>
 <form action="#" th:action="@{/employees}" method="get">
     <input type="number" name="page" hidden="hidden" id="page" th:value="${page}"/> <br>
     <input type="number" name="page_size" hidden="hidden" id="page_size" th:value="${pageSize}"/> <br>
@@ -17,6 +34,8 @@
     <input type="text" name="last_name" id="last_name" th:value="${lastName}"/> <br>
     <label>Search by First Name:</label>
     <input type="text" name="first_name" id="first_name" th:value="${firstName}"><br>
+    <label>Search by function:</label>
+    <input type="text" name="function" id="function" th:value="${function}"><br>
     <label>Filter by Gender:</label>
     <select id="gender" name="gender" th:value="${gender}">
         <option value="">All</option>

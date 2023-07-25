@@ -18,7 +18,6 @@
         </th:block>
 
         <div class="left-details">
-            <img th:src="${employee.photo}" alt="Photo" width="150" height="150"/>
             <p><strong>First Name:</strong> <span th:utext="${employee.firstName} ?: 'Not Specified'"></span></p>
             <p><strong>Last Name:</strong> <span th:utext="${employee.lastName} ?: 'Not Specified'"></span></p>
             <p><strong>Birth Date:</strong> <span th:utext="${employee.birthDate} ?: 'Not Specified'"></span></p>

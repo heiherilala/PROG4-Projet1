@@ -28,7 +28,7 @@ public class PhoneService {
     }
 
     public List<Phone> getByOwnerId(String ownerId){
-        return repository.findAllByEmployeeId(ownerId);
+        return repository.getPhoneByOwnerId(ownerId);
     }
 
     @Transactional

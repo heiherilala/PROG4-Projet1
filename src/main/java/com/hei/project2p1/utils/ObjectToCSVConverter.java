@@ -6,18 +6,19 @@ import java.util.List;
 
 public class ObjectToCSVConverter {
 
-    public static String convertToCSV(Object object) {
+    public static String convertToCSV(Object object, boolean includeHeader) {
         Class<?> clazz = object.getClass();
         Field[] fields = clazz.getDeclaredFields();
         List<Field> fieldList = Arrays.asList(fields);
 
         StringBuilder csvData = new StringBuilder();
 
-        // Append headers
-        fieldList.forEach(field -> csvData.append(field.getName()).append(","));
-
-        csvData.deleteCharAt(csvData.length() - 1);
-        csvData.append("\n");
+        if (includeHeader) {
+            // Append headers only if 'includeHeader' is true
+            fieldList.forEach(field -> csvData.append(field.getName()).append(","));
+            csvData.deleteCharAt(csvData.length() - 1);
+            csvData.append("\n");
+        }
 
         // Append values
         fieldList.forEach(field -> {
@@ -30,6 +31,24 @@ public class ObjectToCSVConverter {
         });
 
         csvData.deleteCharAt(csvData.length() - 1);
+        return csvData.toString();
+    }
+
+    public static <T> String convertToCSV(List<T> list) {
+        if (list == null || list.isEmpty()) {
+            throw new IllegalArgumentException("List must not be null or empty.");
+        }
+
+        StringBuilder csvData = new StringBuilder();
+
+        // Include header only once
+        csvData.append(convertToCSV(list.get(0), true)).append("\n");
+
+        // Append values for each object in the list
+        list.forEach(object -> {
+            String row = convertToCSV(object, false);
+            csvData.append(row).append("\n");
+        });
 
         return csvData.toString();
     }
