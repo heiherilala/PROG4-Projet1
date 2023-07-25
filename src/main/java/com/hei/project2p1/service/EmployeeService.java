@@ -77,6 +77,7 @@ public class EmployeeService {
         return employeeList;
     }
 
+    @Transactional
     public List<Employee> findEmployeesByCriteria(String firstName,
                                                   String lastName,
                                                   String function,
@@ -89,11 +90,12 @@ public class EmployeeService {
 
         // Define sorting criteria
         Sort sort = Sort.by(direction, sortBy);
-
+        PaginationUtils.paginationValidator(pageNo,pageSize);
         // Create a Pageable object for pagination and sorting
-        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+        Pageable pageable = PageRequest.of(pageNo-1, pageSize, sort);
 
         // Perform the search using the EmployeeRepository
-        return employeeDao.findByCriteria(firstName,lastName,pageable);
+        return employeeDao.findByCriteria(firstName,lastName,function,pageable);
+        //return repository.findByLastNameContainingIgnoreCaseAndFirstNameContainingIgnoreCaseAndFunctionContainingIgnoreCase(lastName,firstName,function,pageable);
     }
 }
