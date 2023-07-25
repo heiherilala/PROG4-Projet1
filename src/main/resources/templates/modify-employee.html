@@ -10,10 +10,10 @@
 <h2>Update Employee</h2>
 
 <form th:action="@{/modifyEmployee}" method="post" enctype="multipart/form-data">
-    <th:block th:if="${photoString.length()>0}">
+    <th:block th:if="${photoString!=null && photoString.length()>0}">
         <img th:src="'data:image/png;base64,' + ${photoString}" alt="Photo"> <br>
     </th:block>
-    <th:block th:unless="${photoString.length()>0}"> <br>
+    <th:block th:unless="${photoString!=null && photoString.length()>0}"> <br>
         <h4>Aucun Image</h4>
     </th:block>
     <input type="hidden" name="employeeId" th:value="*{employeeId}">
