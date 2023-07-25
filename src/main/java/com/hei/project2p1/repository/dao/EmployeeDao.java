@@ -1,6 +1,7 @@
 package com.hei.project2p1.repository.dao;
 
 import com.hei.project2p1.model.Employee;
+import com.hei.project2p1.repository.dao.utils.SearchInDb;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -19,7 +20,7 @@ import java.util.List;
 public class EmployeeDao {
     private EntityManager entityManager;
 
-    public List<Employee> findByCriteria(String firstName, String lastName, String function,
+    public List<Employee> findByCriteria(String firstName, String lastName, String function, String gender,
                                          Pageable pageable) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
@@ -28,30 +29,22 @@ public class EmployeeDao {
         List<Predicate> predicates = new ArrayList<>();
 
         if (firstName!= null && firstName.length()>0){
-                Predicate hasUserFirstName =
-                        builder.or(
-                                builder.like(builder.lower(root.get("firstName")), "%" + firstName.toLowerCase() + "%"),
-                                builder.like(root.get("firstName"), "%" + firstName + "%")
-                        );
-                predicates.add(hasUserFirstName);
+                predicates.add(SearchInDb.predicateForMatchText(builder,root,"firstName",firstName));
         }
         if (lastName!= null && lastName.length()>0){
-                Predicate hasUserLastName =
-                        builder.or(
-                                builder.like(builder.lower(root.get("lastName")), "%" + lastName.toLowerCase() + "%"),
-                                builder.like(root.get("lastName"), "%" + lastName + "%")
-                        );
-                predicates.add(hasUserLastName);
+            predicates.add(SearchInDb.predicateForMatchText(builder,root,"lastName",lastName));
         }
 
         if (function!= null && function.length()>0){
-            Predicate hasUserFunction =
-                    builder.or(
-                            builder.like(builder.lower(root.get("function")), "%" + function.toLowerCase() + "%"),
-                            builder.like(root.get("function"), "%" + function + "%")
-                    );
-            predicates.add(hasUserFunction);
+            predicates.add(SearchInDb.predicateForMatchText(builder,root,"function",function));
         }
+        /*
+        if (gender!= null && gender.length()>0){
+            if (gender.equals("H") || gender.equals("F")) {
+                predicates.add(SearchInDb.predicateForEquals(builder, root, "gender", gender));
+            }
+        }
+         */
 
         query
                 .where(builder.and(predicates.toArray(new Predicate[0])))
