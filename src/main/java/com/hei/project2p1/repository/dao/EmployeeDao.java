@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.query.QueryUtils;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,8 @@ import java.util.List;
 public class EmployeeDao {
     private EntityManager entityManager;
 
-    public List<Employee> findByCriteria(String firstName, String lastName, String function, String gender,
+    public List<Employee> findByCriteria(String firstName, String lastName, String function, String gender, LocalDate entranceDateAfter, LocalDate entranceDateBefore,
+                                         LocalDate leaveDateAfter, LocalDate leaveDateBefore,
                                          Pageable pageable) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
@@ -38,13 +40,28 @@ public class EmployeeDao {
         if (function!= null && function.length()>0){
             predicates.add(SearchInDb.predicateForMatchText(builder,root,"function",function));
         }
-        /*
+
         if (gender!= null && gender.length()>0){
-            if (gender.equals("H") || gender.equals("F")) {
-                predicates.add(SearchInDb.predicateForEquals(builder, root, "gender", gender));
+            Employee.Gender g = gender.equals("H")? Employee.Gender.H:(gender.equals("F")?Employee.Gender.F:null);
+            if (g!=null){
+                predicates.add(builder.equal(root.get("gender"),g));
             }
         }
-         */
+
+        if (entranceDateAfter != null ){
+            predicates.add(builder.greaterThanOrEqualTo(root.get("hiringDate"),entranceDateAfter));
+        }
+        if (entranceDateBefore != null ){
+            predicates.add(builder.lessThan(root.get("hiringDate"),entranceDateBefore));
+        }
+
+
+        if (leaveDateAfter!= null ){
+            predicates.add(builder.greaterThanOrEqualTo(root.get("departureDate"),leaveDateAfter));
+        }
+        if (leaveDateBefore != null ){
+            predicates.add(builder.lessThan(root.get("departureDate"),leaveDateBefore));
+        }
 
         query
                 .where(builder.and(predicates.toArray(new Predicate[0])))
