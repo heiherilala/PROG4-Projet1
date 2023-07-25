@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Stream;
 
 @Controller
@@ -39,9 +40,10 @@ import java.util.stream.Stream;
             @RequestParam(value = "sort_order",required = false, defaultValue = "ASC") String sortOrder,
             @RequestParam(value = "last_name",required = false, defaultValue = "") String lastName,
             @RequestParam(value = "first_name",required = false, defaultValue = "") String firstName,
-            @RequestParam(value = "function",required = false, defaultValue = "") String function
+            @RequestParam(value = "function",required = false, defaultValue = "") String function,
+            @RequestParam(value = "gender",required = false, defaultValue = "") String gender
     ){
-        return employeeService.findEmployeesByCriteria(firstName,lastName,function,pageNo,pageSize,sortBy,sortOrder);
+        return employeeService.findEmployeesByCriteria(firstName,lastName,function,gender,pageNo,pageSize,sortBy,sortOrder);
     }
 
     @GetMapping(value = EmployeeUrl.EMPLOYEES_LIST)
@@ -52,6 +54,11 @@ import java.util.stream.Stream;
                         @RequestParam(value = "last_name",required = false, defaultValue = "") String lastName,
                         @RequestParam(value = "first_name",required = false, defaultValue = "") String firstName,
                         @RequestParam(value = "function",required = false, defaultValue = "") String function,
+                        @RequestParam(value = "gender",required = false, defaultValue = "") String gender,
+                        @RequestParam(value = "entrance_before",required = false) Locale entranceDateBefore,
+                        @RequestParam(value = "entrance_after",required = false) Locale entranceDateAfter,
+                        @RequestParam(value = "leave_before",required = false) Locale leaveDateBefore,
+                        @RequestParam(value = "leave_after",required = false) Locale leaveDateAfter,
                         Model model) {
         //List<Employee> employees = employeeService.getEmployeesFromDB();
         //
@@ -59,17 +66,31 @@ import java.util.stream.Stream;
                 firstName,
                 lastName,
                 function,
+                gender,
                 pageNo, pageSize, sortBy, sortOrder);
         long totalPages = employeeService.getTotalPages(pageSize);
         List<EmployeeView> employeesView = employeeMapper.toView(employees);
         List<String> genderList = Stream.of(Employee.Gender.values()).map(Enum::name).toList();
+        //variable to Display
         model.addAttribute("employees", employeesView);
         model.addAttribute("genderList", genderList);
+        //Sort th variables
         model.addAttribute("sortField", sortBy);
         model.addAttribute("sortOrder", sortOrder);
+        //Pagination th variables
         model.addAttribute("page", pageNo);
-        model.addAttribute("page_size", pageSize);
+        model.addAttribute("pageSize", pageSize);
         model.addAttribute("totalPages", totalPages);
+        //Search th variables
+        model.addAttribute("lastName", lastName);
+        model.addAttribute("firstName", firstName);
+        model.addAttribute("gender", gender);
+        model.addAttribute("function", function);
+        model.addAttribute("entrance_before", entranceDateBefore);
+        model.addAttribute("entrance_after", entranceDateAfter);
+        model.addAttribute("leave_before", leaveDateBefore);
+        model.addAttribute("leave_after", leaveDateAfter);
+
         logger.info("------------ lastName: " +lastName);
         logger.info("------------ firstName: " +firstName);
         //logger.info("------------ sortBy: " +sortBy);

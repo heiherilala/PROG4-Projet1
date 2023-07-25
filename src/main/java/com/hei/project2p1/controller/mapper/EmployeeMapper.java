@@ -18,7 +18,7 @@ import static com.hei.project2p1.controller.mapper.utils.ConvertNullValueToView.
 public class EmployeeMapper {
     public Employee toDomain(CreateEmployeeView createEmployeeView) {
         return Employee.builder()
-                .id(createEmployeeView.getId()==null?null:Integer.parseInt(createEmployeeView.getId()))
+                .id(createEmployeeView.getId()==null?null:createEmployeeView.getId())
                 .lastName(createEmployeeView.getLastName())
                 .firstName(createEmployeeView.getFirstName())
                 .registrationNo(createEmployeeView.getRegistrationNo())
@@ -50,7 +50,7 @@ public class EmployeeMapper {
 
         return Employee.builder()
                 .id(createEmployeeView.getId()!=null?
-                        Integer.parseInt(createEmployeeView.getId())
+                        createEmployeeView.getId()
                         :null)
                 .lastName(stringInputOfString(createEmployeeView.getLastName()))
                 .firstName(createEmployeeView.getFirstName())
