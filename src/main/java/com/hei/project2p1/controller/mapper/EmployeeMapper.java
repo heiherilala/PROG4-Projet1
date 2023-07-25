@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.hei.project2p1.controller.mapper.utils.ConvertInputTypeToDomain.multipartImageToString;
-import static com.hei.project2p1.controller.mapper.utils.ConvertInputTypeToDomain.stringInputOfInteger;
 import static com.hei.project2p1.controller.mapper.utils.ConvertInputTypeToDomain.stringInputOfString;
 import static com.hei.project2p1.controller.mapper.utils.ConvertInputTypeToDomain.stringInputValueToLocalDate;
 import static com.hei.project2p1.controller.mapper.utils.ConvertNullValueToView.valueToView;
@@ -31,8 +30,8 @@ public class EmployeeMapper {
                 .address(createEmployeeView.getAddress())
                 .cinIssueDate(stringInputValueToLocalDate(createEmployeeView.getCinIssueDate()))
                 .cinIssuePlace(createEmployeeView.getCinIssuePlace())
-                .cinNumber(stringInputOfInteger(createEmployeeView.getCinNumber()))
-                .cnapsNumber(stringInputOfInteger(createEmployeeView.getCnapsNumber()))
+                .cinNumber(stringInputOfString(createEmployeeView.getCinNumber()))
+                .cnapsNumber(stringInputOfString(createEmployeeView.getCnapsNumber()))
                 .function(createEmployeeView.getFunction())
                 .numberOfChildren(createEmployeeView.getNumberOfChildren())
                 .socioProfessionalCategory(createEmployeeView.getSocioProfessionalCategory().length()>0?
@@ -64,8 +63,8 @@ public class EmployeeMapper {
                 .address(stringInputOfString(createEmployeeView.getAddress()))
                 .cinIssueDate(stringInputValueToLocalDate(createEmployeeView.getCinIssueDate()))
                 .cinIssuePlace(stringInputOfString(createEmployeeView.getCinIssuePlace()))
-                .cinNumber(stringInputOfInteger(createEmployeeView.getCinNumber()))
-                .cnapsNumber(stringInputOfInteger(createEmployeeView.getCnapsNumber()))
+                .cinNumber(stringInputOfString(createEmployeeView.getCinNumber()))
+                .cnapsNumber(stringInputOfString(createEmployeeView.getCnapsNumber()))
                 .function(stringInputOfString(createEmployeeView.getFunction()))
                 .numberOfChildren(createEmployeeView.getNumberOfChildren())
                 .socioProfessionalCategory(createEmployeeView.getSocioProfessionalCategory().length()>0?
@@ -100,8 +99,8 @@ public class EmployeeMapper {
                 .address(employee.getAddress())
                 .cinIssueDate(valueToView(employee.getCinIssueDate()))
                 .cinIssuePlace(employee.getCinIssuePlace())
-                .cinNumber(valueToView(employee.getCinNumber()))
-                .cnapsNumber(valueToView(employee.getCnapsNumber()))
+                .cinNumber(employee.getCinNumber())
+                .cnapsNumber(employee.getCnapsNumber())
                 .function(employee.getFunction())
                 .numberOfChildren(employee.getNumberOfChildren())
                 .socioProfessionalCategory(String.valueOf(employee.getSocioProfessionalCategory()))

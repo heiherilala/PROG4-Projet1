@@ -67,7 +67,7 @@ public class Employee {
     private String professionalEmail;
 
     //@NotBlank(message = "CIN number is required")
-    private Integer cinNumber;
+    private String cinNumber;
 
     private LocalDate cinIssueDate;
 
@@ -91,10 +91,10 @@ public class Employee {
 
     //TODO: to another DB
     //@NotBlank(message = "CNAPS number is required")
-    private Integer cnapsNumber;
+    private String cnapsNumber;
 
     @Lob //large object
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String photo;
 
     public enum Gender {
