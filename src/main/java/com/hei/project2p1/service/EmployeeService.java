@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -31,7 +32,7 @@ public class EmployeeService {
     public List<Employee> getEmployeesFromDB() {
         return repository.findAll();
     }
-    public Employee getEmployeeById(Integer id){
+    public Employee getEmployeeById(String id){
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Employee with id"+ id + "not found."));
     }
 
@@ -82,10 +83,11 @@ public class EmployeeService {
                                                   String lastName,
                                                   String function,
                                                   String gender,
+                                                  LocalDate entranceDateAfter,LocalDate entranceDateBefore,
+                                                  LocalDate leaveDateAfter, LocalDate leaveDateBefore,
                                                   int pageNo,
                                                   int pageSize,
-                                                  String sortBy,
-                                                  String sortOrder) {
+                                                  String sortBy,  String sortOrder) {
 
         Sort.Direction direction = sortOrder.equalsIgnoreCase("DESC") ? Sort.Direction.DESC : Sort.Direction.ASC;
 
@@ -96,7 +98,7 @@ public class EmployeeService {
         Pageable pageable = PageRequest.of(pageNo-1, pageSize, sort);
 
         // Perform the search using the EmployeeRepository
-        return employeeDao.findByCriteria(firstName,lastName,function,gender,pageable);
+        return employeeDao.findByCriteria(firstName,lastName,function, gender, entranceDateAfter, entranceDateBefore, leaveDateAfter, leaveDateBefore, pageable);
         //return repository.findByLastNameContainingIgnoreCaseAndFirstNameContainingIgnoreCaseAndFunctionContainingIgnoreCase(lastName,firstName,function,pageable);
     }
 }
