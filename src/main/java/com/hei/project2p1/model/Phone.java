@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class Phone {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private String id;
     private String number;
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)

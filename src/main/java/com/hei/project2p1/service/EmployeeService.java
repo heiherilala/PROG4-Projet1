@@ -81,6 +81,7 @@ public class EmployeeService {
     public List<Employee> findEmployeesByCriteria(String firstName,
                                                   String lastName,
                                                   String function,
+                                                  String gender,
                                                   int pageNo,
                                                   int pageSize,
                                                   String sortBy,
@@ -95,7 +96,7 @@ public class EmployeeService {
         Pageable pageable = PageRequest.of(pageNo-1, pageSize, sort);
 
         // Perform the search using the EmployeeRepository
-        return employeeDao.findByCriteria(firstName,lastName,function,pageable);
+        return employeeDao.findByCriteria(firstName,lastName,function,gender,pageable);
         //return repository.findByLastNameContainingIgnoreCaseAndFirstNameContainingIgnoreCaseAndFunctionContainingIgnoreCase(lastName,firstName,function,pageable);
     }
 }

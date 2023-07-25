@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface PhoneRepository extends JpaRepository<Phone,Integer> {
-    List<Phone> findAllByEmployeeId(Integer OwnerId);
+    List<Phone> findAllByEmployeeId(String OwnerId);
 }

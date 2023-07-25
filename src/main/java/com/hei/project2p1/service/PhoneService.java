@@ -27,7 +27,7 @@ public class PhoneService {
         return repository.findAll(pageable).toList();
     }
 
-    public List<Phone> getByOwnerId(Integer ownerId){
+    public List<Phone> getByOwnerId(String ownerId){
         return repository.findAllByEmployeeId(ownerId);
     }
 
