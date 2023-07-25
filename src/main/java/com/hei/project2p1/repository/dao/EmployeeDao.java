@@ -19,30 +19,42 @@ import java.util.List;
 public class EmployeeDao {
     private EntityManager entityManager;
 
-    public List<Employee> findByCriteria(String firstName, String lastName,
+    public List<Employee> findByCriteria(String firstName, String lastName, String function,
                                          Pageable pageable) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
         Root<Employee> root = query.from(Employee.class);
 
         List<Predicate> predicates = new ArrayList<>();
-        if (firstName.length()>0){
-            Predicate hasUserFirstName =
-                    builder.or(
-                            builder.like(builder.lower(root.get("firstName")), "%" + firstName + "%"),
-                            builder.like(root.get("firstName"), "%" + firstName + "%")
-                    );
-            predicates.add(hasUserFirstName);
+
+        if (firstName!= null && firstName.length()>0){
+                Predicate hasUserFirstName =
+                        builder.or(
+                                builder.like(builder.lower(root.get("firstName")), "%" + firstName.toLowerCase() + "%"),
+                                builder.like(root.get("firstName"), "%" + firstName + "%")
+                        );
+                predicates.add(hasUserFirstName);
+        }
+        if (lastName!= null && lastName.length()>0){
+                Predicate hasUserLastName =
+                        builder.or(
+                                builder.like(builder.lower(root.get("lastName")), "%" + lastName.toLowerCase() + "%"),
+                                builder.like(root.get("lastName"), "%" + lastName + "%")
+                        );
+                predicates.add(hasUserLastName);
         }
 
-        Predicate hasUserLastName =
-                builder.or(
-                        builder.like(builder.lower(root.get("lastName")), "%" + lastName + "%"),
-                        builder.like(root.get("lastName"), "%" + lastName + "%")
-                );
+        if (function!= null && function.length()>0){
+            Predicate hasUserFunction =
+                    builder.or(
+                            builder.like(builder.lower(root.get("function")), "%" + function.toLowerCase() + "%"),
+                            builder.like(root.get("function"), "%" + function + "%")
+                    );
+            predicates.add(hasUserFunction);
+        }
 
         query
-                .where(builder.and())
+                .where(builder.and(predicates.toArray(new Predicate[0])))
                 .orderBy(QueryUtils.toOrders(pageable.getSort(), root, builder));
 
         return entityManager.createQuery(query)
