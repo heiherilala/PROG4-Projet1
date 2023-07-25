@@ -68,3 +68,80 @@ a:hover {
     background-color: #555;
 }
 
+body {
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+}
+
+.employee-card {
+    display: flex;
+    justify-content: space-between;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px #888888;
+}
+
+.left-details {
+    flex: 1;
+}
+
+.right-details {
+    flex: 1;
+}
+
+.employee-card img {
+    width: 150px;
+    height: 150px;
+    display: block;
+    margin: 0 auto;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.employee-card .left-details p,
+.employee-card .right-details p {
+    margin: 0;
+    padding: 5px;
+}
+
+.employee-card .left-details p strong,
+.employee-card .right-details p strong {
+    font-weight: bold;
+}
+
+.employee-card .left-details ul {
+    margin-top: 0;
+    padding-left: 20px;
+}
+
+/* Styles for header (already provided) */
+.navBar {
+    background-color: #383770;
+    overflow: hidden;
+}
+
+.navBar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.navBar li {
+    margin-right: 20px;
+}
+
+.navBar li a {
+    color: white;
+    text-decoration: none;
+}
+
+.navBar li a:hover {
+    text-decoration: underline;
+}
