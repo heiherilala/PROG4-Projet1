@@ -13,7 +13,7 @@ create table if not exists employee (
     departure_date date  ,
     first_name varchar ,
     "function" varchar ,
-    gender CHAR(1) CHECK (gender IN ('H', 'F')),
+    gender varchar ,
     hiring_date date  ,
     last_name varchar   ,
     number_of_children integer,
@@ -21,7 +21,5 @@ create table if not exists employee (
     photo text  ,
     professional_email varchar   ,
     registration_no varchar   ,
-    socio_professional_category VARCHAR(10) CHECK (
-        socio_professional_category IN ('M1', 'M2', 'OS1', 'OS2', 'OS3', 'OP1A', 'OP1B', 'OP2', 'OP3')
-    )
+    socio_professional_category VARCHAR
 );
