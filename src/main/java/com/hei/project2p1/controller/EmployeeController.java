@@ -160,7 +160,6 @@ import java.util.stream.Stream;
                 .cnapsNumber(cnapsNumber)
                 .registrationNo(null)
                 .build();
-        //logger.info(employee.toString());
         employeeService.save(employeeMapper.toDomain(employee), employee.getPhones());
         return "redirect:"+ EmployeeUrl.EMPLOYEES_LIST;
     }
@@ -213,7 +212,6 @@ import java.util.stream.Stream;
                 .registrationNo(null)
                 .build();
 
-        //logger.info("Photo File : " + (photoFile.getOriginalFilename()));
         employeeService.save(employeeMapper.toDomain(employee), employee.getPhones());
         return "redirect:"+"/employees/"+id+"/details";
     }
@@ -241,9 +239,7 @@ import java.util.stream.Stream;
                 leaveDateAfter, leaveDateBefore,
                 pageNo, pageSize, sortBy, sortOrder);
         List<EmployeeView> employeesView = employeeMapper.toView(employees);
-        logger.info(employeesView.toString());
         String converted = ObjectToCSVConverter.convertToCSV(employeesView);
-        logger.info("csv: "+ converted);
         byte[] bytes = converted.getBytes();
         ByteArrayResource resource = new ByteArrayResource(bytes);
 

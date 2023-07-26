@@ -19,8 +19,6 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class EmployeeService {
-    //TODO: pagination all get
-    //TODO: one query native
     private final String REGISTRATION_PREFIX = "EMP";
     private final RegistrationNoTrackerService registrationNoTrackerService;
 
@@ -45,8 +43,8 @@ public class EmployeeService {
     public Employee save(Employee employee, List<String> phonesNo) {
         Employee toSave = autoSetRegNo(employee);
         Employee saved = repository.save(toSave);
-        List<Phone> phones = phoneService.addPhonesToEmployee(saved,phonesNo);
-        saved.setPhones(phones);
+        List<Phone> phones = phoneService.addPhonesToOwner(saved,phonesNo);
+        phoneService.savePhones(saved,phonesNo);
         return saved;
     }
 
@@ -99,6 +97,5 @@ public class EmployeeService {
 
         // Perform the search using the EmployeeRepository
         return employeeDao.findByCriteria(firstName,lastName,function, gender, entranceDateAfter, entranceDateBefore, leaveDateAfter, leaveDateBefore, pageable);
-        //return repository.findByLastNameContainingIgnoreCaseAndFirstNameContainingIgnoreCaseAndFunctionContainingIgnoreCase(lastName,firstName,function,pageable);
     }
 }

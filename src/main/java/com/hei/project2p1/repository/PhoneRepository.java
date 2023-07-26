@@ -13,4 +13,6 @@ public interface PhoneRepository extends JpaRepository<Phone,Integer> {
 
     @Query(value = "SELECT * FROM phone p where p.employee_id = ?1",nativeQuery = true)
     public List<Phone> getPhoneByOwnerId(String OwnerId);
+
+    List<Phone> findAllByCompanyId(String ownerId);
 }

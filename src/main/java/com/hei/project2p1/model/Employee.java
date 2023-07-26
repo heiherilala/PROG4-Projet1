@@ -10,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,14 +23,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity(name = "employee")
+/*
 @Table(uniqueConstraints = {
-        /*@UniqueConstraint(columnNames = {"registrationNo"},name = "unique_registration_no"),
+        @UniqueConstraint(columnNames = {"registrationNo"},name = "unique_registration_no"),
         @UniqueConstraint(columnNames = {"personalEmail"},name = "unique_email"),
         @UniqueConstraint(columnNames = {"professionalEmail"},name = "unique_email"),
         @UniqueConstraint(columnNames = {"cinNumber"},name = "unique_cin_number"),
         @UniqueConstraint(columnNames = {"cnapsNumber"},name = "unique_cnaps_number"),
-         */
 })
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -40,7 +40,6 @@ public class Employee implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
-    //TODO: unique
     private String registrationNo;
     @NotBlank(message = "firstName is mandatory")
     private String firstName;
@@ -90,7 +89,6 @@ public class Employee implements Serializable {
     @Enumerated(EnumType.STRING)
     private SocioProfessionalCategory socioProfessionalCategory;
 
-    //TODO: to another DB
     //@NotBlank(message = "CNAPS number is required")
     private String cnapsNumber;
 
