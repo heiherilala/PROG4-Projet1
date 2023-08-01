@@ -6,7 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -53,10 +52,10 @@ public class Company implements Serializable {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<Phone> phones;
 
-    @Lob //large object
-    @Column(columnDefinition = "TEXT")
-    private String logo;
-
+    /*@Lob
+    @Column(columnDefinition = "bytea")
+    private byte[] logo;
+     */
     private String nif;
 
     private String stat;

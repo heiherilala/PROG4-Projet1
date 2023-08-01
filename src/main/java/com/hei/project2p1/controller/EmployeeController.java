@@ -4,7 +4,9 @@ import com.hei.project2p1.controller.constant.EmployeeUrl;
 import com.hei.project2p1.controller.mapper.EmployeeMapper;
 import com.hei.project2p1.controller.mapper.modelView.EmployeeView;
 import com.hei.project2p1.controller.mapper.utils.ConvertInputTypeToDomain;
+import com.hei.project2p1.model.Company;
 import com.hei.project2p1.model.Employee;
+import com.hei.project2p1.service.CompanyService;
 import com.hei.project2p1.service.EmployeeService;
 import com.hei.project2p1.utils.ObjectToCSVConverter;
 import lombok.AllArgsConstructor;
@@ -32,6 +34,7 @@ import java.util.stream.Stream;
     public class EmployeeController {
     private final EmployeeMapper employeeMapper;
     private final EmployeeService employeeService;
+    private final CompanyService companyService;
     private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
 
@@ -48,16 +51,18 @@ import java.util.stream.Stream;
                         @RequestParam(value = "entrance_after",required = false) LocalDate entranceDateAfter,
                         @RequestParam(value = "leave_before",required = false) LocalDate leaveDateBefore,
                         @RequestParam(value = "leave_after",required = false) LocalDate leaveDateAfter,
+                        @RequestParam(value = "country_code",required = false) String countryCode,
                         Model model) {
 
         List<Employee> employees = employeeService.findEmployeesByCriteria(
                 firstName,
                 lastName,
                 function,
+                countryCode,
                 gender,
                 entranceDateAfter, entranceDateBefore,
                 leaveDateAfter, leaveDateBefore,
-                pageNo, pageSize, sortBy, sortOrder);
+                pageNo, pageSize+1, sortBy, sortOrder);
         long totalPages = employeeService.getTotalPages(pageSize);
         List<EmployeeView> employeesView = employeeMapper.toView(employees);
         List<String> genderList = Stream.of(Employee.Gender.values()).map(Enum::name).toList();
@@ -72,6 +77,7 @@ import java.util.stream.Stream;
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("totalPages", totalPages);
         //Search th variables
+        model.addAttribute("countryCode", countryCode);
         model.addAttribute("lastName", lastName);
         model.addAttribute("firstName", firstName);
         model.addAttribute("gender", gender);
@@ -80,6 +86,9 @@ import java.util.stream.Stream;
         model.addAttribute("entrance_after", entranceDateAfter);
         model.addAttribute("leave_before", leaveDateBefore);
         model.addAttribute("leave_after", leaveDateAfter);
+
+        Company company = companyService.getCompanyInfo();
+        model.addAttribute("company", company);
 
         return "index";
     }
@@ -228,12 +237,15 @@ import java.util.stream.Stream;
                                                                 @RequestParam(value = "entrance_before",required = false) LocalDate entranceDateBefore,
                                                                 @RequestParam(value = "entrance_after",required = false) LocalDate entranceDateAfter,
                                                                 @RequestParam(value = "leave_before",required = false) LocalDate leaveDateBefore,
+
+                                                                @RequestParam(value = "country_code",required = false) String countryCode,
                                                                 @RequestParam(value = "leave_after",required = false) LocalDate leaveDateAfter){
 
         List<Employee> employees = employeeService.findEmployeesByCriteria(
                 firstName,
                 lastName,
                 function,
+                countryCode,
                 gender,
                 entranceDateAfter, entranceDateBefore,
                 leaveDateAfter, leaveDateBefore,
@@ -243,6 +255,7 @@ import java.util.stream.Stream;
         byte[] bytes = converted.getBytes();
         ByteArrayResource resource = new ByteArrayResource(bytes);
 
+        logger.info(employeesView.get(0).getPhoto());
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=employees.csv");

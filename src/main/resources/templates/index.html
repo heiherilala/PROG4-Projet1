@@ -27,7 +27,6 @@
 </form>>
 <form action="#" th:action="@{/employees}" method="get">
     <input type="number" name="page" hidden="hidden" id="page" th:value="${page}"/> <br>
-    <input type="number" name="page_size" hidden="hidden" id="page_size" th:value="${pageSize}"/> <br>
     <input type="text" name="sort_by" hidden="hidden" id="sort_by" th:value="${sortField}"/> <br>
     <input type="text" name="sort_order" hidden="hidden" id="sort_order" th:value="${sortOrder}"/> <br>
     <label>Search by Last Name:</label>
@@ -36,6 +35,8 @@
     <input type="text" name="first_name" id="first_name" th:value="${firstName}"><br>
     <label>Search by function:</label>
     <input type="text" name="function" id="function" th:value="${function}"><br>
+    <label>Search by country code:</label>
+    <input type="text" name="country_code" id="country_code" th:value="${countryCode}"><br>
     <label>Filter by Gender:</label>
     <select id="gender" name="gender" th:value="${gender}">
         <option value="">All</option>
@@ -52,6 +53,8 @@
     <input type="date" name="leave_after" id="leave_after" th:value="${leave_after}"/>
     <input type="date" name="leave_before" id="leave_before" th:value="${leave_before}"/> <br>
 
+    <label>Page size:</label>
+    <input type="number" name="page_size"  id="page_size" th:value="${pageSize}"/> <br>
     <button type="submit">Search</button>
 </form>
 
@@ -238,6 +241,18 @@
         <option value="50">50</option>
     </select>
 </div>
-
+<div class="footer">
+    <div class="left-content">
+        <h1 class="footer-info" th:text="${company.companyName}"></h1>
+        <p class="footer-info" th:text="${company.slogan}"></p>
+        <p class="footer-info" th:text="${company.contactEmail}"></p>
+    </div>
+    <div class="right-content">
+        <p class="footer-info">Address: <span th:text="${company.address}"></span></p>
+        <p class="footer-info">NIF: <span th:text="${company.nif}"></span></p>
+        <p class="footer-info">STAT: <span th:text="${company.stat}"></span></p>
+        <p class="footer-info">RCS: <span th:text="${company.rcs}"></span></p>
+    </div>
+</div>
 </body>
 </html>

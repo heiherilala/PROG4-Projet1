@@ -27,6 +27,8 @@ public class Phone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     private String number;
+    private String countryCode;
+
     @ManyToOne
     @JoinColumn(name = "employee_id")
     @JsonIgnore

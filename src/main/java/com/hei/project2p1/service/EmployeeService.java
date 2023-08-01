@@ -80,6 +80,7 @@ public class EmployeeService {
     public List<Employee> findEmployeesByCriteria(String firstName,
                                                   String lastName,
                                                   String function,
+                                                  String countryCode,
                                                   String gender,
                                                   LocalDate entranceDateAfter,LocalDate entranceDateBefore,
                                                   LocalDate leaveDateAfter, LocalDate leaveDateBefore,
@@ -96,6 +97,6 @@ public class EmployeeService {
         Pageable pageable = PageRequest.of(pageNo-1, pageSize, sort);
 
         // Perform the search using the EmployeeRepository
-        return employeeDao.findByCriteria(firstName,lastName,function, gender, entranceDateAfter, entranceDateBefore, leaveDateAfter, leaveDateBefore, pageable);
+        return employeeDao.findByCriteria(firstName,lastName,function,countryCode, gender, entranceDateAfter, entranceDateBefore, leaveDateAfter, leaveDateBefore, pageable);
     }
 }

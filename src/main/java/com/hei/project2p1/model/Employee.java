@@ -93,7 +93,7 @@ public class Employee implements Serializable {
     private String cnapsNumber;
 
     @Lob //large object
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "clob")
     private String photo;
 
     public enum Gender {

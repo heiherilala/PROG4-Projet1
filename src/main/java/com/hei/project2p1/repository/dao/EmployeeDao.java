@@ -1,10 +1,12 @@
 package com.hei.project2p1.repository.dao;
 
 import com.hei.project2p1.model.Employee;
+import com.hei.project2p1.model.Phone;
 import com.hei.project2p1.repository.dao.utils.SearchInDb;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.AllArgsConstructor;
@@ -21,12 +23,15 @@ import java.util.List;
 public class EmployeeDao {
     private EntityManager entityManager;
 
-    public List<Employee> findByCriteria(String firstName, String lastName, String function, String gender, LocalDate entranceDateAfter, LocalDate entranceDateBefore,
+    public List<Employee> findByCriteria(String firstName, String lastName, String function,
+                                         String countryCode,
+                                         String gender, LocalDate entranceDateAfter, LocalDate entranceDateBefore,
                                          LocalDate leaveDateAfter, LocalDate leaveDateBefore,
                                          Pageable pageable) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
         Root<Employee> root = query.from(Employee.class);
+        Join<Employee, Phone> phone = root.join("phones");
 
         List<Predicate> predicates = new ArrayList<>();
 
@@ -55,6 +60,16 @@ public class EmployeeDao {
             predicates.add(builder.lessThan(root.get("hiringDate"),entranceDateBefore));
         }
 
+
+        if (countryCode!= null && countryCode.length()>0){
+            predicates.add(
+                    builder.or(
+                            builder.like(builder.lower(phone.get("countryCode")),"%" + countryCode.toLowerCase() + "%"),
+                            builder.like(phone.get("countryCode"),"%" + countryCode + "%"),
+                            builder.isNull(phone)
+                            )
+                    );
+        }
 
         if (leaveDateAfter!= null ){
             predicates.add(builder.greaterThanOrEqualTo(root.get("departureDate"),leaveDateAfter));

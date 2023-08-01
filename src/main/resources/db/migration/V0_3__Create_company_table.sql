@@ -9,7 +9,6 @@ create table if not exists company (
     slogan text,
     address varchar,
     contact_email varchar,
-    logo text,
     nif varchar,
     stat varchar,
     rcs varchar
