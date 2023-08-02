@@ -1,0 +1,1 @@
+alter table phone drop constraint "unique_phone_number_constraint";

@@ -6,9 +6,12 @@ import com.hei.project2p1.controller.mapper.modelView.EmployeeView;
 import com.hei.project2p1.controller.mapper.utils.ConvertInputTypeToDomain;
 import com.hei.project2p1.model.Company;
 import com.hei.project2p1.model.Employee;
+import com.hei.project2p1.model.SpringSession;
 import com.hei.project2p1.service.CompanyService;
 import com.hei.project2p1.service.EmployeeService;
+import com.hei.project2p1.service.SpringSessionService;
 import com.hei.project2p1.utils.ObjectToCSVConverter;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +38,7 @@ import java.util.stream.Stream;
     private final EmployeeMapper employeeMapper;
     private final EmployeeService employeeService;
     private final CompanyService companyService;
+    private final SpringSessionService springSessionService;
     private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
 
@@ -52,8 +56,12 @@ import java.util.stream.Stream;
                         @RequestParam(value = "leave_before",required = false) LocalDate leaveDateBefore,
                         @RequestParam(value = "leave_after",required = false) LocalDate leaveDateAfter,
                         @RequestParam(value = "country_code",required = false) String countryCode,
-                        Model model) {
+                        Model model,
+                        HttpSession session
 
+    ) {
+
+        List<SpringSession> sessions = springSessionService.getAll();
         List<Employee> employees = employeeService.findEmployeesByCriteria(
                 firstName,
                 lastName,
@@ -62,7 +70,7 @@ import java.util.stream.Stream;
                 gender,
                 entranceDateAfter, entranceDateBefore,
                 leaveDateAfter, leaveDateBefore,
-                pageNo, pageSize+1, sortBy, sortOrder);
+                pageNo, pageSize, sortBy, sortOrder);
         long totalPages = employeeService.getTotalPages(pageSize);
         List<EmployeeView> employeesView = employeeMapper.toView(employees);
         List<String> genderList = Stream.of(Employee.Gender.values()).map(Enum::name).toList();
@@ -86,6 +94,10 @@ import java.util.stream.Stream;
         model.addAttribute("entrance_after", entranceDateAfter);
         model.addAttribute("leave_before", leaveDateBefore);
         model.addAttribute("leave_after", leaveDateAfter);
+
+
+        model.addAttribute("session_id", session.getId());
+        model.addAttribute("session", springSessionService.getBySessionId(session.getId()));
 
         Company company = companyService.getCompanyInfo();
         model.addAttribute("company", company);
@@ -132,6 +144,7 @@ import java.util.stream.Stream;
             @RequestParam("photo") MultipartFile photo,
             @RequestParam("gender") String gender,
             @RequestParam("phones") List<String> phones,
+            @RequestParam("code") List<String> code,
             @RequestParam("address") String address,
             @RequestParam("personalEmail") String personalEmail,
             @RequestParam("professionalEmail") String professionalEmail,

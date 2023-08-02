@@ -23,6 +23,7 @@ public class EmployeeView {
     private String photo;
     private String gender;
     private List<String> phones;
+    private List<String> codeCountry;
     private String address;
     private String personalEmail;
     private String professionalEmail;

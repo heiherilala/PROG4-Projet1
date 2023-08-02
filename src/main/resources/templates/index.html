@@ -7,9 +7,9 @@
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
+<span th:text="${session.sessionId}"></span>
 <h1>Employee List</h1>
 
-<p>Export as CSV</p>
 <form th:action="@{/exportEmployees}" method="get" >
     <input type="number" name="page" hidden="hidden" id="_page" th:value="${page}"/> <br>
     <input type="number" name="page_size" hidden="hidden" id="_page_size" th:value="${pageSize}"/> <br>
@@ -24,7 +24,12 @@
     <input type="date" name="leave_after" id="_leave_after" th:value="${leave_after}" hidden="hidden"/>
     <input type="date" name="leave_before" id="_leave_before" th:value="${leave_before}" hidden="hidden"/> <br>
     <button type="submit">Export CSV</button>
-</form>>
+</form>
+
+<form th:action="@{/quitSession}" method="post">
+    <input type="text" th:value="${session_id}" hidden="hidden" name="session_id" id="session_id">
+    <button type="submit">Log out</button>
+</form>
 <form action="#" th:action="@{/employees}" method="get">
     <input type="number" name="page" hidden="hidden" id="page" th:value="${page}"/> <br>
     <input type="text" name="sort_by" hidden="hidden" id="sort_by" th:value="${sortField}"/> <br>
@@ -175,7 +180,7 @@
         entrance_after=${entrance_after},
         leave_before=${leave_before},
         leave_after=${leave_after}
-        )}" th:if="${page > 1}">First</a>
+        )}" th:if="${page > 1}"> 1 </a>
     </span>
     <!-- Previous Page -->
     <span>
@@ -191,7 +196,7 @@
         entrance_after=${entrance_after},
         leave_before=${leave_before},
         leave_after=${leave_after}
-        )}" th:if="${page > 1}">Previous</a>
+        )}" th:if="${page > 1}"> < </a>
     </span>
 
     <!-- Current Page -->
@@ -212,7 +217,7 @@
         entrance_after=${entrance_after},
         leave_before=${leave_before},
         leave_after=${leave_after})}"
-           th:if="${page + 1 < totalPages}">Next</a>
+           th:if="${page + 1 < totalPages}"> > </a>
     </span>
     <!-- Last Page -->
     <span>

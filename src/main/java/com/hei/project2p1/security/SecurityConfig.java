@@ -57,10 +57,13 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest()
-                        .authenticated())
+        http.authorizeRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers("/login","/register").permitAll()
+                        .anyRequest().authenticated())
+                .formLogin(formLogin -> formLogin.defaultSuccessUrl("/employees"))
+                .logout(logout->logout.logoutUrl("/quitSession").logoutSuccessUrl("/employees"))
                 .httpBasic(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }

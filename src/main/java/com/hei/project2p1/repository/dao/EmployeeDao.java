@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.AllArgsConstructor;
@@ -31,7 +32,7 @@ public class EmployeeDao {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
         Root<Employee> root = query.from(Employee.class);
-        Join<Employee, Phone> phone = root.join("phones");
+        Join<Employee, Phone> phone = root.join("phones", JoinType.LEFT);
 
         List<Predicate> predicates = new ArrayList<>();
 
@@ -57,11 +58,11 @@ public class EmployeeDao {
             predicates.add(builder.greaterThanOrEqualTo(root.get("hiringDate"),entranceDateAfter));
         }
         if (entranceDateBefore != null ){
-            predicates.add(builder.lessThan(root.get("hiringDate"),entranceDateBefore));
+            predicates.add(builder.lessThanOrEqualTo(root.get("hiringDate"),entranceDateBefore));
         }
 
 
-        if (countryCode!= null && countryCode.length()>0){
+        if (countryCode!= null && !countryCode.isEmpty()){
             predicates.add(
                     builder.or(
                             builder.like(builder.lower(phone.get("countryCode")),"%" + countryCode.toLowerCase() + "%"),
@@ -75,10 +76,10 @@ public class EmployeeDao {
             predicates.add(builder.greaterThanOrEqualTo(root.get("departureDate"),leaveDateAfter));
         }
         if (leaveDateBefore != null ){
-            predicates.add(builder.lessThan(root.get("departureDate"),leaveDateBefore));
+            predicates.add(builder.lessThanOrEqualTo(root.get("departureDate"),leaveDateBefore));
         }
 
-        query
+        query.distinct(true)
                 .where(builder.and(predicates.toArray(new Predicate[0])))
                 .orderBy(QueryUtils.toOrders(pageable.getSort(), root, builder));
 
