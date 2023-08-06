@@ -264,7 +264,7 @@ import java.util.stream.Stream;
                 leaveDateAfter, leaveDateBefore,
                 pageNo, pageSize, sortBy, sortOrder);
         List<EmployeeView> employeesView = employeeMapper.toView(employees);
-        String converted = ObjectToCSVConverter.convertToCSV(employeesView);
+        String converted = ObjectToCSVConverter.convertToCSV(employeesView,List.of("photo"));
         byte[] bytes = converted.getBytes();
         ByteArrayResource resource = new ByteArrayResource(bytes);
 
