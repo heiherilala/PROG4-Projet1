@@ -1,5 +1,7 @@
 package com.hei.project2p1.utils;
 
+import com.hei.project2p1.exception.InternalServerException;
+
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +28,7 @@ public class ObjectToCSVConverter {
             try {
                 csvData.append(field.get(object)).append(",");
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                throw new InternalServerException(e.getMessage());
             }
         });
 
@@ -44,11 +46,15 @@ public class ObjectToCSVConverter {
         // Include header only once
         csvData.append(convertToCSV(list.get(0), true)).append("\n");
 
+        if (list.size()>1){
+            list.subList(1, list.size()).forEach(object -> {
+                String row = convertToCSV(object, false);
+                csvData.append(row).append("\n");
+            });
+        }
+
         // Append values for each object in the list
-        list.forEach(object -> {
-            String row = convertToCSV(object, false);
-            csvData.append(row).append("\n");
-        });
+
 
         return csvData.toString();
     }
