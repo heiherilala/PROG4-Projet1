@@ -7,7 +7,7 @@
 </head>
 <body>
 
-    <div th:replace="fragments/header :: header"></div>
+    <div th:replace="~{fragments/header :: header}"></div>
     <h1>Employee Details</h1>
     <div class="employee-card">
         <th:block th:if="${employee.photo!=null && employee.photo.length()>0}">
