@@ -2,7 +2,6 @@ package com.hei.project2p1.controller.mapper;
 
 import com.hei.project2p1.controller.mapper.modelView.EmployeeView;
 import com.hei.project2p1.model.Employee;
-import com.hei.project2p1.model.Phone;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class EmployeeMapper {
                 .registrationNo(createEmployeeView.getRegistrationNo())
                 .birthDate(stringInputValueToLocalDate(createEmployeeView.getBirthDate()))
                 .photo(createEmployeeView.getPhoto())
-                .gender(createEmployeeView.getGender().length()>0?
+                .gender(!createEmployeeView.getGender().isEmpty() ?
                         Employee.Gender.valueOf(createEmployeeView.getGender())
                         :null)
                 .address(stringInputOfString(createEmployeeView.getAddress()))
@@ -36,7 +35,7 @@ public class EmployeeMapper {
                 .cnapsNumber(stringInputOfString(createEmployeeView.getCnapsNumber()))
                 .function(stringInputOfString(createEmployeeView.getFunction()))
                 .numberOfChildren(createEmployeeView.getNumberOfChildren())
-                .socioProfessionalCategory(createEmployeeView.getSocioProfessionalCategory().length()>0?
+                .socioProfessionalCategory(!createEmployeeView.getSocioProfessionalCategory().isEmpty() ?
                         Employee.SocioProfessionalCategory.valueOf(createEmployeeView.getSocioProfessionalCategory())
                         :null)
                 .hiringDate(stringInputValueToLocalDate(createEmployeeView.getHiringDate()))
@@ -68,7 +67,8 @@ public class EmployeeMapper {
                 .socioProfessionalCategory(String.valueOf(employee.getSocioProfessionalCategory()))
                 .hiringDate(valueToView(employee.getHiringDate()))
                 .departureDate(valueToView(employee.getDepartureDate()))
-                .phones(employee.getPhones()==null?List.of():employee.getPhones().stream().map(Phone::getNumber).toList())
+                .phones(employee.getPhones()==null?List.of()
+                        :employee.getPhones().stream().map(phone -> phone.getCountryCode()+","+phone.getNumber()).toList())
                 .personalEmail(employee.getPersonalEmail())
                 .professionalEmail(employee.getProfessionalEmail())
                 .build();
