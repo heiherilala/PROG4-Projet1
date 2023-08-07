@@ -144,7 +144,7 @@ import java.util.stream.Stream;
             @RequestParam("photo") MultipartFile photo,
             @RequestParam("gender") String gender,
             @RequestParam("phones") List<String> phones,
-            @RequestParam("code") List<String> code,
+            @RequestParam("countryCodes") List<String> countryCodes,
             @RequestParam("address") String address,
             @RequestParam("personalEmail") String personalEmail,
             @RequestParam("professionalEmail") String professionalEmail,
@@ -161,13 +161,17 @@ import java.util.stream.Stream;
     ) {
         String photoTreated = ConvertInputTypeToDomain.multipartImageToString(photo);
 
+        logger.info("phones: "+countryCodes);
+        logger.info("phones: "+phones);
+
         EmployeeView employee = EmployeeView.builder()
                 .firstName(firstName)
                 .lastName(lastName)
                 .birthDate(birthDate)
                 .photo(photoTreated)
                 .gender(gender)
-                .phones(phones==null?new ArrayList<>():phones)
+                .phones(phones==null?List.of():phones)
+                .codeCountry(countryCodes==null?List.of():countryCodes)
                 .address(address)
                 .personalEmail(personalEmail)
                 .professionalEmail(professionalEmail)
@@ -182,7 +186,7 @@ import java.util.stream.Stream;
                 .cnapsNumber(cnapsNumber)
                 .registrationNo(null)
                 .build();
-        employeeService.save(employeeMapper.toDomain(employee), employee.getPhones());
+        employeeService.save(employeeMapper.toDomain(employee), employee.getCodeCountry() , employee.getPhones());
         return "redirect:"+ EmployeeUrl.EMPLOYEES_LIST;
     }
 
@@ -234,7 +238,7 @@ import java.util.stream.Stream;
                 .registrationNo(null)
                 .build();
 
-        employeeService.save(employeeMapper.toDomain(employee), employee.getPhones());
+        employeeService.save(employeeMapper.toDomain(employee), employee.getCodeCountry(), employee.getPhones());
         return "redirect:"+"/employees/"+id+"/details";
     }
 

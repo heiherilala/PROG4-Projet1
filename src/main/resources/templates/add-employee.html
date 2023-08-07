@@ -75,12 +75,21 @@
 </form>
 
 <script>
-    function addPhoneInput(phoneValue) {
+    function addPhoneInput(countryCodeValue, phoneValue) {
         const phoneInput = document.createElement("input");
         phoneInput.type = "text";
         phoneInput.name = "phones";
         phoneInput.value = phoneValue;
+        phoneInput.placeholder = "Number";
+
+        const countryCodeInput = document.createElement("input");
+        countryCodeInput.type = "text";
+        countryCodeInput.name = "countryCodes";
+        countryCodeInput.value = countryCodeValue;
+        countryCodeInput.placeholder = "Country Code";
+
         const phoneDiv = document.createElement("div");
+        phoneDiv.appendChild(countryCodeInput);
         phoneDiv.appendChild(phoneInput);
 
         // Check if there is more than one phone input to decide whether to add the delete button
@@ -89,7 +98,7 @@
             deleteButton.type = "button";
             deleteButton.innerHTML = "Delete";
             deleteButton.onclick = function() {
-                deletePhone(phoneInput);
+                deletePhone(phoneDiv);
             };
             phoneDiv.appendChild(deleteButton);
         }
@@ -100,22 +109,23 @@
     }
 
     function addPhone() {
-        addPhoneInput("");
+        addPhoneInput("", "");
     }
 
-    function deletePhone(phoneInput) {
+    function deletePhone(phoneDiv) {
         const phonesDiv = document.getElementById("phones");
-        phonesDiv.removeChild(phoneInput.parentElement);
+        phonesDiv.removeChild(phoneDiv);
     }
 
     // On page load, set phones to be an empty list if no phone numbers are provided
     window.onload = function() {
         const phonesInput = document.getElementsByName("phones");
+        const countryCodesInput = document.getElementsByName("countryCodes");
         if (phonesInput.length === 0) {
             addPhone();
         } else {
             for (let i = 0; i < phonesInput.length; i++) {
-                addPhoneInput(phonesInput[i].value);
+                addPhoneInput(countryCodesInput[i].value, phonesInput[i].value);
             }
         }
     };
@@ -123,14 +133,21 @@
     // Before form submission, update the actual input fields with the phone values
     document.getElementById("employeeForm").addEventListener("submit", function() {
         const phonesInput = document.getElementsByName("phones");
-        const phoneValues = [];
+        const countryCodesInput = document.getElementsByName("countryCodes");
+
+        const combinedPhoneValues = [];
+
         for (let i = 0; i < phonesInput.length; i++) {
-            phoneValues.push(phonesInput[i].value);
+            const combinedValue = countryCodesInput[i].value + "," + phonesInput[i].value;
+            combinedPhoneValues.push(combinedValue);
         }
-        document.getElementById("phones").innerHTML = "";
-        for (let i = 0; i < phoneValues.length; i++) {
-            addPhoneInput(phoneValues[i]);
-        }
+
+        const combinedPhonesInput = document.createElement("input");
+        combinedPhonesInput.type = "hidden";
+        combinedPhonesInput.name = "combinedPhones";
+        combinedPhonesInput.value = combinedPhoneValues.join(";");
+
+        this.appendChild(combinedPhonesInput);
     });
 </script>
 

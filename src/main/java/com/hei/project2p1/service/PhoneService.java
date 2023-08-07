@@ -37,12 +37,12 @@ public class PhoneService {
     }
 
     @Transactional
-    public List<Phone> savePhones(Employee owner, List<String> toSave) {
-        return repository.saveAll(addPhonesToOwner(owner,toSave));
+    public List<Phone> savePhones(Employee owner,List<String> countryCode, List<String> toSave) {
+        return repository.saveAll(addPhonesToOwner(owner,countryCode, toSave));
     }
     @Transactional
-    public List<Phone> savePhones(Company owner, List<String> toSave) {
-        return repository.saveAll(addPhonesToOwner(owner,toSave));
+    public List<Phone> savePhones(Company owner, List<String> countryCode, List<String> toSave) {
+        return repository.saveAll(addPhonesToOwner(owner,countryCode,toSave));
     }
     @Transactional
     public void deletePhonesOfOwner(Employee owner){
@@ -55,23 +55,25 @@ public class PhoneService {
         List<Phone> toDelete = getByCompanyId(owner.getId());
         repository.deleteAll(toDelete);
     }
-    public List<Phone> addPhonesToOwner(Employee owner, List<String> toSave) {
+    public List<Phone> addPhonesToOwner(Employee owner,List<String> countryCodes, List<String> toSave) {
         List<Phone> phoneList = new ArrayList<>();
-        for (String num : toSave){
+        for (int i = 0; i < toSave.size(); i++) {
             phoneList.add(Phone.builder()
                     .employee(owner)
-                    .number(num)
+                    .countryCode(countryCodes.get(i))
+                    .number(toSave.get(i))
                     .company(null)
                     .build());
         }
         return phoneList;
     }
-    public List<Phone> addPhonesToOwner(Company owner, List<String> toSave) {
+    public List<Phone> addPhonesToOwner(Company owner, List<String> countryCodes, List<String> toSave) {
         List<Phone> phoneList = new ArrayList<>();
-        for (String num : toSave){
+        for (int i = 0; i < toSave.size(); i++) {
             phoneList.add(Phone.builder()
                     .employee(null)
-                    .number(num)
+                    .countryCode(countryCodes.get(i))
+                    .number(toSave.get(i))
                     .company(owner)
                     .build());
         }

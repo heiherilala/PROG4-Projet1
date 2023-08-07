@@ -40,11 +40,11 @@ public class EmployeeService {
     }
 
     @Transactional
-    public Employee save(Employee employee, List<String> phonesNo) {
+    public Employee save(Employee employee,List<String> countryCode, List<String> phonesNo) {
         Employee toSave = autoSetRegNo(employee);
         Employee saved = repository.save(toSave);
-        List<Phone> phones = phoneService.addPhonesToOwner(saved,phonesNo);
-        phoneService.savePhones(saved,phonesNo);
+        List<Phone> phones = phoneService.addPhonesToOwner(saved,countryCode,phonesNo);
+        phoneService.savePhones(saved,countryCode,phonesNo);
         return saved;
     }
 
