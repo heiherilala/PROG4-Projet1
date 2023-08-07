@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" >
+    <title></title>
+</head>
+<body>
+<div th:fragment="sort_link">
+<a th:href="@{/employees(
+        sort_by=${sortField},
+        sort_order=${sortOrder eq 'ASC' ? 'DESC' : 'ASC'},
+        page=${page}, page_size=${pageSize},
+        last_name=${lastName},
+        first_name=${firstName},
+        function=${function},
+        gender=${gender},
+        entrance_before=${entrance_before},
+        entrance_after=${entrance_after},
+        leave_before=${leave_before},
+        leave_after=${leave_after}
+    )}" th:text="${sortText}"></a>
+</div>
+</body>
+</html>

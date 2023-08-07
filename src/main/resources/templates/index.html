@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset = "UTF-8" />
     <link href = "/css/styles.css" rel = "stylesheet"/>
@@ -66,41 +66,17 @@
 <table class="employee-table">
     <tr>
         <th>Photo</th>
-        <th><a th:href="@{/employees(sort_by='firstName',sort_order=${sortField eq 'firstName' and sortOrder eq 'ASC' ? 'DESC' : 'ASC'},
-        page=1, page_size=${pageSize}, last_name=${lastName},
-        first_name=${firstName},
-        function=${function},
-        gender=${gender},
-        entrance_before=${entrance_before},
-        entrance_after=${entrance_after},
-        leave_before=${leave_before},
-        leave_after=${leave_after}
-        )}"
-               th:text="${sortField eq 'firstName' ? (sortOrder eq 'ASC' ? 'First Name ▲' : 'First Name ▼') : 'First Name'}"></a></th>
-        <th><a th:href="@{/employees(sort_by='lastName',sort_order=${sortField eq 'lastName' and sortOrder eq 'ASC' ? 'DESC' : 'ASC'},
-        page=1, page_size=${pageSize}, last_name=${lastName},
-        first_name=${firstName},
-        function=${function},
-        gender=${gender},
-        entrance_before=${entrance_before},
-        entrance_after=${entrance_after},
-        leave_before=${leave_before},
-        leave_after=${leave_after}
-        )}"
-               th:text="${sortField eq 'lastName' ? (sortOrder eq 'ASC' ? 'Last Name ▲' : 'Last Name ▼') : 'Last Name'}"></a></th>
+        <th>
+            <div th:replace="~{fragments/sort-link :: sort_link(sortField='firstName', sortText=${sortField eq 'firstName' ? (sortOrder eq 'ASC' ? 'First Name ▲' : 'First Name ▼') : 'First Name'})}"></div>
+        </th>
+        <th>
+            <div th:replace="~{fragments/sort-link :: sort_link(sortField='lastName', sortText=${sortField eq 'lastName' ? (sortOrder eq 'ASC' ? 'Last Name ▲' : 'Last Name ▼') : 'Last Name'})}"></div>
+        </th>
         <th>Registration Number</th>
         <th>Birth Date</th>
-        <th><a th:href="@{/employees(sort_by='gender',sort_order=${sortField eq 'gender' and sortOrder eq 'ASC' ? 'DESC' : 'ASC'},
-        page=1, page_size=${pageSize}, last_name=${lastName},
-        first_name=${firstName},
-        function=${function},
-        gender=${gender},
-        entrance_before=${entrance_before},
-        entrance_after=${entrance_after},
-        leave_before=${leave_before},
-        leave_after=${leave_after}
-        )}"
-               th:text="${sortField eq 'gender' ? (sortOrder eq 'ASC' ? 'Gender ▲' : 'Gender ▼') : 'Gender'}"></a></th>
+        <th>
+            <div th:replace="~{fragments/sort-link :: sort_link(sortField='gender', sortText=${sortField eq 'gender' ? (sortOrder eq 'ASC' ? 'Gender ▲' : 'Gender ▼') : 'Gender'})}"></div>
+        </th>
         <th>Phones</th>
         <th>Address</th>
         <th>Personal Email</th>
@@ -108,17 +84,9 @@
         <th>CIN Number</th>
         <th>CIN Issue Date</th>
         <th>CIN Issue Place</th>
-        <th><a th:href="@{/employees(sort_by='function',sort_order=${sortField eq 'function' and sortOrder eq 'ASC' ? 'DESC' : 'ASC'},
-        page=1, page_size=${pageSize}, last_name=${lastName},
-        first_name=${firstName},
-        function=${function},
-        gender=${gender},
-        entrance_before=${entrance_before},
-        entrance_after=${entrance_after},
-        leave_before=${leave_before},
-        leave_after=${leave_after}
-        )}"
-               th:text="${sortField eq 'function' ? (sortOrder eq 'ASC' ? 'Function ▲' : 'Function ▼') : 'Function'}"></a></th>
+        <th>
+            <div th:replace="~{fragments/sort-link :: sort_link(sortField='function', sortText=${sortField eq 'function' ? (sortOrder eq 'ASC' ? 'Function ▲' : 'Function ▼') : 'Function'})}"></div>
+        </th>
         <th>Number of Children</th>
         <th>Hiring Date</th>
         <th>Departure Date</th>
@@ -217,7 +185,7 @@
         entrance_after=${entrance_after},
         leave_before=${leave_before},
         leave_after=${leave_after})}"
-           th:if="${page + 1 < totalPages}"> > </a>
+           th:if="${page < totalPages}"> > </a>
     </span>
     <!-- Last Page -->
     <span>
@@ -232,7 +200,7 @@
         entrance_after=${entrance_after},
         leave_before=${leave_before},
         leave_after=${leave_after})}"
-           th:if="${page + 1 < totalPages}">Last</a>
+           th:if="${page < totalPages}" th:text="${totalPages}"></a>
     </span>
 
     <!-- Total Pages -->

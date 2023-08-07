@@ -14,7 +14,7 @@
             <img th:src="'data:image/png;base64,' + ${employee.photo}" width="400" alt="Photo">
         </th:block>
         <th:block th:unless="${employee.photo!=null && employee.photo.length()>0}">
-            <h4>Aucun Image</h4>
+            <h4>No Image</h4>
         </th:block>
 
         <div class="left-details">
