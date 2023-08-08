@@ -28,6 +28,10 @@ public class PhoneService {
         return repository.findAll(pageable).toList();
     }
 
+    public List<Phone> getByCodeAndNumber(String code, String number){
+        return repository.findAllByCountryCodeAndNumber(code,number);
+    }
+
     public List<Phone> getByOwnerId(String ownerId){
         return repository.getPhoneByOwnerId(ownerId);
     }

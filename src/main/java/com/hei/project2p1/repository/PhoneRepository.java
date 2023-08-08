@@ -15,4 +15,6 @@ public interface PhoneRepository extends JpaRepository<Phone,Integer> {
     public List<Phone> getPhoneByOwnerId(String OwnerId);
 
     List<Phone> findAllByCompanyId(String ownerId);
+
+    List<Phone> findAllByCountryCodeAndNumber(String code, String number);
 }

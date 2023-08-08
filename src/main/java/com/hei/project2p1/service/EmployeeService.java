@@ -1,5 +1,6 @@
 package com.hei.project2p1.service;
 
+import com.hei.project2p1.exception.BadRequestException;
 import com.hei.project2p1.exception.NotFoundException;
 import com.hei.project2p1.model.Employee;
 import com.hei.project2p1.model.Phone;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -48,7 +50,16 @@ public class EmployeeService {
         List<Phone> phones = phoneService.addPhonesToOwner(saved,countryCode,phonesNo);
         phoneValidator.accept(phones);
 
+        phones.forEach(phone -> {
+            List<Phone> alreadyExist = phoneService.getByCodeAndNumber(phone.getCountryCode(),phone.getNumber());
+            alreadyExist.forEach(p -> {
+                if (!Objects.equals(p.getEmployee().getId(), saved.getId())){
+                    throw new BadRequestException("Phone with number "+p.getCountryCode()+p.getNumber()+" already exist");
+                }
+            });
+        });
         phoneService.deletePhonesOfOwner(saved);
+
         phoneService.savePhones(saved,countryCode,phonesNo);
         return saved;
     }
