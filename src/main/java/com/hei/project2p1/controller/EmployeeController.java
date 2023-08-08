@@ -201,6 +201,7 @@ import java.util.stream.Stream;
             @RequestParam("photo") MultipartFile photo,
             @RequestParam("gender") String gender,
             @RequestParam("phones") List<String> phones,
+            @RequestParam("countryCodes") List<String> countryCodes,
             @RequestParam("address") String address,
             @RequestParam("personalEmail") String personalEmail,
             @RequestParam("professionalEmail") String professionalEmail,
@@ -222,7 +223,8 @@ import java.util.stream.Stream;
                 .birthDate(birthDate)
                 .photo(photo.getOriginalFilename().isEmpty()? photoString : ConvertInputTypeToDomain.multipartImageToString(photo) )
                 .gender(gender)
-                .phones(phones==null?new ArrayList<>():phones)
+                .phones(phones==null?List.of():phones)
+                .codeCountry(countryCodes==null?List.of():countryCodes)
                 .address(address)
                 .personalEmail(personalEmail)
                 .professionalEmail(professionalEmail)
