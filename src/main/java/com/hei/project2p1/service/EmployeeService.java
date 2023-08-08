@@ -3,6 +3,7 @@ package com.hei.project2p1.service;
 import com.hei.project2p1.exception.NotFoundException;
 import com.hei.project2p1.model.Employee;
 import com.hei.project2p1.model.Phone;
+import com.hei.project2p1.model.Validator.PhoneValidator;
 import com.hei.project2p1.repository.EmployeeRepository;
 import com.hei.project2p1.repository.dao.EmployeeDao;
 import com.hei.project2p1.utils.PaginationUtils;
@@ -25,6 +26,7 @@ public class EmployeeService {
     private final EmployeeRepository repository;
     private final EmployeeDao employeeDao;
     private final PhoneService phoneService;
+    private final PhoneValidator phoneValidator;
 
 
     public List<Employee> getEmployeesFromDB() {
@@ -44,6 +46,9 @@ public class EmployeeService {
         Employee toSave = autoSetRegNo(employee);
         Employee saved = repository.save(toSave);
         List<Phone> phones = phoneService.addPhonesToOwner(saved,countryCode,phonesNo);
+        phoneValidator.accept(phones);
+
+        phoneService.deletePhonesOfOwner(saved);
         phoneService.savePhones(saved,countryCode,phonesNo);
         return saved;
     }
