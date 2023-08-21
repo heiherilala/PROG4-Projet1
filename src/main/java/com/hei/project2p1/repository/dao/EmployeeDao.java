@@ -10,7 +10,8 @@ import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.query.QueryUtils;
 import org.springframework.stereotype.Repository;
@@ -20,9 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-@AllArgsConstructor
 public class EmployeeDao {
+
     private EntityManager entityManager;
+
+    @Autowired
+    EmployeeDao(@Qualifier("companyEntityManagerFactory") EntityManager manager){
+        this.entityManager = manager;
+    }
 
     public List<Employee> findByCriteria(String firstName, String lastName, String function,
                                          String countryCode,

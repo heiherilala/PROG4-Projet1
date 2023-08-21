@@ -7,6 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
@@ -51,6 +52,7 @@ public class CompanyDataSourceConfig {
     }
 
     @Bean
+    @Primary
     public PlatformTransactionManager companyTransactionManager()
     {
         EntityManagerFactory factory = companyEntityManagerFactory().getObject();
@@ -62,7 +64,7 @@ public class CompanyDataSourceConfig {
     {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setDataSource(companyDataSource());
-        factory.setPackagesToScan(new String[]{"com.hei.project2p1.company.entity"});
+        factory.setPackagesToScan("com.hei.project2p1.model");
         factory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
         Properties jpaProperties = new Properties();
