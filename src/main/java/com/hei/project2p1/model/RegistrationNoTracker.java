@@ -1,6 +1,5 @@
 package com.hei.project2p1.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -14,6 +13,5 @@ import lombok.NoArgsConstructor;
 public class RegistrationNoTracker {
     @Id
     private int id;
-    @Column(name = "last_no")
     private Long lastNo;
 }

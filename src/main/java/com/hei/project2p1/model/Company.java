@@ -39,7 +39,7 @@ public class Company implements Serializable {
     //@Column(name = "company_name")
     private String companyName;
 
-    @Column(columnDefinition = "TEXT",name = "company_description")
+    @Column(columnDefinition = "TEXT")
     private String companyDescription;
 
     private String slogan;
@@ -48,7 +48,6 @@ public class Company implements Serializable {
     private String address;
 
     @Email()
-    @Column(name = "contact_email")
     private String contactEmail;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
