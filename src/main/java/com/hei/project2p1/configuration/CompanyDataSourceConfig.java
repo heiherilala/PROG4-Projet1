@@ -60,6 +60,7 @@ public class CompanyDataSourceConfig {
     }
 
     @Bean
+    @Primary
     public LocalContainerEntityManagerFactoryBean companyEntityManagerFactory()
     {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
