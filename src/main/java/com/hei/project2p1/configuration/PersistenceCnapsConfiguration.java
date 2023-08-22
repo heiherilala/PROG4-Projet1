@@ -1,6 +1,5 @@
 package com.hei.project2p1.configuration;
 
-import com.hei.project2p1.utils.hibernate.naming.CamelCaseToSnakeCaseNamingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,12 +9,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
 import java.util.Objects;
+
+import static com.hei.project2p1.configuration.dataEntityManagerSetter.getLocalContainerEntityManagerFactoryBean;
 
 @Configuration
 @PropertySource({"classpath:persistence-multiple-db.properties"})
@@ -32,20 +31,7 @@ public class PersistenceCnapsConfiguration {
 
     @Bean
     public LocalContainerEntityManagerFactoryBean cnapsEntityManager() {
-        System.out.println("loading config");
-        final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(cnapsDataSource());
-        em.setPackagesToScan("com.hei.project2p1.cnaps.entity");
-
-        final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        em.setJpaVendorAdapter(vendorAdapter);
-        final HashMap<String, Object> properties = new HashMap<String, Object>();
-        properties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
-        properties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
-        properties.put("hibernate.physical_naming_strategy", CamelCaseToSnakeCaseNamingStrategy.class.getName());
-        em.setJpaPropertyMap(properties);
-
-        return em;
+        return getLocalContainerEntityManagerFactoryBean(cnapsDataSource(),"com.hei.project2p1.cnaps.entity",env);
     }
 
     @Bean

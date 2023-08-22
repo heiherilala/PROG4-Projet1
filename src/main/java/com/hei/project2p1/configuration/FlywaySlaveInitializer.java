@@ -20,7 +20,10 @@ public class FlywaySlaveInitializer {
 
     @PostConstruct
     public void migrateFlyway() {
-        Flyway flyway = Flyway.configure().dataSource(cnapsDatabase).locations("classpath:/db/migration2").load();
+        Flyway flyway = Flyway.configure()
+                .dataSource(cnapsDatabase)
+                .locations("classpath:/db/migration2")
+                .load();
         flyway.migrate();
 
     }
