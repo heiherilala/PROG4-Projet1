@@ -1,6 +1,6 @@
 package com.hei.project2p1.repository;
 
-import com.hei.project2p1.model.Phone;
+import com.hei.project2p1.repository.entity.PhoneEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -8,13 +8,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PhoneRepository extends JpaRepository<Phone,Integer> {
-    List<Phone> findAllByEmployeeId(String OwnerId);
+public interface PhoneRepository extends JpaRepository<PhoneEntity,Integer> {
+    List<PhoneEntity> findAllByEmployeeId(String OwnerId);
 
     @Query(value = "SELECT * FROM phone p where p.employee_id = ?1",nativeQuery = true)
-    public List<Phone> getPhoneByOwnerId(String OwnerId);
+    public List<PhoneEntity> getPhoneByOwnerId(String OwnerId);
 
-    List<Phone> findAllByCompanyId(String ownerId);
+    List<PhoneEntity> findAllByCompanyId(String ownerId);
 
-    List<Phone> findAllByCountryCodeAndNumber(String code, String number);
+    List<PhoneEntity> findAllByCountryCodeAndNumber(String code, String number);
 }

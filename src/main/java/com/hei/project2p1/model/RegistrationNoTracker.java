@@ -1,17 +1,21 @@
 package com.hei.project2p1.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Entity(name = "registration_no_tracker")
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
+@ToString
+@EqualsAndHashCode
 public class RegistrationNoTracker {
-    @Id
     private int id;
     private Long lastNo;
 }
