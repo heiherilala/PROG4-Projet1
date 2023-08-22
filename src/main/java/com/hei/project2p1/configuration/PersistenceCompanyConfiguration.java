@@ -1,5 +1,6 @@
 package com.hei.project2p1.configuration;
 
+import com.hei.project2p1.utils.hibernate.naming.CamelCaseToSnakeCaseNamingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,6 +44,7 @@ public class PersistenceCompanyConfiguration {
         final HashMap<String, Object> properties = new HashMap<String, Object>();
         properties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
         properties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
+        properties.put("hibernate.physical_naming_strategy", CamelCaseToSnakeCaseNamingStrategy.class.getName());
         em.setJpaPropertyMap(properties);
 
         return em;

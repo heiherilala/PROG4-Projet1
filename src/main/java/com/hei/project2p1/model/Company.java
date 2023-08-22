@@ -36,7 +36,7 @@ public class Company implements Serializable {
     private String id;
 
     @NotBlank()
-    @Column(name = "company_name")
+    //@Column(name = "company_name")
     private String companyName;
 
     @Column(columnDefinition = "TEXT",name = "company_description")
