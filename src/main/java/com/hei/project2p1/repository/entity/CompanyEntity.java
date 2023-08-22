@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -53,11 +54,12 @@ public class CompanyEntity implements Serializable {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<PhoneEntity> phoneEntities;
 
-    /*@Lob
+    @Lob
     @Column(columnDefinition = "bytea")
     private byte[] logo;
-     */
+
     private String nif;
+
 
     private String stat;
 
