@@ -35,7 +35,7 @@ public class PersistenceCnapsConfiguration {
         System.out.println("loading config");
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(cnapsDataSource());
-        em.setPackagesToScan("com.hei.project2p1.cnaps.entity:");
+        em.setPackagesToScan("com.hei.project2p1.cnaps.entity");
 
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
