@@ -1,6 +1,7 @@
 package com.hei.project2p1.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +28,7 @@ public class Phone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     private String number;
+    @Column(name = "country_code")
     private String countryCode;
 
     @ManyToOne

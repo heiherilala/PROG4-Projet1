@@ -1,5 +1,6 @@
 package com.hei.project2p1.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,12 +20,19 @@ import java.io.Serializable;
 public class SpringSession implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "primary_id")
     private String primaryId;
+    @Column(name = "session_id")
     private String sessionId;
+    @Column(name = "creation_time")
     private long creationTime;
+    @Column(name = "last_access_time")
     private long lastAccessTime;
+    @Column(name = "max_inactive_interval")
     private int maxInactiveInterval;
+    @Column(name = "expiry_time")
     private long expiryTime;
+    @Column(name = "principal_name")
     private String principalName;
 
 }

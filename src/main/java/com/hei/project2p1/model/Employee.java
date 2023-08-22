@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +24,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity(name = "employee")
+@Table(name = "employee")
 /*
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = {"registrationNo"},name = "unique_registration_no"),
@@ -40,12 +42,16 @@ public class Employee implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+    @Column(name = "registration_no")
     private String registrationNo;
     @NotBlank(message = "firstName is mandatory")
+    @Column(name = "first_name")
     private String firstName;
     @NotBlank(message = "lastName is mandatory")
+    @Column(name = "last_name")
     private String lastName;
     //@NotNull(message = "birthDate is mandatory")
+    @Column(name = "birth_date")
     private LocalDate birthDate;
 
     //@NotNull(message = "Sex is required")
@@ -60,36 +66,46 @@ public class Employee implements Serializable {
 
     //@NotBlank(message = "Personal email is required")
     @Email(message = "Invalid personal email format")
+    @Column(name = "personal_email")
     private String personalEmail;
 
     //@NotBlank(message = "Professional email is required")
     @Email(message = "Invalid professional email format")
+    @Column(name = "professional_email")
     private String professionalEmail;
 
     //@NotBlank(message = "CIN number is required")
+    @Column(name = "cin_number")
     private String cinNumber;
 
+    @Column(name = "cin_issue_date")
     private LocalDate cinIssueDate;
 
     //@NotBlank(message = "CIN issue place is required")
+    @Column(name = "cin_issue_place")
     private String cinIssuePlace;
 
     //@NotBlank(message = "Function is required")
     private String function;
 
     @Min(value = 0, message = "Number of children must be non-negative")
+    @Column(name = "number_of_children")
     private Integer numberOfChildren;
 
     //@NotNull(message = "Hiring date is required")
+    @Column(name = "hiring_date")
     private LocalDate hiringDate;
 
+    @Column(name = "departure_date")
     private LocalDate departureDate;
 
     //@NotNull(message = "Socio-professional category is required")
     @Enumerated(EnumType.STRING)
+    @Column(name = "socio_professional_category")
     private SocioProfessionalCategory socioProfessionalCategory;
 
     //@NotBlank(message = "CNAPS number is required")
+    @Column(name = "cnaps_number")
     private String cnapsNumber;
 
     @Lob //large object

@@ -38,18 +38,18 @@ public class EmployeeDao {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        if (firstName!= null && firstName.length()>0){
+        if (firstName!= null && !firstName.isEmpty()){
                 predicates.add(SearchInDb.predicateForMatchText(builder,root,"firstName",firstName));
         }
-        if (lastName!= null && lastName.length()>0){
+        if (lastName!= null && !lastName.isEmpty()){
             predicates.add(SearchInDb.predicateForMatchText(builder,root,"lastName",lastName));
         }
 
-        if (function!= null && function.length()>0){
+        if (function!= null && !function.isEmpty()){
             predicates.add(SearchInDb.predicateForMatchText(builder,root,"function",function));
         }
 
-        if (gender!= null && gender.length()>0){
+        if (gender!= null && !gender.isEmpty()){
             Employee.Gender g = gender.equals("H")? Employee.Gender.H:(gender.equals("F")?Employee.Gender.F:null);
             if (g!=null){
                 predicates.add(builder.equal(root.get("gender"),g));
