@@ -11,7 +11,7 @@ import java.util.List;
 public interface PhoneRepository extends JpaRepository<PhoneEntity,Integer> {
     List<PhoneEntity> findAllByEmployeeId(String OwnerId);
 
-    @Query(value = "SELECT * FROM phone p where p.employee_id = ?1",nativeQuery = true)
+    @Query(value = "SELECT * FROM phone p where (p.employee_id = ?1 or p.company_id = ?1)", nativeQuery = true)
     public List<PhoneEntity> getPhoneByOwnerId(String OwnerId);
 
     List<PhoneEntity> findAllByCompanyId(String ownerId);

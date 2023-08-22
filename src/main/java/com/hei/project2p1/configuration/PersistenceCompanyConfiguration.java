@@ -1,13 +1,17 @@
 package com.hei.project2p1.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.init.DataSourceInitializer;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -33,7 +37,7 @@ public class PersistenceCompanyConfiguration {
     @Primary
     @Bean
     public LocalContainerEntityManagerFactoryBean companyEntityManager() {
-        return getLocalContainerEntityManagerFactoryBean(companyDataSource(),"com.hei.project2p1.model",env);
+        return getLocalContainerEntityManagerFactoryBean(companyDataSource(),"com.hei.project2p1.repository.entity",env);
     }
 
 
@@ -56,6 +60,16 @@ public class PersistenceCompanyConfiguration {
         final JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(companyEntityManager().getObject());
         return transactionManager;
+    }
+
+    @Bean
+    public DataSourceInitializer companyDataSourceInitializer(DataSourceProperties properties) {
+        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+        populator.addScript(new ClassPathResource("initialization_script.sql"));
+        DataSourceInitializer initializer = new DataSourceInitializer();
+        initializer.setDataSource(companyDataSource());
+        initializer.setDatabasePopulator(populator);
+        return initializer;
     }
 
 }

@@ -1,7 +1,10 @@
 package com.hei.project2p1.service;
 
+import com.hei.project2p1.exception.NotFoundException;
 import com.hei.project2p1.model.RegistrationNoTracker;
 import com.hei.project2p1.repository.RegistrationNoTrackerRepository;
+import com.hei.project2p1.repository.entity.RegistrationNoTrackerEntity;
+import com.hei.project2p1.repository.mapper.RegistrationNoTrackerMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,17 +14,20 @@ import java.util.Optional;
 @AllArgsConstructor
 public class RegistrationNoTrackerService {
     private final RegistrationNoTrackerRepository repository;
+    private final RegistrationNoTrackerMapper mapper;
+
     private final int ID = 1;
 
     private RegistrationNoTracker getNoTracker(){
         Long initialNo =0L;
-        Optional<RegistrationNoTracker> registrationNoTracker = repository.findById(ID);
+        Optional<RegistrationNoTrackerEntity> registrationNoTracker = repository.findById(ID);
         if (registrationNoTracker.isEmpty()){
-            RegistrationNoTracker noTracker= (new RegistrationNoTracker(ID,initialNo));
+            RegistrationNoTrackerEntity noTracker= (new RegistrationNoTrackerEntity(ID,initialNo));
             repository.save(noTracker);
             registrationNoTracker = Optional.of(noTracker);
         }
-        return registrationNoTracker.orElseThrow();
+        RegistrationNoTrackerEntity noTracker = registrationNoTracker.orElseThrow(()-> new NotFoundException("No registration Tracker found"));
+        return mapper.toDomain(noTracker);
     }
     public Long getLastRegistrationNo(){
         RegistrationNoTracker registrationNoTracker = getNoTracker();
@@ -31,6 +37,6 @@ public class RegistrationNoTrackerService {
     public void updateLastNo(Long last){
         RegistrationNoTracker registrationNoTracker = getNoTracker();
         registrationNoTracker.setLastNo(last);
-        repository.save(registrationNoTracker);
+        repository.save(mapper.toEntity(registrationNoTracker));
     }
 }

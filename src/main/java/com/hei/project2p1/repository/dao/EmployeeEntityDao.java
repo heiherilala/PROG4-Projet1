@@ -1,8 +1,8 @@
 package com.hei.project2p1.repository.dao;
 
-import com.hei.project2p1.model.Employee;
-import com.hei.project2p1.model.Phone;
 import com.hei.project2p1.repository.dao.utils.SearchInDb;
+import com.hei.project2p1.repository.entity.EmployeeEntity;
+import com.hei.project2p1.repository.entity.PhoneEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -21,20 +21,20 @@ import java.util.List;
 
 @Repository
 @AllArgsConstructor
-public class EmployeeDao {
+public class EmployeeEntityDao {
 
     private EntityManager entityManager;
 
 
-    public List<Employee> findByCriteria(String firstName, String lastName, String function,
+    public List<EmployeeEntity> findByCriteria(String firstName, String lastName, String function,
                                          String countryCode,
                                          String gender, LocalDate entranceDateAfter, LocalDate entranceDateBefore,
                                          LocalDate leaveDateAfter, LocalDate leaveDateBefore,
                                          Pageable pageable) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
-        Root<Employee> root = query.from(Employee.class);
-        Join<Employee, Phone> phone = root.join("phones", JoinType.LEFT);
+        CriteriaQuery<EmployeeEntity> query = builder.createQuery(EmployeeEntity.class);
+        Root<EmployeeEntity> root = query.from(EmployeeEntity.class);
+        Join<EmployeeEntity, PhoneEntity> phone = root.join("phones", JoinType.LEFT);
 
         List<Predicate> predicates = new ArrayList<>();
 
@@ -50,7 +50,7 @@ public class EmployeeDao {
         }
 
         if (gender!= null && !gender.isEmpty()){
-            Employee.Gender g = gender.equals("H")? Employee.Gender.H:(gender.equals("F")?Employee.Gender.F:null);
+            EmployeeEntity.Gender g = gender.equals("H")? EmployeeEntity.Gender.H:(gender.equals("F")?EmployeeEntity.Gender.F:null);
             if (g!=null){
                 predicates.add(builder.equal(root.get("gender"),g));
             }

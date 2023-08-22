@@ -2,6 +2,7 @@ package com.hei.project2p1.service;
 
 import com.hei.project2p1.model.SpringSession;
 import com.hei.project2p1.repository.SpringSessionRepository;
+import com.hei.project2p1.repository.mapper.SpringSessionMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,8 @@ import java.util.List;
 public class SpringSessionService {
     private final SpringSessionRepository repository;
 
+    private final SpringSessionMapper mapper;
+
     public void shutUpSessionById(String id){
         //List<SpringSession> toDelete = repository.findAllByPrincipalName(connected);
         //repository.deleteAll(toDelete);
@@ -20,11 +23,11 @@ public class SpringSessionService {
     }
 
     public SpringSession getBySessionId(String id){
-        return repository.findBySessionId(id);
+        return mapper.toDomain(repository.findBySessionId(id));
     }
 
     public List<SpringSession> getAll(){
-        return repository.findAll();
+        return repository.findAll().stream().map(mapper::toDomain).toList();
     }
 
 }

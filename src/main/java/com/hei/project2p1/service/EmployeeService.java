@@ -6,7 +6,8 @@ import com.hei.project2p1.model.Employee;
 import com.hei.project2p1.model.Phone;
 import com.hei.project2p1.model.Validator.PhoneValidator;
 import com.hei.project2p1.repository.EmployeeRepository;
-import com.hei.project2p1.repository.dao.EmployeeDao;
+import com.hei.project2p1.repository.dao.EmployeeEntityDao;
+import com.hei.project2p1.repository.mapper.CompanyAndEmployeeMapper;
 import com.hei.project2p1.utils.PaginationUtils;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -24,18 +25,18 @@ import java.util.Objects;
 public class EmployeeService {
     private final String REGISTRATION_PREFIX = "EMP";
     private final RegistrationNoTrackerService registrationNoTrackerService;
+    private final CompanyAndEmployeeMapper mapper;
 
     private final EmployeeRepository repository;
-    private final EmployeeDao employeeDao;
+    private final EmployeeEntityDao employeeDao;
     private final PhoneService phoneService;
     private final PhoneValidator phoneValidator;
 
 
-    public List<Employee> getEmployeesFromDB() {
-        return repository.findAll();
-    }
     public Employee getEmployeeById(String id){
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("Employee with id"+ id + "not found."));
+        return mapper.toDomain(
+                repository.findById(id)
+                        .orElseThrow(() -> new NotFoundException("Employee with id"+ id + "not found.")));
     }
 
     public long getTotalPages(int pageSize){
@@ -46,7 +47,7 @@ public class EmployeeService {
     @Transactional
     public Employee save(Employee employee,List<String> countryCode, List<String> phonesNo) {
         Employee toSave = autoSetRegNo(employee);
-        Employee saved = repository.save(toSave);
+        Employee saved = mapper.toDomain(repository.save(mapper.toEntity(toSave)));
         List<Phone> phones = phoneService.addPhonesToOwner(saved,countryCode,phonesNo);
         phoneValidator.accept(phones);
 
@@ -67,7 +68,9 @@ public class EmployeeService {
     @Transactional
     public List<Employee> saveAll(List<Employee> employees) {
         List<Employee> toSave = autoSetRegNo(employees);
-        return repository.saveAll(toSave);
+        return repository.saveAll(toSave
+                .stream().map(mapper::toEntity).toList())
+                .stream().map(mapper::toDomain).toList();
     }
 
     private Employee autoSetRegNo(Employee employee){
@@ -113,6 +116,9 @@ public class EmployeeService {
         Pageable pageable = PageRequest.of(pageNo-1, pageSize, sort);
 
         // Perform the search using the EmployeeRepository
-        return employeeDao.findByCriteria(firstName,lastName,function,countryCode, gender, entranceDateAfter, entranceDateBefore, leaveDateAfter, leaveDateBefore, pageable);
+        return employeeDao.findByCriteria(
+                firstName, lastName,function,countryCode, gender,
+                entranceDateAfter, entranceDateBefore, leaveDateAfter, leaveDateBefore, pageable)
+                .stream().map(mapper::toDomain).toList();
     }
 }

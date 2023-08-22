@@ -52,7 +52,7 @@ public class CompanyEntity implements Serializable {
     private String contactEmail;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
-    private List<PhoneEntity> phoneEntities;
+    private List<PhoneEntity> phones;
 
     @Lob
     @Column(columnDefinition = "bytea")

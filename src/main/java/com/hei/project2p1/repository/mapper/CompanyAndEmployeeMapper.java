@@ -18,7 +18,7 @@ public class CompanyAndEmployeeMapper {
                 .lastName(entity.getLastName())
                 .birthDate(entity.getBirthDate())
                 .gender(Employee.Gender.valueOf(entity.getGender().toString()))
-                .phones(entity.getPhoneEntities().stream().map(this::toDomain).toList())
+                .phones(entity.getPhones().stream().map(this::toDomain).toList())
                 .address(entity.getAddress())
                 .personalEmail(entity.getPersonalEmail())
                 .professionalEmail(entity.getProfessionalEmail())
@@ -43,7 +43,7 @@ public class CompanyAndEmployeeMapper {
                 .lastName(domain.getLastName())
                 .birthDate(domain.getBirthDate())
                 .gender(EmployeeEntity.Gender.valueOf(domain.getGender().toString()))
-                .phoneEntities(domain.getPhones().stream().map(this::toEntity).toList())
+                .phones(domain.getPhones().stream().map(this::toEntity).toList())
                 .address(domain.getAddress())
                 .personalEmail(domain.getPersonalEmail())
                 .professionalEmail(domain.getProfessionalEmail())
@@ -68,7 +68,7 @@ public class CompanyAndEmployeeMapper {
                 .slogan(entity.getSlogan())
                 .address(entity.getAddress())
                 .contactEmail(entity.getContactEmail())
-                .phones(entity.getPhoneEntities().stream().map(this::toDomain).toList())
+                .phones(entity.getPhones().stream().map(this::toDomain).toList())
                 .logo(entity.getLogo())
                 .nif(entity.getNif())
                 .stat(entity.getStat())
@@ -84,7 +84,7 @@ public class CompanyAndEmployeeMapper {
                 .slogan(domain.getSlogan())
                 .address(domain.getAddress())
                 .contactEmail(domain.getContactEmail())
-                .phoneEntities(domain.getPhones().stream().map(this::toEntity).toList())
+                .phones(domain.getPhones().stream().map(this::toEntity).toList())
                 .logo(domain.getLogo())
                 .nif(domain.getNif())
                 .stat(domain.getStat())
@@ -97,8 +97,8 @@ public class CompanyAndEmployeeMapper {
                 .id(entity.getId())
                 .number(entity.getNumber())
                 .countryCode(entity.getCountryCode())
-                .employee(toDomain(entity.getEmployeeEntity()))
-                .company(toDomain(entity.getCompanyEntity()))
+                .employee(toDomain(entity.getEmployee()))
+                .company(toDomain(entity.getCompany()))
                 .build();
     }
 
@@ -107,8 +107,8 @@ public class CompanyAndEmployeeMapper {
                 .id(domain.getId())
                 .number(domain.getNumber())
                 .countryCode(domain.getCountryCode())
-                .employeeEntity(toEntity(domain.getEmployee()))
-                .companyEntity(toEntity(domain.getCompany()))
+                .employee(toEntity(domain.getEmployee()))
+                .company(toEntity(domain.getCompany()))
                 .build();
 
     }

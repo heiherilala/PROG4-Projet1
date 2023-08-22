@@ -32,10 +32,10 @@ public class PhoneEntity {
     @ManyToOne
     @JoinColumn(name = "employee_id")
     @JsonIgnore
-    private EmployeeEntity employeeEntity;
+    private EmployeeEntity employee;
 
     @ManyToOne
     @JoinColumn(name = "company_id")
     @JsonIgnore
-    private CompanyEntity companyEntity;
+    private CompanyEntity company;
 }

@@ -55,7 +55,7 @@ public class EmployeeEntity implements Serializable {
     private Gender gender;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-    private List<PhoneEntity> phoneEntities;
+    private List<PhoneEntity> phones;
 
     //@NotBlank(message = "Exact address is required")
     private String address;
