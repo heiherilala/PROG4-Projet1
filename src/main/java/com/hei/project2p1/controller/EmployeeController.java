@@ -41,6 +41,10 @@ import java.util.stream.Stream;
     private final SpringSessionService springSessionService;
     private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
+    @GetMapping(value = "/")
+    public String redirection(){
+        return "redirect:"+ EmployeeUrl.EMPLOYEES_LIST;
+    }
 
     @GetMapping(value = EmployeeUrl.EMPLOYEES_LIST)
     public String index(@RequestParam(value = "page", defaultValue = "1") int pageNo,
