@@ -46,7 +46,7 @@ public class EmployeeService {
         phones.forEach(phone -> {
             List<Phone> alreadyExist = phoneService.getByCodeAndNumber(phone.getCountryCode(),phone.getNumber());
             alreadyExist.forEach(p -> {
-                if (!Objects.equals(p.getEmployee().getId(), saved.getId())){
+                if (!Objects.equals(p.getEmployeeId(), saved.getId())){
                     throw new BadRequestException("Phone with number "+p.getCountryCode()+p.getNumber()+" already exist");
                 }
             });

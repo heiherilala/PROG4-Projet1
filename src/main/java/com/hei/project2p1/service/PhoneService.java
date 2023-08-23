@@ -74,10 +74,10 @@ public class PhoneService {
         List<Phone> phoneList = new ArrayList<>();
         for (int i = 0; i < toSave.size(); i++) {
             phoneList.add(Phone.builder()
-                    .employee(owner)
+                    .employeeId(owner.getId())
                     .countryCode(countryCodes.get(i))
                     .number(toSave.get(i))
-                    .company(null)
+                    .companyId(null)
                     .build());
         }
         return phoneList;
@@ -86,10 +86,10 @@ public class PhoneService {
         List<Phone> phoneList = new ArrayList<>();
         for (int i = 0; i < toSave.size(); i++) {
             phoneList.add(Phone.builder()
-                    .employee(null)
+                    .employeeId(null)
                     .countryCode(countryCodes.get(i))
                     .number(toSave.get(i))
-                    .company(owner)
+                    .companyId(owner.getId())
                     .build());
         }
         return phoneList;

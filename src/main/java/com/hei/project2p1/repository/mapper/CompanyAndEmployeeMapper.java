@@ -3,13 +3,24 @@ package com.hei.project2p1.repository.mapper;
 import com.hei.project2p1.model.Company;
 import com.hei.project2p1.model.Employee;
 import com.hei.project2p1.model.Phone;
+import com.hei.project2p1.repository.CompanyRepository;
+import com.hei.project2p1.repository.EmployeeRepository;
 import com.hei.project2p1.repository.entity.CompanyEntity;
 import com.hei.project2p1.repository.entity.EmployeeEntity;
 import com.hei.project2p1.repository.entity.PhoneEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class CompanyAndEmployeeMapper {
+    private final EmployeeRepository employeeRepository;
+    private final CompanyRepository companyRepository;
+    public CompanyAndEmployeeMapper(EmployeeRepository employeeRepository, CompanyRepository companyRepository) {
+        this.employeeRepository = employeeRepository;
+        this.companyRepository = companyRepository;
+    }
+
     public Employee toDomain(EmployeeEntity entity) {
         return Employee.builder()
                 .id(entity.getId())
@@ -42,8 +53,8 @@ public class CompanyAndEmployeeMapper {
                 .firstName(domain.getFirstName())
                 .lastName(domain.getLastName())
                 .birthDate(domain.getBirthDate())
-                .gender(EmployeeEntity.Gender.valueOf(domain.getGender().toString()))
-                .phones(domain.getPhones().stream().map(this::toEntity).toList())
+                .gender(domain.getGender()==null?null:EmployeeEntity.Gender.valueOf(domain.getGender().toString()))
+                .phones(List.of())
                 .address(domain.getAddress())
                 .personalEmail(domain.getPersonalEmail())
                 .professionalEmail(domain.getProfessionalEmail())
@@ -54,7 +65,7 @@ public class CompanyAndEmployeeMapper {
                 .numberOfChildren(domain.getNumberOfChildren())
                 .hiringDate(domain.getHiringDate())
                 .departureDate(domain.getDepartureDate())
-                .socioProfessionalCategory(EmployeeEntity.SocioProfessionalCategory.valueOf(domain.getSocioProfessionalCategory().toString()))
+                .socioProfessionalCategory(domain.getSocioProfessionalCategory()==null?null:EmployeeEntity.SocioProfessionalCategory.valueOf(domain.getSocioProfessionalCategory().toString()))
                 .cnapsNumber(domain.getCnapsNumber())
                 .photo(domain.getPhoto())
                 .build();
@@ -84,7 +95,7 @@ public class CompanyAndEmployeeMapper {
                 .slogan(domain.getSlogan())
                 .address(domain.getAddress())
                 .contactEmail(domain.getContactEmail())
-                .phones(domain.getPhones().stream().map(this::toEntity).toList())
+                .phones(List.of())
                 .logo(domain.getLogo())
                 .nif(domain.getNif())
                 .stat(domain.getStat())
@@ -97,8 +108,8 @@ public class CompanyAndEmployeeMapper {
                 .id(entity.getId())
                 .number(entity.getNumber())
                 .countryCode(entity.getCountryCode())
-                .employee(toDomain(entity.getEmployee()))
-                .company(toDomain(entity.getCompany()))
+                .employeeId(entity.getEmployee()==null?null:entity.getEmployee().getId())
+                .companyId(entity.getCompany()==null?null:entity.getCompany().getId())
                 .build();
     }
 
@@ -107,8 +118,10 @@ public class CompanyAndEmployeeMapper {
                 .id(domain.getId())
                 .number(domain.getNumber())
                 .countryCode(domain.getCountryCode())
-                .employee(toEntity(domain.getEmployee()))
-                .company(toEntity(domain.getCompany()))
+                .employee(domain.getEmployeeId()==null || domain.getEmployeeId().isEmpty()?
+                        null : employeeRepository.findById(domain.getEmployeeId()).orElse(null))
+                .company(domain.getCompanyId()==null || domain.getEmployeeId().isEmpty()?
+                        null : companyRepository.findById(domain.getCompanyId()).orElse(null))
                 .build();
 
     }

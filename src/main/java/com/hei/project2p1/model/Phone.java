@@ -19,6 +19,6 @@ public class Phone {
     private String id;
     private String number;
     private String countryCode;
-    private Employee employee;
-    private Company company;
+    private String employeeId;
+    private String companyId;
 }
