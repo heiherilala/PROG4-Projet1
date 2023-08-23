@@ -98,6 +98,8 @@ public class EmployeeEntity implements Serializable {
     @Column(columnDefinition = "clob")
     private String photo;
 
+    private String cnapsEndToEndId;
+
     public enum Gender {
         H, F
     }
