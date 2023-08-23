@@ -1,168 +1,204 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8"/>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-  <link href="/css/styles.css" rel="stylesheet"/>
-  <title>Employee Management</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="/css/styles.css" rel="stylesheet"/>
+    <title>Employee Management</title>
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 <h1>Modify Employee</h1>
 
-<form th:action="@{/modifyEmployee}" method="post" enctype="multipart/form-data" class="employeeForm">
-  <input type="hidden" name="id" th:value="${employee.id}" />
-  <input type="hidden" name="photoString" th:value="${employee.photo}">
-  <img id="currentImage" th:src="'data:image/png;base64,' + ${employee.photo}" alt="Photo" th:if="${employee.photo!=null && employee.photo.length()>0}" width="300" /><br/>
-  <img id="selectedImage" src="#" alt="Selected Image" width="300"  style="display: none;" /><br/>
+<div class="container mt-5">
+    <form th:action="@{/modifyEmployee}" method="post" enctype="multipart/form-data" class="employeeForm">
+        <div class="col-sm-10"><input type="hidden" class="form-control" name="id" th:value="${employee.id}"/></div>
+        <div class="col-sm-10"><input type="hidden" class="form-control" name="photoString"
+                                      th:value="${employee.photo}"></div>
+        <img id="currentImage" th:src="'data:image/png;base64,' + ${employee.photo}" alt="Photo"
+             th:if="${employee.photo!=null && employee.photo.length()>0}" width="300"/><br/>
+        <img id="selectedImage" src="#" alt="Selected Image" width="300" style="display: none;"/><br/>
 
-  <label class="labelForm">First Name:</label>
-  <input type="text" name="firstName" th:value="${employee.firstName}" required /><br/>
+        <label class="col-sm-2 col-form-label">First Name:</label>
+        <div class="col-sm-10"><input type="text" class="form-control" name="firstName" th:value="${employee.firstName}"
+                                      required/></div>
+        <br/>
 
-  <label class="labelForm">Last Name:</label>
-  <input type="text" name="lastName" th:value="${employee.lastName}" required /><br/>
+        <label class="col-sm-2 col-form-label">Last Name:</label>
+        <div class="col-sm-10"><input type="text" class="form-control" name="lastName" th:value="${employee.lastName}"
+                                      required/></div>
+        <br/>
 
-  <label class="labelForm">Birth Date:</label>
-  <input type="date" name="birthDate" th:value="${employee.birthDate}" /><br/>
+        <label class="col-sm-2 col-form-label">Birth Date:</label>
+        <div class="col-sm-10"><input type="date" class="form-control" name="birthDate"
+                                      th:value="${employee.birthDate}"/></div>
+        <br/>
 
-  <label class="labelForm">Photo:</label>
-  <input type="file" name="photo" id="photoInput" onchange="showSelectedImage(event)" /><br/>
+        <label class="col-sm-2 col-form-label">Photo:</label>
+        <div class="col-sm-10"><input type="file" class="form-control" name="photo" id="photoInput"
+                                      onchange="showSelectedImage(event)"/></div>
+        <br/>
 
-  <label class="labelForm">Gender:</label>
-  <select name="gender">
-    <option th:each="gender: ${genders}"
-            th:value="${gender}" th:text="${gender}" th:selected="${gender == employee.gender}"></option>
-  </select><br/>
+        <label class="col-sm-2 col-form-label">Gender:</label>
+        <select class="form-control" name="gender">
+            <option th:each="gender: ${genders}"
+                    th:value="${gender}" th:text="${gender}" th:selected="${gender == employee.gender}"></option>
+        </select><br/>
 
-  <label class="labelForm">Number of Children:</label>
-  <input type="number" name="numberOfChildren" th:value="${employee.numberOfChildren}" min="0"/><br/>
+        <label class="col-sm-2 col-form-label">Number of Children:</label>
+        <div class="col-sm-10"><input type="number" class="form-control" name="numberOfChildren"
+                                      th:value="${employee.numberOfChildren}" min="0"/></div>
+        <br/>
 
-  <label class="labelForm">Phones:</label>
+        <label class="col-sm-2 col-form-label">Phones:</label>
 
 
+        <div class="col-sm-10"><input type="hidden" th:each="existingNumber : ${employee.phones}" class="form-control"
+                                      name="existingNumbers" th:value="${existingNumber}"/></div>
 
-  <input type="hidden" th:each="existingNumber : ${employee.phones}" name="existingNumbers" th:value="${existingNumber}" />
+        <div id="phones">
+        </div>
+        <button type="button" onclick="addPhone()">Add Phone</button>
+        <br/>
 
-  <div id="phones">
-  </div>
-  <button type="button" onclick="addPhone()">Add Phone</button><br/>
+        <label class="col-sm-2 col-form-label">Address:</label>
+        <div class="col-sm-10"><input type="text" class="form-control" name="address" th:value="${employee.address}"/>
+        </div>
+        <br/>
 
-  <label class="labelForm">Address:</label>
-  <input type="text" name="address" th:value="${employee.address}" /><br/>
+        <label class="col-sm-2 col-form-label">Personal Email:</label>
+        <div class="col-sm-10"><input type="email" class="form-control" name="personalEmail"
+                                      th:value="${employee.personalEmail}"/></div>
+        <br/>
 
-  <label class="labelForm">Personal Email:</label>
-  <input type="email" name="personalEmail" th:value="${employee.personalEmail}" /><br/>
+        <label class="col-sm-2 col-form-label">Professional Email:</label>
+        <div class="col-sm-10"><input type="email" class="form-control" name="professionalEmail"
+                                      th:value="${employee.professionalEmail}"/></div>
+        <br/>
 
-  <label class="labelForm">Professional Email:</label>
-  <input type="email" name="professionalEmail" th:value="${employee.professionalEmail}" /><br/>
+        <label class="col-sm-2 col-form-label">CIN Number:</label>
+        <div class="col-sm-10"><input type="text" class="form-control" name="cinNumber"
+                                      th:value="${employee.cinNumber}"/></div>
+        <br/>
 
-  <label class="labelForm">CIN Number:</label>
-  <input type="text" name="cinNumber" th:value="${employee.cinNumber}" /><br/>
+        <label class="col-sm-2 col-form-label">CIN Issue Date:</label>
+        <div class="col-sm-10"><input type="date" class="form-control" name="cinIssueDate"
+                                      th:value="${employee.cinIssueDate}"/></div>
+        <br/>
 
-  <label class="labelForm">CIN Issue Date:</label>
-  <input type="date" name="cinIssueDate" th:value="${employee.cinIssueDate}" /><br/>
+        <label class="col-sm-2 col-form-label">CIN Issue Place:</label>
+        <div class="col-sm-10"><input type="text" class="form-control" name="cinIssuePlace"
+                                      th:value="${employee.cinIssuePlace}"/></div>
+        <br/>
 
-  <label class="labelForm">CIN Issue Place:</label>
-  <input type="text" name="cinIssuePlace" th:value="${employee.cinIssuePlace}" /><br/>
+        <label class="col-sm-2 col-form-label">Function:</label>
+        <div class="col-sm-10"><input type="text" class="form-control" name="function" th:value="${employee.function}"/>
+        </div>
+        <br/>
 
-  <label class="labelForm">Function:</label>
-  <input type="text" name="function" th:value="${employee.function}" /><br/>
+        <label class="col-sm-2 col-form-label">Hiring Date:</label>
+        <div class="col-sm-10"><input type="date" class="form-control" name="hiringDate"
+                                      th:value="${employee.hiringDate}"/></div>
+        <br/>
 
-  <label class="labelForm">Hiring Date:</label>
-  <input type="date" name="hiringDate" th:value="${employee.hiringDate}" /><br/>
+        <label class="col-sm-2 col-form-label">Departure Date:</label>
+        <div class="col-sm-10"><input type="date" class="form-control" name="departureDate"
+                                      th:value="${employee.departureDate}"/></div>
+        <br/>
 
-  <label class="labelForm">Departure Date:</label>
-  <input type="date" name="departureDate" th:value="${employee.departureDate}" /><br/>
+        <label class="col-sm-2 col-form-label">Socio-Professional Category:</label>
+        <select class="form-control" name="socioProfessionalCategory">
+            <option th:each="category : ${categories}"
+                    th:value="${category}" th:text="${category}"
+                    th:selected="${category == employee.socioProfessionalCategory}"></option>
+        </select><br/>
 
-  <label class="labelForm">Socio-Professional Category:</label>
-  <select name="socioProfessionalCategory">
-    <option th:each="category : ${categories}"
-            th:value="${category}" th:text="${category}" th:selected="${category == employee.socioProfessionalCategory}"></option>
-  </select><br/>
+        <label class="col-sm-2 col-form-label">CNAPS Number:</label>
+        <div class="col-sm-10"><input type="text" class="form-control" name="cnapsNumber"
+                                      th:value="${employee.cnapsNumber}"/></div>
+        <br/>
 
-  <label class="labelForm">CNAPS Number:</label>
-  <input type="text" name="cnapsNumber" th:value="${employee.cnapsNumber}" /><br/>
-
-  <input type="submit" value="Save" class="submitButton" />
-</form>
-<div th:insert="fragments/footer :: footer"></div>
+        <div class="col-sm-10"><input type="submit" value="Save" class="submitButton"/></div>
+    </form>
+</div>
+<div th:insert="~{fragments/footer :: footer}"></div>
 <script>
-  function addPhoneInput(countryCodeValue, phoneValue) {
-    const countryCodeInput = document.createElement("input");
-    countryCodeInput.type = "text";
-    countryCodeInput.name = "countryCodes";
-    countryCodeInput.value = countryCodeValue;
-    countryCodeInput.placeholder = "Country Code";
+    function addPhoneInput(countryCodeValue, phoneValue) {
+        const countryCodeInput = document.createElement("input");
+        countryCodeInput.type = "text";
+        countryCodeInput.name = "countryCodes";
+        countryCodeInput.value = countryCodeValue;
+        countryCodeInput.placeholder = "Country Code";
 
-    const phoneInput = document.createElement("input");
-    phoneInput.type = "text";
-    phoneInput.name = "phones";
-    phoneInput.value = phoneValue;
+        const phoneInput = document.createElement("input");
+        phoneInput.type = "text";
+        phoneInput.name = "phones";
+        phoneInput.value = phoneValue;
 
-    const phoneDiv = document.createElement("div");
-    phoneDiv.appendChild(countryCodeInput);
-    phoneDiv.appendChild(phoneInput);
+        const phoneDiv = document.createElement("div");
+        phoneDiv.appendChild(countryCodeInput);
+        phoneDiv.appendChild(phoneInput);
 
-    // Check if there is more than one phone input to decide whether to add the delete button
-    if (document.getElementsByName("phones").length > 0) {
-      const deleteButton = document.createElement("button");
-      deleteButton.type = "button";
-      deleteButton.innerHTML = "Delete";
-      deleteButton.onclick = function() {
-        deletePhone(phoneDiv);
-      };
-      phoneDiv.appendChild(deleteButton);
+        // Check if there is more than one phone input to decide whether to add the delete button
+        if (document.getElementsByName("phones").length > 0) {
+            const deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.innerHTML = "Delete";
+            deleteButton.onclick = function () {
+                deletePhone(phoneDiv);
+            };
+            phoneDiv.appendChild(deleteButton);
+        }
+
+        phoneDiv.appendChild(document.createElement("br"));
+        const phonesDiv = document.getElementById("phones");
+        phonesDiv.appendChild(phoneDiv);
     }
 
-    phoneDiv.appendChild(document.createElement("br"));
-    const phonesDiv = document.getElementById("phones");
-    phonesDiv.appendChild(phoneDiv);
-  }
-
-  function addPhone() {
-    addPhoneInput("", "");
-  }
-
-  function deletePhone(phoneDiv) {
-    const phonesDiv = document.getElementById("phones");
-    phonesDiv.removeChild(phoneDiv);
-  }
-
-  function deleteExistingNumber(button) {
-    const numberDiv = button.parentElement;
-    const existingPhonesDiv = document.getElementById("existingPhones");
-    existingPhonesDiv.removeChild(numberDiv.parentElement);
-  }
-
-  window.onload = function() {
-    // Populate existing phone numbers
-    const existingNumbersInput = document.getElementsByName("existingNumbers");
-    for (let i = 0; i < existingNumbersInput.length; i++) {
-      const existingNumber = existingNumbersInput[i].value;
-      const countryCode = existingNumber.split(',')[0];
-      const phoneNumber = existingNumber.split(',')[1];
-      addPhoneInput(countryCode, phoneNumber);
-    }
-  };
-
-  document.getElementById("employeeForm").addEventListener("submit", function() {
-    // Update the actual input fields with the phone values
-    const phonesInput = document.getElementsByName("phones");
-    const countryCodesInput = document.getElementsByName("countryCodes");
-    const combinedPhoneValues = [];
-
-    for (let i = 0; i < phonesInput.length; i++) {
-      const combinedValue = countryCodesInput[i].value + "," + phonesInput[i].value;
-      combinedPhoneValues.push(combinedValue);
+    function addPhone() {
+        addPhoneInput("", "");
     }
 
-    const combinedPhonesInput = document.createElement("input");
-    combinedPhonesInput.type = "hidden";
-    combinedPhonesInput.name = "combinedPhones";
-    combinedPhonesInput.value = combinedPhoneValues.join(";");
+    function deletePhone(phoneDiv) {
+        const phonesDiv = document.getElementById("phones");
+        phonesDiv.removeChild(phoneDiv);
+    }
 
-    this.appendChild(combinedPhonesInput);
-  });
+    function deleteExistingNumber(button) {
+        const numberDiv = button.parentElement;
+        const existingPhonesDiv = document.getElementById("existingPhones");
+        existingPhonesDiv.removeChild(numberDiv.parentElement);
+    }
+
+    window.onload = function () {
+        // Populate existing phone numbers
+        const existingNumbersInput = document.getElementsByName("existingNumbers");
+        for (let i = 0; i < existingNumbersInput.length; i++) {
+            const existingNumber = existingNumbersInput[i].value;
+            const countryCode = existingNumber.split(',')[0];
+            const phoneNumber = existingNumber.split(',')[1];
+            addPhoneInput(countryCode, phoneNumber);
+        }
+    };
+
+    document.getElementById("employeeForm").addEventListener("submit", function () {
+        // Update the actual input fields with the phone values
+        const phonesInput = document.getElementsByName("phones");
+        const countryCodesInput = document.getElementsByName("countryCodes");
+        const combinedPhoneValues = [];
+
+        for (let i = 0; i < phonesInput.length; i++) {
+            const combinedValue = countryCodesInput[i].value + "," + phonesInput[i].value;
+            combinedPhoneValues.push(combinedValue);
+        }
+
+        const combinedPhonesInput = document.createElement("input");
+        combinedPhonesInput.type = "hidden";
+        combinedPhonesInput.name = "combinedPhones";
+        combinedPhonesInput.value = combinedPhoneValues.join(";");
+
+        this.appendChild(combinedPhonesInput);
+    });
 
 </script>
 

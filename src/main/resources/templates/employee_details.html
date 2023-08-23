@@ -44,6 +44,10 @@
             <p><strong>CNAPS Number:</strong> <span th:utext="${employee.cnapsNumber} ?: 'Not Specified'"></span></p>
         </div>
     </div>
-    <div th:insert="fragments/footer :: footer"></div>
+    <div class="container d-flex justify-content-center align-items-center min-vh-40">
+        <a th:href="@{/employees/{id}/update(id=${employee.id})}" class="btn btn-primary custom-button">Update</a>
+    </div>
+
+    <div th:insert="~{fragments/footer :: footer}"></div>
 </body>
 </html>

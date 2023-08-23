@@ -1,80 +1,99 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset = "ISO-8859-1" />
+    <meta charset="ISO-8859-1"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link href = "/css/styles.css" rel = "stylesheet"/>
+    <link href="/css/styles.css" rel="stylesheet"/>
     <title>Employee Management</title>
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 <h1>Create New Employee</h1>
-<form th:action="@{/addEmployee}" method="post" enctype="multipart/form-data" class="employeeForm">
-    <label class="labelForm">First Name:</label>
-    <input type="text" name="firstName" required /><br/>
+<div class="container mt-5">
+    <form th:action="@{/addEmployee}" method="post" enctype="multipart/form-data" class="employeeForm">
+        <label class="col-sm-2 col-form-label">First Name:</label>
+        <div class="col-sm-10"><input type="text" class="form-control" name="firstName" required/></div>
+        <br/>
 
-    <label class="labelForm">Last Name:</label>
-    <input type="text" name="lastName" required /><br/>
+        <label class="col-sm-2 col-form-label">Last Name:</label>
+        <div class="col-sm-10"><input type="text" class="form-control" name="lastName" required/></div>
+        <br/>
 
-    <label class="labelForm">Birth Date:</label>
-    <input type="date" name="birthDate" /><br/>
+        <label class="col-sm-2 col-form-label">Birth Date:</label>
+        <div class="col-sm-10"><input type="date" class="form-control" name="birthDate"/></div>
+        <br/>
 
-    <label class="labelForm">Photo:</label>
-    <input type="file" name="photo" /><br/>
+        <label class="col-sm-2 col-form-label">Photo:</label>
+        <div class="col-sm-10"><input type="file" class="form-control" name="photo"/></div>
+        <br/>
 
-    <label class="labelForm">Gender:</label>
-    <select name="gender">
-        <option th:each="gender: ${genders}"
-                th:value="${gender}" th:text="${gender}"></option>
-    </select><br/>
+        <label class="col-sm-2 col-form-label">Gender:</label>
+        <select class="form-control" name="gender">
+            <option th:each="gender: ${genders}"
+                    th:value="${gender}" th:text="${gender}"></option>
+        </select><br/>
 
 
-    <label class="labelForm">Number of Children:</label>
-    <input type="number" name="numberOfChildren" value="0" min="0"/><br/>
+        <label class="col-sm-2 col-form-label">Number of Children:</label>
+        <div class="col-sm-10"><input type="number" class="form-control" name="numberOfChildren" value="0" min="0"/>
+        </div>
+        <br/>
 
-    <label class="labelForm">Phones:</label>
-    <div id="phones">
-    </div>
-    <button type="button" onclick="addPhone()">Add Phone</button><br/>
-    <label class="labelForm">Address:</label>
-    <input type="text" name="address" /><br/>
+        <label class="col-sm-2 col-form-label">Phones:</label>
+        <div id="phones">
+        </div>
+        <button type="button" onclick="addPhone()">Add Phone</button>
+        <br/>
+        <label class="col-sm-2 col-form-label">Address:</label>
+        <div class="col-sm-10"><input type="text" class="form-control" name="address"/></div>
+        <br/>
 
-    <label class="labelForm">Personal Email:</label>
-    <input type="email" name="personalEmail" /><br/>
+        <label class="col-sm-2 col-form-label">Personal Email:</label>
+        <div class="col-sm-10"><input type="email" class="form-control" name="personalEmail"/></div>
+        <br/>
 
-    <label class="labelForm">Professional Email:</label>
-    <input type="email" name="professionalEmail" /><br/>
+        <label class="col-sm-2 col-form-label">Professional Email:</label>
+        <div class="col-sm-10"><input type="email" class="form-control" name="professionalEmail"/></div>
+        <br/>
 
-    <label class="labelForm">CIN Number:</label>
-    <input type="text" name="cinNumber" /><br/>
+        <label class="col-sm-2 col-form-label">CIN Number:</label>
+        <div class="col-sm-10"><input type="text" class="form-control" name="cinNumber"/></div>
+        <br/>
 
-    <label class="labelForm">CIN Issue Date:</label>
-    <input type="date" name="cinIssueDate" /><br/>
+        <label class="col-sm-2 col-form-label">CIN Issue Date:</label>
+        <div class="col-sm-10"><input type="date" class="form-control" name="cinIssueDate"/></div>
+        <br/>
 
-    <label class="labelForm">CIN Issue Place:</label>
-    <input type="text" name="cinIssuePlace" /><br/>
+        <label class="col-sm-2 col-form-label">CIN Issue Place:</label>
+        <div class="col-sm-10"><input type="text" class="form-control" name="cinIssuePlace"/></div>
+        <br/>
 
-    <label class="labelForm">Function:</label>
-    <input type="text" name="function" /><br/>
+        <label class="col-sm-2 col-form-label">Function:</label>
+        <div class="col-sm-10"><input type="text" class="form-control" name="function"/></div>
+        <br/>
 
-    <label class="labelForm">Hiring Date:</label>
-    <input type="date" name="hiringDate" /><br/>
+        <label class="col-sm-2 col-form-label">Hiring Date:</label>
+        <div class="col-sm-10"><input type="date" class="form-control" name="hiringDate"/></div>
+        <br/>
 
-    <label class="labelForm">Departure Date:</label>
-    <input type="date" name="departureDate" /><br/>
+        <label class="col-sm-2 col-form-label">Departure Date:</label>
+        <div class="col-sm-10"><input type="date" class="form-control" name="departureDate"/></div>
+        <br/>
 
-    <label class="labelForm">Socio-Professional Category:</label>
-    <select name="socioProfessionalCategory">
-        <option th:each="category : ${categories}"
-                th:value="${category}" th:text="${category}"></option>
-    </select><br/>
+        <label class="col-sm-2 col-form-label">Socio-Professional Category:</label>
+        <select name="socioProfessionalCategory">
+            <option th:each="category : ${categories}"
+                    th:value="${category}" th:text="${category}"></option>
+        </select><br/>
 
-    <label class="labelForm">CNAPS Number:</label>
-    <input type="text" name="cnapsNumber" /><br/>
+        <label class="col-sm-2 col-form-label">CNAPS Number:</label>
+        <div class="col-sm-10"><input type="text" name="cnapsNumber"/></div>
+        <br/>
 
-    <input type="submit" value="Create" class="submitButton"/>
-</form>
-<!--<div th:insert="fragments/footer :: footer"></div>-->
+        <div class="col-sm-10"><input type="submit" value="Create" class="submitButton"/></div>
+    </form>
+</div>
+<!--<div th:insert="~{fragments/footer :: footer}"></div>-->
 <script>
     function addPhoneInput(countryCodeValue, phoneValue) {
         const phoneInput = document.createElement("input");
@@ -98,7 +117,7 @@
             const deleteButton = document.createElement("button");
             deleteButton.type = "button";
             deleteButton.innerHTML = "Delete";
-            deleteButton.onclick = function() {
+            deleteButton.onclick = function () {
                 deletePhone(phoneDiv);
             };
             phoneDiv.appendChild(deleteButton);
@@ -119,7 +138,7 @@
     }
 
     // On page load, set phones to be an empty list if no phone numbers are provided
-    window.onload = function() {
+    window.onload = function () {
         const phonesInput = document.getElementsByName("phones");
         const countryCodesInput = document.getElementsByName("countryCodes");
         if (phonesInput.length === 0) {
@@ -132,7 +151,7 @@
     };
 
     // Before form submission, update the actual input fields with the phone values
-    document.getElementById("employeeForm").addEventListener("submit", function() {
+    document.getElementById("employeeForm").addEventListener("submit", function () {
         const phonesInput = document.getElementsByName("phones");
         const countryCodesInput = document.getElementsByName("countryCodes");
 
@@ -154,3 +173,7 @@
 
 </body>
 </html>
+
+
+
+

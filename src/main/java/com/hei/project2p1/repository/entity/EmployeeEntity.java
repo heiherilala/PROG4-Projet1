@@ -14,6 +14,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
@@ -22,21 +23,15 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
+import lombok.ToString;
 
 @Entity(name = "employee")
 @Table(name = "employee")
-/*
-@Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"registrationNo"},name = "unique_registration_no"),
-        @UniqueConstraint(columnNames = {"personalEmail"},name = "unique_email"),
-        @UniqueConstraint(columnNames = {"professionalEmail"},name = "unique_email"),
-        @UniqueConstraint(columnNames = {"cinNumber"},name = "unique_cin_number"),
-        @UniqueConstraint(columnNames = {"cnapsNumber"},name = "unique_cnaps_number"),
-})
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 @Builder
 public class EmployeeEntity implements Serializable {
     @Id

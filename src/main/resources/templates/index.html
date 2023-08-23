@@ -27,10 +27,6 @@
     <button type="submit">Export CSV</button>
 </form>
 
-<form th:action="@{/quitSession}" method="post">
-    <input type="text" th:value="${session_id}" hidden="hidden" name="session_id" id="session_id">
-    <button type="submit">Log out</button>
-</form>
 <form action="#" th:action="@{/employees}" method="get">
     <input type="number" name="page" hidden="hidden" id="page" th:value="${page}"/> <br>
     <input type="text" name="sort_by" hidden="hidden" id="sort_by" th:value="${sortField}"/> <br>
@@ -215,6 +211,6 @@
         <option value="50">50</option>
     </select>
 </div>
-<div th:insert="fragments/footer :: footer"></div>
+<div th:insert="~{fragments/footer :: footer}"></div>
 </body>
 </html>

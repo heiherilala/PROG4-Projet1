@@ -26,12 +26,14 @@ public class PhoneValidator implements Consumer<Phone> {
         if (phone.getNumber() == null) {
             violationMessages.add("Number is mandatory");
         }
-        if (phone.getNumber().length() != 10) {
-            violationMessages.add("Number length should be 10");
-        }
 
-        if (!validateNumberRegex(phone.getNumber())) {
-            violationMessages.add("Number should be alphanumeric");
+        if (phone.getNumber() != null) {
+            if (phone.getNumber().length() != 10) {
+                violationMessages.add("the phone number length have to be 10, but yours is : " + phone.getNumber().length() );
+            }
+            if (!validateNumberRegex(phone.getNumber())) {
+                violationMessages.add("Number should be alphanumeric");
+            }
         }
 
         if (!violationMessages.isEmpty()) {
@@ -44,16 +46,8 @@ public class PhoneValidator implements Consumer<Phone> {
     }
 
     public static boolean validateNumberRegex(String number) {
-        if (number.length() != 10) {
-        throw new RuntimeException("the phone number length have to be 10, but yours is : " + number.length() );
-        }
-
-        String regexPattern = "^[a-zA-Z0-9]+$"; // Regex pour alphanumérique (lettres minuscules, majuscules et chiffres)
-
-        // Créez un objet Pattern en utilisant le regexPattern
+        String regexPattern = "^[a-zA-Z0-9]+$";
         Pattern pattern = Pattern.compile(regexPattern);
-
-        // Créez un objet Matcher en utilisant la chaîne d'entrée et le Pattern
         Matcher matcher = pattern.matcher(number);
         return matcher.matches();
     }
