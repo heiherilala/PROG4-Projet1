@@ -129,6 +129,8 @@ import java.util.stream.Stream;
         model.addAttribute("categories", categories);
         List<String> genderList= Stream.of(Employee.Gender.values()).map(Enum::name).toList();
         model.addAttribute("genders", genderList);
+        Company company = companyService.getCompanyInfo();
+        model.addAttribute("company", company);
         return "update-employee";
     }
 
@@ -137,6 +139,8 @@ import java.util.stream.Stream;
         Employee employee = employeeService.getEmployeeById(id);
         EmployeeView createEmployeeView = employeeMapper.toView(employee);
         model.addAttribute("employee", createEmployeeView);
+        Company company = companyService.getCompanyInfo();
+        model.addAttribute("company", company);
         return "employee_details";
     }
 
@@ -191,6 +195,8 @@ import java.util.stream.Stream;
                 .registrationNo(null)
                 .build();
         employeeService.save(employeeMapper.toDomain(employee), employee.getCodeCountry() , employee.getPhones());
+        Company company = companyService.getCompanyInfo();
+        model.addAttribute("company", company);
         return "redirect:"+ EmployeeUrl.EMPLOYEES_LIST;
     }
 
@@ -217,7 +223,8 @@ import java.util.stream.Stream;
             @RequestParam("hiringDate") String hiringDate,
             @RequestParam("departureDate") String departureDate,
             @RequestParam("socioProfessionalCategory") String socioProfessionalCategory,
-            @RequestParam("cnapsNumber") String cnapsNumber
+            @RequestParam("cnapsNumber") String cnapsNumber,
+            Model model
             ) {
 
         EmployeeView employee = EmployeeView.builder()
@@ -245,6 +252,8 @@ import java.util.stream.Stream;
                 .build();
 
         employeeService.save(employeeMapper.toDomain(employee), employee.getCodeCountry(), employee.getPhones());
+        Company company = companyService.getCompanyInfo();
+        model.addAttribute("company", company);
         return "redirect:"+"/employees/"+id+"/details";
     }
 
@@ -262,7 +271,8 @@ import java.util.stream.Stream;
                                                                 @RequestParam(value = "leave_before",required = false) LocalDate leaveDateBefore,
 
                                                                 @RequestParam(value = "country_code",required = false) String countryCode,
-                                                                @RequestParam(value = "leave_after",required = false) LocalDate leaveDateAfter){
+                                                                @RequestParam(value = "leave_after",required = false) LocalDate leaveDateAfter,
+                                                                Model model){
 
         List<Employee> employees = employeeService.findEmployeesByCriteria(
                 firstName,
@@ -282,6 +292,8 @@ import java.util.stream.Stream;
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=employees.csv");
+        Company company = companyService.getCompanyInfo();
+        model.addAttribute("company", company);
 
         return ResponseEntity.ok()
                 .headers(headers)

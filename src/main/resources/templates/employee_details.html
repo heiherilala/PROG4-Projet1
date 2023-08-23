@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link href = "/css/styles.css" rel = "stylesheet"/>
     <title>Employee details</title>
 </head>
@@ -43,5 +44,6 @@
             <p><strong>CNAPS Number:</strong> <span th:utext="${employee.cnapsNumber} ?: 'Not Specified'"></span></p>
         </div>
     </div>
+    <div th:insert="fragments/footer :: footer"></div>
 </body>
 </html>
