@@ -1,7 +1,7 @@
 package com.hei.project2p1.controller;
 
 import com.hei.project2p1.controller.constant.EmployeeUrl;
-import com.hei.project2p1.controller.mapper.EmployeeMapper;
+import com.hei.project2p1.controller.mapper.EmployeeViewMapper;
 import com.hei.project2p1.controller.mapper.modelView.EmployeeView;
 import com.hei.project2p1.controller.mapper.utils.ConvertInputTypeToDomain;
 import com.hei.project2p1.model.Company;
@@ -35,7 +35,7 @@ import java.util.stream.Stream;
 @Controller
 @AllArgsConstructor
     public class EmployeeController {
-    private final EmployeeMapper employeeMapper;
+    private final EmployeeViewMapper employeeViewMapper;
     private final EmployeeService employeeService;
     private final CompanyService companyService;
     private final SpringSessionService springSessionService;
@@ -76,7 +76,7 @@ import java.util.stream.Stream;
                 leaveDateAfter, leaveDateBefore,
                 pageNo, pageSize, sortBy, sortOrder);
         long totalPages = employeeService.getTotalPages(pageSize);
-        List<EmployeeView> employeesView = employeeMapper.toView(employees);
+        List<EmployeeView> employeesView = employeeViewMapper.toView(employees);
         List<String> genderList = Stream.of(Employee.Gender.values()).map(Enum::name).toList();
         //variable to Display
         model.addAttribute("employees", employeesView);
@@ -123,7 +123,7 @@ import java.util.stream.Stream;
     public String modifyEmployeePage( Model model, @PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
 
-        model.addAttribute("employee", employeeMapper.toView(employee));
+        model.addAttribute("employee", employeeViewMapper.toView(employee));
 
         List<String> categories = Stream.of(Employee.SocioProfessionalCategory.values()).map(Enum::name).toList();
         model.addAttribute("categories", categories);
@@ -137,7 +137,7 @@ import java.util.stream.Stream;
     @GetMapping(value = EmployeeUrl.EMPLOYEES_DETAILS)
     public String details(Model model, @PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
-        EmployeeView createEmployeeView = employeeMapper.toView(employee);
+        EmployeeView createEmployeeView = employeeViewMapper.toView(employee);
         model.addAttribute("employee", createEmployeeView);
         Company company = companyService.getCompanyInfo();
         model.addAttribute("company", company);
@@ -169,9 +169,6 @@ import java.util.stream.Stream;
     ) {
         String photoTreated = ConvertInputTypeToDomain.multipartImageToString(photo);
 
-        logger.info("phones: "+countryCodes);
-        logger.info("phones: "+phones);
-
         EmployeeView employee = EmployeeView.builder()
                 .firstName(firstName)
                 .lastName(lastName)
@@ -194,7 +191,7 @@ import java.util.stream.Stream;
                 .cnapsNumber(cnapsNumber)
                 .registrationNo(null)
                 .build();
-        employeeService.save(employeeMapper.toDomain(employee), employee.getCodeCountry() , employee.getPhones());
+        employeeService.save(employeeViewMapper.toDomain(employee), employee.getCodeCountry() , employee.getPhones());
         Company company = companyService.getCompanyInfo();
         model.addAttribute("company", company);
         return "redirect:"+ EmployeeUrl.EMPLOYEES_LIST;
@@ -251,7 +248,7 @@ import java.util.stream.Stream;
                 .registrationNo(null)
                 .build();
 
-        employeeService.save(employeeMapper.toDomain(employee), employee.getCodeCountry(), employee.getPhones());
+        employeeService.save(employeeViewMapper.toDomain(employee), employee.getCodeCountry(), employee.getPhones());
         Company company = companyService.getCompanyInfo();
         model.addAttribute("company", company);
         return "redirect:"+"/employees/"+id+"/details";
@@ -283,12 +280,10 @@ import java.util.stream.Stream;
                 entranceDateAfter, entranceDateBefore,
                 leaveDateAfter, leaveDateBefore,
                 pageNo, pageSize, sortBy, sortOrder);
-        List<EmployeeView> employeesView = employeeMapper.toView(employees);
+        List<EmployeeView> employeesView = employeeViewMapper.toView(employees);
         String converted = ObjectToCSVConverter.convertToCSV(employeesView,List.of("photo"));
         byte[] bytes = converted.getBytes();
         ByteArrayResource resource = new ByteArrayResource(bytes);
-
-        logger.info(employeesView.get(0).getPhoto());
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=employees.csv");

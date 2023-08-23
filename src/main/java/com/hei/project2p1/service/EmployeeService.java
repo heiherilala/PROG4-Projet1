@@ -4,6 +4,7 @@ import com.hei.project2p1.exception.BadRequestException;
 import com.hei.project2p1.model.Employee;
 import com.hei.project2p1.model.Phone;
 import com.hei.project2p1.model.Validator.PhoneValidator;
+import com.hei.project2p1.repository.Repository;
 import com.hei.project2p1.utils.PaginationUtils;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ public class EmployeeService {
     private final String REGISTRATION_PREFIX = "EMP";
     private final RegistrationNoTrackerService registrationNoTrackerService;
 
-    private final EmployeeConnectorRepository repository;
+    private final Repository repository;
     private final PhoneService phoneService;
     private final PhoneValidator phoneValidator;
 

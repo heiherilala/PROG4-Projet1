@@ -1,4 +1,4 @@
-package com.hei.project2p1.service;
+package com.hei.project2p1.repository;
 
 import com.hei.project2p1.model.Employee;
 import org.springframework.data.domain.Pageable;
@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface EmployeeConnectorRepository {
+public interface Repository {
     double count();
 
     Employee save(Employee toSave);

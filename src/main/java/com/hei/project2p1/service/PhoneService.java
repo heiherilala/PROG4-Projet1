@@ -4,7 +4,7 @@ import com.hei.project2p1.model.Company;
 import com.hei.project2p1.model.Employee;
 import com.hei.project2p1.model.Phone;
 import com.hei.project2p1.repository.PhoneRepository;
-import com.hei.project2p1.repository.mapper.CompanyAndEmployeeMapper;
+import com.hei.project2p1.repository.mapper.PhoneMapper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +22,7 @@ import static org.springframework.data.domain.Sort.Direction.ASC;
 @AllArgsConstructor
 public class PhoneService {
     private final PhoneRepository repository;
-    private final CompanyAndEmployeeMapper mapper;
+    private final PhoneMapper mapper;
 
     public List<Phone> getAll(int page, int pageSize){
         paginationValidator(page,pageSize);

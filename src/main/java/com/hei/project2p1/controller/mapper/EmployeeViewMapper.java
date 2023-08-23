@@ -12,7 +12,7 @@ import static com.hei.project2p1.controller.mapper.utils.ConvertInputTypeToDomai
 import static com.hei.project2p1.controller.mapper.utils.ConvertNullValueToView.valueToView;
 
 @Component
-public class EmployeeMapper {
+public class EmployeeViewMapper {
 
     public Employee toDomain(EmployeeView createEmployeeView) {
 

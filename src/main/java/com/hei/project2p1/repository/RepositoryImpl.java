@@ -1,31 +1,28 @@
-package com.hei.project2p1.service;
+package com.hei.project2p1.repository;
 
 import com.hei.project2p1.cnaps.entity.EmployeeCnapsEntity;
 import com.hei.project2p1.cnaps.repository.EmployeeCnapsRepository;
 import com.hei.project2p1.exception.NotFoundException;
 import com.hei.project2p1.model.Employee;
-import com.hei.project2p1.repository.EmployeeRepository;
 import com.hei.project2p1.repository.dao.EmployeeEntityDao;
 import com.hei.project2p1.repository.entity.EmployeeEntity;
-import com.hei.project2p1.repository.mapper.CompanyAndEmployeeMapper;
+import com.hei.project2p1.repository.mapper.EmployeeMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@org.springframework.stereotype.Repository
 @AllArgsConstructor
-public class EmployeeConnectorRepositoryImpl implements EmployeeConnectorRepository{
+public class RepositoryImpl implements Repository {
     private EmployeeRepository mainRepository;
     private EmployeeCnapsRepository cnapsRepository;
     private final EmployeeEntityDao employeeDao;
 
-    private final CompanyAndEmployeeMapper mapper;
-
+    private final EmployeeMapper mapper;
 
     @Override
     public double count() {
