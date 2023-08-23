@@ -1,13 +1,9 @@
 package com.hei.project2p1.service;
 
 import com.hei.project2p1.exception.BadRequestException;
-import com.hei.project2p1.exception.NotFoundException;
 import com.hei.project2p1.model.Employee;
 import com.hei.project2p1.model.Phone;
 import com.hei.project2p1.model.Validator.PhoneValidator;
-import com.hei.project2p1.repository.EmployeeRepository;
-import com.hei.project2p1.repository.dao.EmployeeEntityDao;
-import com.hei.project2p1.repository.mapper.CompanyAndEmployeeMapper;
 import com.hei.project2p1.utils.PaginationUtils;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -25,18 +21,14 @@ import java.util.Objects;
 public class EmployeeService {
     private final String REGISTRATION_PREFIX = "EMP";
     private final RegistrationNoTrackerService registrationNoTrackerService;
-    private final CompanyAndEmployeeMapper mapper;
 
-    private final EmployeeRepository repository;
-    private final EmployeeEntityDao employeeDao;
+    private final EmployeeConnectorRepository repository;
     private final PhoneService phoneService;
     private final PhoneValidator phoneValidator;
 
 
     public Employee getEmployeeById(String id){
-        return mapper.toDomain(
-                repository.findById(id)
-                        .orElseThrow(() -> new NotFoundException("Employee with id"+ id + "not found.")));
+        return repository.findById(id);
     }
 
     public long getTotalPages(int pageSize){
@@ -47,7 +39,7 @@ public class EmployeeService {
     @Transactional
     public Employee save(Employee employee,List<String> countryCode, List<String> phonesNo) {
         Employee toSave = autoSetRegNo(employee);
-        Employee saved = mapper.toDomain(repository.save(mapper.toEntity(toSave)));
+        Employee saved = repository.save(toSave);
         List<Phone> phones = phoneService.addPhonesToOwner(saved,countryCode,phonesNo);
         phoneValidator.accept(phones);
 
@@ -60,18 +52,10 @@ public class EmployeeService {
             });
         });
         phoneService.deletePhonesOfOwner(saved);
-
         phoneService.savePhones(saved,countryCode,phonesNo);
         return saved;
     }
 
-    @Transactional
-    public List<Employee> saveAll(List<Employee> employees) {
-        List<Employee> toSave = autoSetRegNo(employees);
-        return repository.saveAll(toSave
-                .stream().map(mapper::toEntity).toList())
-                .stream().map(mapper::toDomain).toList();
-    }
 
     private Employee autoSetRegNo(Employee employee){
         if (employee.getRegistrationNo()==null){
@@ -116,9 +100,8 @@ public class EmployeeService {
         Pageable pageable = PageRequest.of(pageNo-1, pageSize, sort);
 
         // Perform the search using the EmployeeRepository
-        return employeeDao.findByCriteria(
+        return repository.findByCriteria(
                 firstName, lastName,function,countryCode, gender,
-                entranceDateAfter, entranceDateBefore, leaveDateAfter, leaveDateBefore, pageable)
-                .stream().map(mapper::toDomain).toList();
+                entranceDateAfter, entranceDateBefore, leaveDateAfter, leaveDateBefore, pageable);
     }
 }
