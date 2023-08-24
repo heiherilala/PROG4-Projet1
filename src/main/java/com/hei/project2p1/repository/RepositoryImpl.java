@@ -31,8 +31,13 @@ public class RepositoryImpl implements Repository {
 
     @Override
     public Employee save(Employee toSave) {
+        if (toSave.getId()!=null){
+            Optional<EmployeeEntity> existingEmployee = mainRepository.findById(toSave.getId());
+            existingEmployee.ifPresent(present -> toSave.setEndToEndId(present.getCnapsEndToEndId()));
+        }
+        EmployeeEntity entityToSave = mapper.toEntity(toSave);
         return mapper.toDomain(
-                mainRepository.save(mapper.toEntity(toSave)));
+                mainRepository.save(entityToSave));
     }
 
 

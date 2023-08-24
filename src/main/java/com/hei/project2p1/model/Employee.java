@@ -40,6 +40,7 @@ public class Employee implements Serializable {
     private SocioProfessionalCategory socioProfessionalCategory;
     private String cnapsNumber;
     private String photo;
+    private String endToEndId;
 
     public enum Gender {
         H, F
