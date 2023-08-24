@@ -6,11 +6,11 @@ import com.hei.project2p1.controller.mapper.modelView.EmployeeView;
 import com.hei.project2p1.controller.mapper.utils.ConvertInputTypeToDomain;
 import com.hei.project2p1.model.Company;
 import com.hei.project2p1.model.Employee;
-import com.hei.project2p1.model.SpringSession;
 import com.hei.project2p1.service.CompanyService;
 import com.hei.project2p1.service.EmployeeService;
 import com.hei.project2p1.service.SpringSessionService;
 import com.hei.project2p1.utils.ObjectToCSVConverter;
+import com.hei.project2p1.utils.PhoneFormating;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -64,8 +64,6 @@ import java.util.stream.Stream;
                         HttpSession session
 
     ) {
-
-        List<SpringSession> sessions = springSessionService.getAll();
         List<Employee> employees = employeeService.findEmployeesByCriteria(
                 firstName,
                 lastName,
@@ -78,6 +76,9 @@ import java.util.stream.Stream;
         long totalPages = employeeService.getTotalPages(pageSize);
         List<EmployeeView> employeesView = employeeViewMapper.toView(employees);
         List<String> genderList = Stream.of(Employee.Gender.values()).map(Enum::name).toList();
+        for (EmployeeView ev:employeesView) {
+            ev.setPhones(ev.getPhones().stream().map(PhoneFormating::reformatPhoneNumber).toList());
+        }
         //variable to Display
         model.addAttribute("employees", employeesView);
         model.addAttribute("genderList", genderList);
@@ -138,6 +139,7 @@ import java.util.stream.Stream;
     public String details(Model model, @PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
         EmployeeView createEmployeeView = employeeViewMapper.toView(employee);
+        createEmployeeView.setPhones(createEmployeeView.getPhones().stream().map(PhoneFormating::reformatPhoneNumber).toList());
         model.addAttribute("employee", createEmployeeView);
         Company company = companyService.getCompanyInfo();
         model.addAttribute("company", company);
@@ -281,6 +283,9 @@ import java.util.stream.Stream;
                 leaveDateAfter, leaveDateBefore,
                 pageNo, pageSize, sortBy, sortOrder);
         List<EmployeeView> employeesView = employeeViewMapper.toView(employees);
+        for (EmployeeView ev:employeesView) {
+            ev.setPhones(ev.getPhones().stream().map(PhoneFormating::reformatPhoneNumber).toList());
+        }
         String converted = ObjectToCSVConverter.convertToCSV(employeesView,List.of("photo"));
         byte[] bytes = converted.getBytes();
         ByteArrayResource resource = new ByteArrayResource(bytes);
