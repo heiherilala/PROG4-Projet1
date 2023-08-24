@@ -10,7 +10,7 @@ import com.hei.project2p1.service.CompanyService;
 import com.hei.project2p1.service.EmployeeService;
 import com.hei.project2p1.service.SpringSessionService;
 import com.hei.project2p1.utils.ObjectToCSVConverter;
-import com.hei.project2p1.utils.PhoneFormating;
+import com.hei.project2p1.utils.PhoneFormatting;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -77,7 +77,7 @@ import java.util.stream.Stream;
         List<EmployeeView> employeesView = employeeViewMapper.toView(employees);
         List<String> genderList = Stream.of(Employee.Gender.values()).map(Enum::name).toList();
         for (EmployeeView ev:employeesView) {
-            ev.setPhones(ev.getPhones().stream().map(PhoneFormating::reformatPhoneNumber).toList());
+            ev.setPhones(ev.getPhones().stream().map(PhoneFormatting::reformatPhoneNumber).toList());
         }
         //variable to Display
         model.addAttribute("employees", employeesView);
@@ -139,7 +139,7 @@ import java.util.stream.Stream;
     public String details(Model model, @PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
         EmployeeView createEmployeeView = employeeViewMapper.toView(employee);
-        createEmployeeView.setPhones(createEmployeeView.getPhones().stream().map(PhoneFormating::reformatPhoneNumber).toList());
+        createEmployeeView.setPhones(createEmployeeView.getPhones().stream().map(PhoneFormatting::reformatPhoneNumber).toList());
         model.addAttribute("employee", createEmployeeView);
         Company company = companyService.getCompanyInfo();
         model.addAttribute("company", company);
@@ -282,7 +282,7 @@ import java.util.stream.Stream;
                 pageNo, pageSize, sortBy, sortOrder);
         List<EmployeeView> employeesView = employeeViewMapper.toView(employees);
         for (EmployeeView ev:employeesView) {
-            ev.setPhones(ev.getPhones().stream().map(PhoneFormating::reformatPhoneNumber).toList());
+            ev.setPhones(ev.getPhones().stream().map(PhoneFormatting::reformatPhoneNumber).toList());
         }
         String converted = ObjectToCSVConverter.convertToCSV(employeesView,List.of("photo"),List.of("phones","codeCountry"));
         byte[] bytes = converted.getBytes();
