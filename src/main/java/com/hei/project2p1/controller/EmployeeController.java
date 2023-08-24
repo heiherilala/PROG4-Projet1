@@ -286,7 +286,7 @@ import java.util.stream.Stream;
         for (EmployeeView ev:employeesView) {
             ev.setPhones(ev.getPhones().stream().map(PhoneFormating::reformatPhoneNumber).toList());
         }
-        String converted = ObjectToCSVConverter.convertToCSV(employeesView,List.of("photo"));
+        String converted = ObjectToCSVConverter.convertToCSV(employeesView,List.of("photo"),List.of("phones","codeCountry"));
         byte[] bytes = converted.getBytes();
         ByteArrayResource resource = new ByteArrayResource(bytes);
 
