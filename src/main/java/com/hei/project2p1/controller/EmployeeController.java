@@ -166,7 +166,6 @@ import java.util.stream.Stream;
             @RequestParam("hiringDate") String hiringDate,
             @RequestParam("departureDate") String departureDate,
             @RequestParam("socioProfessionalCategory") String socioProfessionalCategory,
-            @RequestParam("cnapsNumber") String cnapsNumber,
             Model model
     ) {
         String photoTreated = ConvertInputTypeToDomain.multipartImageToString(photo);
@@ -190,7 +189,7 @@ import java.util.stream.Stream;
                 .hiringDate(hiringDate)
                 .departureDate(departureDate)
                 .socioProfessionalCategory(socioProfessionalCategory)
-                .cnapsNumber(cnapsNumber)
+                .cnapsNumber(null)
                 .registrationNo(null)
                 .build();
         employeeService.save(employeeViewMapper.toDomain(employee), employee.getCodeCountry() , employee.getPhones());
@@ -222,7 +221,6 @@ import java.util.stream.Stream;
             @RequestParam("hiringDate") String hiringDate,
             @RequestParam("departureDate") String departureDate,
             @RequestParam("socioProfessionalCategory") String socioProfessionalCategory,
-            @RequestParam("cnapsNumber") String cnapsNumber,
             Model model
             ) {
 
@@ -246,7 +244,7 @@ import java.util.stream.Stream;
                 .hiringDate(hiringDate)
                 .departureDate(departureDate)
                 .socioProfessionalCategory(socioProfessionalCategory)
-                .cnapsNumber(cnapsNumber)
+                .cnapsNumber(null)
                 .registrationNo(null)
                 .build();
 

@@ -14,7 +14,7 @@ public class ConvertInputTypeToDomain {
         if (input==null) {
             return null;
         }
-        return input.length()>0?LocalDate.parse(input):null;
+        return !input.isEmpty() ?LocalDate.parse(input):null;
     }
 
     public static String multipartImageToString(MultipartFile multipartFile) {
@@ -29,14 +29,17 @@ public class ConvertInputTypeToDomain {
     }
 
     public static String stringInputOfString(String input){
-        return input.length()>0?input:null;
+        if (input==null){
+            return null;
+        }
+        return !input.isEmpty() ?input:null;
     }
 
     public static Integer stringInputOfInteger(String input){
         if (input==null){
             return null;
         }
-        return input.length()>0? Integer.valueOf(input) : null;
+        return !input.isEmpty() ? Integer.valueOf(input) : null;
     }
 
 }
