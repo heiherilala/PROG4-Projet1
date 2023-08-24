@@ -32,7 +32,7 @@ public class ObjectToCSVConverter {
                     try {
                         Object fieldValue = field.get(object);
                         if (listFields.contains(field.getName()) && fieldValue instanceof List<?> listValue) {
-                            String joinedList = listValue.toString().substring(1,listValue.toString().length()-1).replaceAll(",",":");
+                            String joinedList = listValue.toString().substring(1,listValue.toString().length()-1).replaceAll(",","-");
                             csvData.append(joinedList).append(",");
                         } else {
                             csvData.append(fieldValue).append(",");
