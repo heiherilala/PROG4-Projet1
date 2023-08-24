@@ -1,12 +1,12 @@
 package com.hei.project2p1.service;
 
 import com.hei.project2p1.exception.BadRequestException;
-import com.hei.project2p1.exception.NotFoundException;
 import com.hei.project2p1.model.Employee;
 import com.hei.project2p1.model.Phone;
 import com.hei.project2p1.model.Validator.PhoneValidator;
-import com.hei.project2p1.repository.EmployeeRepository;
-import com.hei.project2p1.repository.dao.EmployeeDao;
+import com.hei.project2p1.repository.Repository;
+import com.hei.project2p1.repository.firm.entity.validator.EmployeeEntityValidator;
+import com.hei.project2p1.repository.firm.mapper.EmployeeMapper;
 import com.hei.project2p1.utils.PaginationUtils;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -25,17 +25,15 @@ public class EmployeeService {
     private final String REGISTRATION_PREFIX = "EMP";
     private final RegistrationNoTrackerService registrationNoTrackerService;
 
-    private final EmployeeRepository repository;
-    private final EmployeeDao employeeDao;
+    private  final EmployeeMapper employeeMapper;
+    private final Repository repository;
     private final PhoneService phoneService;
     private final PhoneValidator phoneValidator;
+    private final EmployeeEntityValidator employeeEntityValidator;
 
 
-    public List<Employee> getEmployeesFromDB() {
-        return repository.findAll();
-    }
     public Employee getEmployeeById(String id){
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("Employee with id"+ id + "not found."));
+        return repository.findById(id);
     }
 
     public long getTotalPages(int pageSize){
@@ -46,6 +44,7 @@ public class EmployeeService {
     @Transactional
     public Employee save(Employee employee,List<String> countryCode, List<String> phonesNo) {
         Employee toSave = autoSetRegNo(employee);
+        employeeEntityValidator.accept(employeeMapper.toEntity(employee));
         Employee saved = repository.save(toSave);
         List<Phone> phones = phoneService.addPhonesToOwner(saved,countryCode,phonesNo);
         phoneValidator.accept(phones);
@@ -53,22 +52,16 @@ public class EmployeeService {
         phones.forEach(phone -> {
             List<Phone> alreadyExist = phoneService.getByCodeAndNumber(phone.getCountryCode(),phone.getNumber());
             alreadyExist.forEach(p -> {
-                if (!Objects.equals(p.getEmployee().getId(), saved.getId())){
+                if (!Objects.equals(p.getEmployeeId(), saved.getId())){
                     throw new BadRequestException("Phone with number "+p.getCountryCode()+p.getNumber()+" already exist");
                 }
             });
         });
         phoneService.deletePhonesOfOwner(saved);
-
         phoneService.savePhones(saved,countryCode,phonesNo);
         return saved;
     }
 
-    @Transactional
-    public List<Employee> saveAll(List<Employee> employees) {
-        List<Employee> toSave = autoSetRegNo(employees);
-        return repository.saveAll(toSave);
-    }
 
     private Employee autoSetRegNo(Employee employee){
         if (employee.getRegistrationNo()==null){
@@ -113,6 +106,8 @@ public class EmployeeService {
         Pageable pageable = PageRequest.of(pageNo-1, pageSize, sort);
 
         // Perform the search using the EmployeeRepository
-        return employeeDao.findByCriteria(firstName,lastName,function,countryCode, gender, entranceDateAfter, entranceDateBefore, leaveDateAfter, leaveDateBefore, pageable);
+        return repository.findByCriteria(
+                firstName, lastName,function,countryCode, gender,
+                entranceDateAfter, entranceDateBefore, leaveDateAfter, leaveDateBefore, pageable);
     }
 }

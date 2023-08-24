@@ -1,7 +1,7 @@
 package com.hei.project2p1.service;
 
-import com.hei.project2p1.model.Users;
-import com.hei.project2p1.repository.UserRepository;
+import com.hei.project2p1.repository.firm.UserRepository;
+import com.hei.project2p1.repository.firm.entity.UsersEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +18,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Users users = userRepository.findByUsername(username)
+        UsersEntity users = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
         return new org.springframework.security.core.userdetails.User(

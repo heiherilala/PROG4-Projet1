@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset = "UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link href = "/css/styles.css" rel = "stylesheet"/>
     <title>Employee Management</title>
 </head>
@@ -26,10 +27,6 @@
     <button type="submit">Export CSV</button>
 </form>
 
-<form th:action="@{/quitSession}" method="post">
-    <input type="text" th:value="${session_id}" hidden="hidden" name="session_id" id="session_id">
-    <button type="submit">Log out</button>
-</form>
 <form action="#" th:action="@{/employees}" method="get">
     <input type="number" name="page" hidden="hidden" id="page" th:value="${page}"/> <br>
     <input type="text" name="sort_by" hidden="hidden" id="sort_by" th:value="${sortField}"/> <br>
@@ -204,28 +201,9 @@
     </span>
 
     <!-- Total Pages -->
-    <span>Total Pages: <span th:text="${totalPages}"></span></span>
+    <span> / <span th:text="${totalPages}"></span></span>
 
-    <!-- Page Size Select Dropdown -->
-    <label>Page Size:</label>
-    <select th:field="*{pageSize}">
-        <option value="10">10</option>
-        <option value="25">25</option>
-        <option value="50">50</option>
-    </select>
 </div>
-<div class="footer">
-    <div class="left-content">
-        <h1 class="footer-info" th:text="${company.companyName}"></h1>
-        <p class="footer-info" th:text="${company.slogan}"></p>
-        <p class="footer-info" th:text="${company.contactEmail}"></p>
-    </div>
-    <div class="right-content">
-        <p class="footer-info">Address: <span th:text="${company.address}"></span></p>
-        <p class="footer-info">NIF: <span th:text="${company.nif}"></span></p>
-        <p class="footer-info">STAT: <span th:text="${company.stat}"></span></p>
-        <p class="footer-info">RCS: <span th:text="${company.rcs}"></span></p>
-    </div>
-</div>
+<div th:insert="~{fragments/footer :: footer}"></div>
 </body>
 </html>

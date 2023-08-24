@@ -26,8 +26,14 @@ public class PhoneValidator implements Consumer<Phone> {
         if (phone.getNumber() == null) {
             violationMessages.add("Number is mandatory");
         }
-        if (!validateNumberLength(phone.getNumber())) {
-            violationMessages.add("Number length should be 10");
+
+        if (phone.getNumber() != null) {
+            if (phone.getNumber().length() != 10) {
+                violationMessages.add("the phone number length have to be 10, but yours is : " + phone.getNumber().length() );
+            }
+            if (!validateNumberRegex(phone.getNumber())) {
+                violationMessages.add("Number should be alphanumeric");
+            }
         }
 
         if (!violationMessages.isEmpty()) {
@@ -39,9 +45,9 @@ public class PhoneValidator implements Consumer<Phone> {
 
     }
 
-    public static boolean validateNumberLength(String number) {
-        String regex = "^.{10}$";
-        Pattern pattern = Pattern.compile(regex);
+    public static boolean validateNumberRegex(String number) {
+        String regexPattern = "^[0-9\\s]+$";
+        Pattern pattern = Pattern.compile(regexPattern);
         Matcher matcher = pattern.matcher(number);
         return matcher.matches();
     }

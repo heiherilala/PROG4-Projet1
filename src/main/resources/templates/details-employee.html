@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href = "/css/styles.css" rel = "stylesheet"/>
+    <title>Employee details</title>
+</head>
+<body>
+
+    <div th:replace="~{fragments/header :: header}"></div>
+    <h1>Employee Details</h1>
+    <div class="employee-card">
+        <th:block th:if="${employee.photo!=null && employee.photo.length()>0}">
+            <img th:src="'data:image/png;base64,' + ${employee.photo}" width="400" alt="Photo">
+        </th:block>
+        <th:block th:unless="${employee.photo!=null && employee.photo.length()>0}">
+            <h4>No Image</h4>
+        </th:block>
+
+        <div class="left-details">
+            <p><strong>First Name:</strong> <span th:utext="${employee.firstName} ?: 'Not Specified'"></span></p>
+            <p><strong>Last Name:</strong> <span th:utext="${employee.lastName} ?: 'Not Specified'"></span></p>
+            <p><strong>Birth Date:</strong> <span th:utext="${employee.birthDate} ?: 'Not Specified'"></span></p>
+            <p><strong>Gender:</strong> <span th:utext="${employee.gender} ?: 'Not Specified'"></span></p>
+            <p><strong>Phones:</strong></p>
+            <ul>
+                <li th:each="phone : ${employee.phones}" th:text="${phone}"></li>
+                <li th:if="${#lists.isEmpty(employee.phones)}">Not Specified</li>
+            </ul>
+            <p><strong>Address:</strong> <span th:utext="${employee.address} ?: 'Not Specified'"></span></p>
+            <p><strong>Personal Email:</strong> <span th:utext="${employee.personalEmail} ?: 'Not Specified'"></span></p>
+            <p><strong>Professional Email:</strong> <span th:utext="${employee.professionalEmail} ?: 'Not Specified'"></span></p>
+        </div>
+        <div class="right-details">
+            <p><strong>CIN Number:</strong> <span th:utext="${employee.cinNumber} ?: 'Not Specified'"></span></p>
+            <p><strong>CIN Issue Date:</strong> <span th:utext="${employee.cinIssueDate} ?: 'Not Specified'"></span></p>
+            <p><strong>CIN Issue Place:</strong> <span th:utext="${employee.cinIssuePlace} ?: 'Not Specified'"></span></p>
+            <p><strong>Function:</strong> <span th:utext="${employee.function} ?: 'Not Specified'"></span></p>
+            <p><strong>Number of Children:</strong> <span th:utext="${employee.numberOfChildren} ?: 'Not Specified'"></span></p>
+            <p><strong>Hiring Date:</strong> <span th:utext="${employee.hiringDate} ?: 'Not Specified'"></span></p>
+            <p><strong>Departure Date:</strong> <span th:utext="${employee.departureDate} ?: 'Not Specified'"></span></p>
+            <p><strong>Socio-Professional Category:</strong> <span th:utext="${employee.socioProfessionalCategory} ?: 'Not Specified'"></span></p>
+            <p><strong>CNAPS Number:</strong> <span th:utext="${employee.cnapsNumber} ?: 'Not Specified'"></span></p>
+        </div>
+    </div>
+    <div class="container d-flex justify-content-center align-items-center min-vh-40">
+        <a th:href="@{/employees/{id}/update(id=${employee.id})}" class="btn btn-primary custom-button">Update</a>
+    </div>
+
+    <div th:insert="~{fragments/footer :: footer}"></div>
+</body>
+</html>

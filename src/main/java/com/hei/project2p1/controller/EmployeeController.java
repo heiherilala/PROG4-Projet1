@@ -1,16 +1,17 @@
 package com.hei.project2p1.controller;
 
 import com.hei.project2p1.controller.constant.EmployeeUrl;
-import com.hei.project2p1.controller.mapper.EmployeeMapper;
+import com.hei.project2p1.controller.mapper.EmployeeViewMapper;
 import com.hei.project2p1.controller.mapper.modelView.EmployeeView;
 import com.hei.project2p1.controller.mapper.utils.ConvertInputTypeToDomain;
+import com.hei.project2p1.exception.BadRequestException;
 import com.hei.project2p1.model.Company;
 import com.hei.project2p1.model.Employee;
-import com.hei.project2p1.model.SpringSession;
 import com.hei.project2p1.service.CompanyService;
 import com.hei.project2p1.service.EmployeeService;
 import com.hei.project2p1.service.SpringSessionService;
 import com.hei.project2p1.utils.ObjectToCSVConverter;
+import com.hei.project2p1.utils.PhoneFormatting;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -35,12 +36,16 @@ import java.util.stream.Stream;
 @Controller
 @AllArgsConstructor
     public class EmployeeController {
-    private final EmployeeMapper employeeMapper;
+    private final EmployeeViewMapper employeeViewMapper;
     private final EmployeeService employeeService;
     private final CompanyService companyService;
     private final SpringSessionService springSessionService;
     private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
+    @GetMapping(value = "/")
+    public String redirection(){
+        return "redirect:"+ EmployeeUrl.EMPLOYEES_LIST;
+    }
 
     @GetMapping(value = EmployeeUrl.EMPLOYEES_LIST)
     public String index(@RequestParam(value = "page", defaultValue = "1") int pageNo,
@@ -60,8 +65,6 @@ import java.util.stream.Stream;
                         HttpSession session
 
     ) {
-
-        List<SpringSession> sessions = springSessionService.getAll();
         List<Employee> employees = employeeService.findEmployeesByCriteria(
                 firstName,
                 lastName,
@@ -72,8 +75,11 @@ import java.util.stream.Stream;
                 leaveDateAfter, leaveDateBefore,
                 pageNo, pageSize, sortBy, sortOrder);
         long totalPages = employeeService.getTotalPages(pageSize);
-        List<EmployeeView> employeesView = employeeMapper.toView(employees);
+        List<EmployeeView> employeesView = employeeViewMapper.toView(employees);
         List<String> genderList = Stream.of(Employee.Gender.values()).map(Enum::name).toList();
+        for (EmployeeView ev:employeesView) {
+            ev.setPhones(ev.getPhones().stream().map(phone -> PhoneFormatting.reformatPhoneNumber(phone).replace(" ","")).toList());
+        }
         //variable to Display
         model.addAttribute("employees", employeesView);
         model.addAttribute("genderList", genderList);
@@ -119,21 +125,26 @@ import java.util.stream.Stream;
     public String modifyEmployeePage( Model model, @PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
 
-        model.addAttribute("employee", employeeMapper.toView(employee));
+        model.addAttribute("employee", employeeViewMapper.toView(employee));
 
         List<String> categories = Stream.of(Employee.SocioProfessionalCategory.values()).map(Enum::name).toList();
         model.addAttribute("categories", categories);
         List<String> genderList= Stream.of(Employee.Gender.values()).map(Enum::name).toList();
         model.addAttribute("genders", genderList);
+        Company company = companyService.getCompanyInfo();
+        model.addAttribute("company", company);
         return "update-employee";
     }
 
     @GetMapping(value = EmployeeUrl.EMPLOYEES_DETAILS)
     public String details(Model model, @PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
-        EmployeeView createEmployeeView = employeeMapper.toView(employee);
+        EmployeeView createEmployeeView = employeeViewMapper.toView(employee);
+        createEmployeeView.setPhones(createEmployeeView.getPhones().stream().map(PhoneFormatting::reformatPhoneNumber).toList());
         model.addAttribute("employee", createEmployeeView);
-        return "employee_details";
+        Company company = companyService.getCompanyInfo();
+        model.addAttribute("company", company);
+        return "details-employee";
     }
 
     @PostMapping("/addEmployee")
@@ -156,14 +167,12 @@ import java.util.stream.Stream;
             @RequestParam("hiringDate") String hiringDate,
             @RequestParam("departureDate") String departureDate,
             @RequestParam("socioProfessionalCategory") String socioProfessionalCategory,
-            @RequestParam("cnapsNumber") String cnapsNumber,
             Model model
     ) {
         String photoTreated = ConvertInputTypeToDomain.multipartImageToString(photo);
-
-        logger.info("phones: "+countryCodes);
-        logger.info("phones: "+phones);
-
+        if (countryCodes!=null && phones!=null && countryCodes.size()!=phones.size()){
+            throw new BadRequestException("country code and phone number must be specified at the same time");
+        }
         EmployeeView employee = EmployeeView.builder()
                 .firstName(firstName)
                 .lastName(lastName)
@@ -183,10 +192,12 @@ import java.util.stream.Stream;
                 .hiringDate(hiringDate)
                 .departureDate(departureDate)
                 .socioProfessionalCategory(socioProfessionalCategory)
-                .cnapsNumber(cnapsNumber)
+                .cnapsNumber(null)
                 .registrationNo(null)
                 .build();
-        employeeService.save(employeeMapper.toDomain(employee), employee.getCodeCountry() , employee.getPhones());
+        employeeService.save(employeeViewMapper.toDomain(employee), employee.getCodeCountry() , employee.getPhones());
+        Company company = companyService.getCompanyInfo();
+        model.addAttribute("company", company);
         return "redirect:"+ EmployeeUrl.EMPLOYEES_LIST;
     }
 
@@ -200,8 +211,8 @@ import java.util.stream.Stream;
             @RequestParam("birthDate") String birthDate,
             @RequestParam("photo") MultipartFile photo,
             @RequestParam("gender") String gender,
-            @RequestParam("phones") List<String> phones,
-            @RequestParam("countryCodes") List<String> countryCodes,
+            @RequestParam(value = "phones", required = false) List<String> phones,
+            @RequestParam(value = "countryCodes", required = false) List<String> countryCodes,
             @RequestParam("address") String address,
             @RequestParam("personalEmail") String personalEmail,
             @RequestParam("professionalEmail") String professionalEmail,
@@ -213,9 +224,11 @@ import java.util.stream.Stream;
             @RequestParam("hiringDate") String hiringDate,
             @RequestParam("departureDate") String departureDate,
             @RequestParam("socioProfessionalCategory") String socioProfessionalCategory,
-            @RequestParam("cnapsNumber") String cnapsNumber
+            Model model
             ) {
-
+        if (countryCodes!=null && phones!=null && countryCodes.size()!=phones.size()){
+            throw new BadRequestException("country code and phone number must be specified at the same time");
+        }
         EmployeeView employee = EmployeeView.builder()
                 .id(id)
                 .firstName(firstName)
@@ -236,11 +249,13 @@ import java.util.stream.Stream;
                 .hiringDate(hiringDate)
                 .departureDate(departureDate)
                 .socioProfessionalCategory(socioProfessionalCategory)
-                .cnapsNumber(cnapsNumber)
+                .cnapsNumber(null)
                 .registrationNo(null)
                 .build();
 
-        employeeService.save(employeeMapper.toDomain(employee), employee.getCodeCountry(), employee.getPhones());
+        employeeService.save(employeeViewMapper.toDomain(employee), employee.getCodeCountry(), employee.getPhones());
+        Company company = companyService.getCompanyInfo();
+        model.addAttribute("company", company);
         return "redirect:"+"/employees/"+id+"/details";
     }
 
@@ -258,7 +273,8 @@ import java.util.stream.Stream;
                                                                 @RequestParam(value = "leave_before",required = false) LocalDate leaveDateBefore,
 
                                                                 @RequestParam(value = "country_code",required = false) String countryCode,
-                                                                @RequestParam(value = "leave_after",required = false) LocalDate leaveDateAfter){
+                                                                @RequestParam(value = "leave_after",required = false) LocalDate leaveDateAfter,
+                                                                Model model){
 
         List<Employee> employees = employeeService.findEmployeesByCriteria(
                 firstName,
@@ -269,15 +285,18 @@ import java.util.stream.Stream;
                 entranceDateAfter, entranceDateBefore,
                 leaveDateAfter, leaveDateBefore,
                 pageNo, pageSize, sortBy, sortOrder);
-        List<EmployeeView> employeesView = employeeMapper.toView(employees);
-        String converted = ObjectToCSVConverter.convertToCSV(employeesView,List.of("photo"));
+        List<EmployeeView> employeesView = employeeViewMapper.toView(employees);
+        for (EmployeeView ev:employeesView) {
+            ev.setPhones(ev.getPhones().stream().map(PhoneFormatting::reformatPhoneNumber).toList());
+        }
+        String converted = ObjectToCSVConverter.convertToCSV(employeesView,List.of("photo"),List.of("phones","codeCountry"));
         byte[] bytes = converted.getBytes();
         ByteArrayResource resource = new ByteArrayResource(bytes);
 
-        logger.info(employeesView.get(0).getPhoto());
-
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=employees.csv");
+        Company company = companyService.getCompanyInfo();
+        model.addAttribute("company", company);
 
         return ResponseEntity.ok()
                 .headers(headers)

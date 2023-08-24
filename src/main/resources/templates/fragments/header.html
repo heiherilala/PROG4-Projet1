@@ -1,18 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset = "UTF-8" />
-    <link href = "css/header.css" rel = "stylesheet"/>
-    <title>Employee Management</title>
-</head>
-<body>
-<div th:fragment="header" class="=headerComponent">
-    <nav class="navBar">
-        <ul>
-            <li><a th:href="@{/employees}" class="headerButton">Home</a></li>
-            <li><a th:href="@{/employees/add}" class="headerButton">Add Employee</a></li>
-        </ul>
-    </nav>
-</div>
-</body>
-</html>
+
+<header class="bg-dark text-white py-3 fixed-top">
+    <div class="container">
+        <head>
+            <meta charset = "UTF-8" />
+            <link href = "css/header.css" rel = "stylesheet"/>
+            <title>Employee Management</title>
+        </head>
+        <div class="row align-items-center">
+            <div class="col-md-4">
+                <a class="fw-bold" href="/"><img th:src="@{/image/logo.png}" alt="My Image" class="d-block" style="width: auto; height: 40px;" /></a>
+            </div>
+            <div class="col-md-8 d-flex justify-content-end">
+                <a class="text-white" th:href="@{/employees/add}">Add Employee</a>
+                <a class="text-white" href="/">Employees</a>
+                <a class="btn btn-link text-danger fw-bold" href="/quitSession">LogOut</a>
+
+            </div>
+        </div>
+    </div>
+</header>
