@@ -4,6 +4,7 @@ import com.hei.project2p1.controller.constant.EmployeeUrl;
 import com.hei.project2p1.controller.mapper.EmployeeViewMapper;
 import com.hei.project2p1.controller.mapper.modelView.EmployeeView;
 import com.hei.project2p1.controller.mapper.utils.ConvertInputTypeToDomain;
+import com.hei.project2p1.exception.BadRequestException;
 import com.hei.project2p1.model.Company;
 import com.hei.project2p1.model.Employee;
 import com.hei.project2p1.service.CompanyService;
@@ -169,7 +170,9 @@ import java.util.stream.Stream;
             Model model
     ) {
         String photoTreated = ConvertInputTypeToDomain.multipartImageToString(photo);
-
+        if (countryCodes!=null && phones!=null && countryCodes.size()!=phones.size()){
+            throw new BadRequestException("country code and phone number must be specified at the same time");
+        }
         EmployeeView employee = EmployeeView.builder()
                 .firstName(firstName)
                 .lastName(lastName)
@@ -223,7 +226,9 @@ import java.util.stream.Stream;
             @RequestParam("socioProfessionalCategory") String socioProfessionalCategory,
             Model model
             ) {
-
+        if (countryCodes!=null && phones!=null && countryCodes.size()!=phones.size()){
+            throw new BadRequestException("country code and phone number must be specified at the same time");
+        }
         EmployeeView employee = EmployeeView.builder()
                 .id(id)
                 .firstName(firstName)
