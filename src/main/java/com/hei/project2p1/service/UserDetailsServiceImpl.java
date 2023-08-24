@@ -1,7 +1,7 @@
 package com.hei.project2p1.service;
 
-import com.hei.project2p1.repository.UserRepository;
-import com.hei.project2p1.repository.entity.UsersEntity;
+import com.hei.project2p1.repository.firm.UserRepository;
+import com.hei.project2p1.repository.firm.entity.UsersEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

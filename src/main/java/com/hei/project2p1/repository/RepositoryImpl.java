@@ -1,12 +1,13 @@
 package com.hei.project2p1.repository;
 
-import com.hei.project2p1.cnaps.entity.EmployeeCnapsEntity;
-import com.hei.project2p1.cnaps.repository.EmployeeCnapsRepository;
+import com.hei.project2p1.repository.cnaps.entity.EmployeeCnapsEntity;
+import com.hei.project2p1.repository.cnaps.EmployeeCnapsRepository;
 import com.hei.project2p1.exception.NotFoundException;
 import com.hei.project2p1.model.Employee;
-import com.hei.project2p1.repository.dao.EmployeeEntityDao;
-import com.hei.project2p1.repository.entity.EmployeeEntity;
-import com.hei.project2p1.repository.mapper.EmployeeMapper;
+import com.hei.project2p1.repository.firm.dao.EmployeeEntityDao;
+import com.hei.project2p1.repository.firm.entity.EmployeeEntity;
+import com.hei.project2p1.repository.firm.EmployeeRepository;
+import com.hei.project2p1.repository.firm.mapper.EmployeeMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 

@@ -1,8 +1,8 @@
 package com.hei.project2p1.service;
 
 import com.hei.project2p1.model.SpringSession;
-import com.hei.project2p1.repository.SpringSessionRepository;
-import com.hei.project2p1.repository.mapper.SpringSessionMapper;
+import com.hei.project2p1.repository.firm.SpringSessionRepository;
+import com.hei.project2p1.repository.firm.mapper.SpringSessionMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

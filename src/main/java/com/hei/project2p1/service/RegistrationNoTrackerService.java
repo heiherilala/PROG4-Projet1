@@ -2,9 +2,9 @@ package com.hei.project2p1.service;
 
 import com.hei.project2p1.exception.NotFoundException;
 import com.hei.project2p1.model.RegistrationNoTracker;
-import com.hei.project2p1.repository.RegistrationNoTrackerRepository;
-import com.hei.project2p1.repository.entity.RegistrationNoTrackerEntity;
-import com.hei.project2p1.repository.mapper.RegistrationNoTrackerMapper;
+import com.hei.project2p1.repository.firm.RegistrationNoTrackerRepository;
+import com.hei.project2p1.repository.firm.entity.RegistrationNoTrackerEntity;
+import com.hei.project2p1.repository.firm.mapper.RegistrationNoTrackerMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

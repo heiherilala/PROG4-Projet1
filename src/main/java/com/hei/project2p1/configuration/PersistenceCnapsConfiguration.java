@@ -18,7 +18,7 @@ import static com.hei.project2p1.configuration.dataEntityManagerSetter.getLocalC
 
 @Configuration
 @PropertySource({"classpath:persistence-multiple-db.properties"})
-@EnableJpaRepositories(basePackages = "com.hei.project2p1.cnaps.repository", entityManagerFactoryRef = "cnapsEntityManager", transactionManagerRef = "cnapsTransactionManager")
+@EnableJpaRepositories(basePackages = "com.hei.project2p1.repository.cnaps", entityManagerFactoryRef = "cnapsEntityManager", transactionManagerRef = "cnapsTransactionManager")
 public class PersistenceCnapsConfiguration {
     @Autowired
     private Environment env;
@@ -31,7 +31,7 @@ public class PersistenceCnapsConfiguration {
 
     @Bean
     public LocalContainerEntityManagerFactoryBean cnapsEntityManager() {
-        return getLocalContainerEntityManagerFactoryBean(cnapsDataSource(),"com.hei.project2p1.cnaps.entity",env);
+        return getLocalContainerEntityManagerFactoryBean(cnapsDataSource(),"com.hei.project2p1.repository.cnaps.entity",env);
     }
 
     @Bean

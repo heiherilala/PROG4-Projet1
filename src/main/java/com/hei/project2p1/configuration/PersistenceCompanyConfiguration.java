@@ -23,7 +23,7 @@ import static com.hei.project2p1.configuration.dataEntityManagerSetter.getLocalC
 
 @Configuration
 @PropertySource({"classpath:persistence-multiple-db.properties"})
-@EnableJpaRepositories(basePackages = "com.hei.project2p1.repository", entityManagerFactoryRef = "companyEntityManager", transactionManagerRef = "companyTransactionManager")
+@EnableJpaRepositories(basePackages = "com.hei.project2p1.repository.firm", entityManagerFactoryRef = "companyEntityManager", transactionManagerRef = "companyTransactionManager")
 public class PersistenceCompanyConfiguration {
     @Autowired
     private Environment env;
@@ -37,7 +37,7 @@ public class PersistenceCompanyConfiguration {
     @Primary
     @Bean
     public LocalContainerEntityManagerFactoryBean companyEntityManager() {
-        return getLocalContainerEntityManagerFactoryBean(companyDataSource(),"com.hei.project2p1.repository.entity",env);
+        return getLocalContainerEntityManagerFactoryBean(companyDataSource(),"com.hei.project2p1.repository.firm.entity",env);
     }
 
 
