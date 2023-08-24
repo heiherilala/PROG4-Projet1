@@ -11,7 +11,6 @@ CREATE TABLE IF NOT EXISTS phone (
     company_id VARCHAR REFERENCES company (id)
         CONSTRAINT check_employee_id_company_id
         CHECK ((employee_id IS NULL AND company_id IS NOT NULL) OR (employee_id IS NOT NULL AND company_id IS NULL))
-
     );
 
 create index if not exists employee_id_index on phone (employee_id);

@@ -106,6 +106,7 @@ import java.util.stream.Stream;
 
         Company company = companyService.getCompanyInfo();
         model.addAttribute("company", company);
+        model.addAttribute("LogoImage", ImageToBase64Converter.gateLogo());
 
         return "index";
     }
