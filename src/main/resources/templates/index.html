@@ -201,15 +201,8 @@
     </span>
 
     <!-- Total Pages -->
-    <span>Total Pages: <span th:text="${totalPages}"></span></span>
+    <span> / <span th:text="${totalPages}"></span></span>
 
-    <!-- Page Size Select Dropdown -->
-    <label>Page Size:</label>
-    <select th:field="*{pageSize}">
-        <option value="10">10</option>
-        <option value="25">25</option>
-        <option value="50">50</option>
-    </select>
 </div>
 <div th:insert="~{fragments/footer :: footer}"></div>
 </body>
