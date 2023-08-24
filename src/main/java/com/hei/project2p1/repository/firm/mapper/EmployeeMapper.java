@@ -34,7 +34,7 @@ public class EmployeeMapper {
                 .socioProfessionalCategory(Employee.SocioProfessionalCategory.valueOf(entity.getSocioProfessionalCategory().toString()))
                 .cnapsNumber(entity.getCnapsNumber())
                 .photo(entity.getPhoto())
-                .endToEndId(entity.getCnapsEndToEndId())
+                .endToEndId(entity.getEndToEndId())
                 .build();
     }
 
@@ -60,7 +60,7 @@ public class EmployeeMapper {
                 .socioProfessionalCategory(domain.getSocioProfessionalCategory()==null?null:EmployeeEntity.SocioProfessionalCategory.valueOf(domain.getSocioProfessionalCategory().toString()))
                 .cnapsNumber(domain.getCnapsNumber())
                 .photo(domain.getPhoto())
-                .cnapsEndToEndId(domain.getEndToEndId())
+                .endToEndId(domain.getEndToEndId())
                 .build();
     }
 

@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
@@ -23,7 +24,6 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
-import lombok.ToString;
 
 @Entity(name = "employee")
 @Table(name = "employee")
@@ -93,7 +93,7 @@ public class EmployeeEntity implements Serializable {
     @Column(columnDefinition = "clob")
     private String photo;
 
-    private String cnapsEndToEndId;
+    private String endToEndId;
 
     public enum Gender {
         H, F

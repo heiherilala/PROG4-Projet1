@@ -34,7 +34,7 @@ public class RepositoryImpl implements Repository {
     public Employee save(Employee toSave) {
         if (toSave.getId()!=null){
             Optional<EmployeeEntity> existingEmployee = mainRepository.findById(toSave.getId());
-            existingEmployee.ifPresent(present -> toSave.setEndToEndId(present.getCnapsEndToEndId()));
+            existingEmployee.ifPresent(present -> toSave.setEndToEndId(present.getEndToEndId()));
         }
         EmployeeEntity entityToSave = mapper.toEntity(toSave);
         return mapper.toDomain(
@@ -48,7 +48,7 @@ public class RepositoryImpl implements Repository {
         EmployeeEntity employee = mainRepository.findById(id)
                 .orElseThrow(()-> new NotFoundException("Employee with id "+id+" not found"));
         Employee toDisplay = mapper.toDomain(employee);
-        return setCnapsNumber(employee.getCnapsEndToEndId(),toDisplay);
+        return setCnapsNumber(employee.getEndToEndId(),toDisplay);
     }
 
 
@@ -62,7 +62,7 @@ public class RepositoryImpl implements Repository {
                 //.stream().map(mapper::toDomain).toList();
         List<Employee> toDisplay = new ArrayList<>();
         for (EmployeeEntity e:entityList) {
-            toDisplay.add(setCnapsNumber(e.getCnapsEndToEndId(),mapper.toDomain(e)));
+            toDisplay.add(setCnapsNumber(e.getEndToEndId(),mapper.toDomain(e)));
         }
         return toDisplay;
     }

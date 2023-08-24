@@ -2,6 +2,7 @@ package com.hei.project2p1.repository.firm.entity.validator;
 
 import com.hei.project2p1.exception.BadRequestException;
 import com.hei.project2p1.repository.firm.entity.EmployeeEntity;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,7 +10,6 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import org.springframework.stereotype.Component;
 
 @Component
 public class EmployeeEntityValidator implements Consumer<EmployeeEntity> {
@@ -53,14 +53,14 @@ public class EmployeeEntityValidator implements Consumer<EmployeeEntity> {
     }
   }
   public static boolean validateEmailRegex(String email) {
-    String regexPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\\\.[a-zA-Z]{2,}$";
+    String regexPattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
     Pattern pattern = Pattern.compile(regexPattern);
     Matcher matcher = pattern.matcher(email);
     return matcher.matches();
   }
 
   public static boolean validateCinRegex(String number) {
-    String regexPattern = "^[a-zA-Z0-9]+$";
+    String regexPattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
     Pattern pattern = Pattern.compile(regexPattern);
     Matcher matcher = pattern.matcher(number);
     return matcher.matches();
