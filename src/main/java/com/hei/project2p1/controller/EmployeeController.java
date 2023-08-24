@@ -78,7 +78,7 @@ import java.util.stream.Stream;
         List<EmployeeView> employeesView = employeeViewMapper.toView(employees);
         List<String> genderList = Stream.of(Employee.Gender.values()).map(Enum::name).toList();
         for (EmployeeView ev:employeesView) {
-            ev.setPhones(ev.getPhones().stream().map(PhoneFormatting::reformatPhoneNumber).toList());
+            ev.setPhones(ev.getPhones().stream().map(phone -> PhoneFormatting.reformatPhoneNumber(phone).replace(" ","")).toList());
         }
         //variable to Display
         model.addAttribute("employees", employeesView);
