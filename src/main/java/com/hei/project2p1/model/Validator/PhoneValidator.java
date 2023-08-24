@@ -46,7 +46,7 @@ public class PhoneValidator implements Consumer<Phone> {
     }
 
     public static boolean validateNumberRegex(String number) {
-        String regexPattern = "^[a-zA-Z0-9]+$";
+        String regexPattern = "^[0-9\\s]+$";
         Pattern pattern = Pattern.compile(regexPattern);
         Matcher matcher = pattern.matcher(number);
         return matcher.matches();

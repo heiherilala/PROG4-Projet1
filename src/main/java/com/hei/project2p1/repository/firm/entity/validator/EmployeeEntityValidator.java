@@ -60,7 +60,7 @@ public class EmployeeEntityValidator implements Consumer<EmployeeEntity> {
   }
 
   public static boolean validateCinRegex(String number) {
-    String regexPattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+    String regexPattern = "^[0-9\\s]+$";
     Pattern pattern = Pattern.compile(regexPattern);
     Matcher matcher = pattern.matcher(number);
     return matcher.matches();
