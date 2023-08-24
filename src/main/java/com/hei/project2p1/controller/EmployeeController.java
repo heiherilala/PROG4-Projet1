@@ -144,7 +144,7 @@ import java.util.stream.Stream;
         model.addAttribute("employee", createEmployeeView);
         Company company = companyService.getCompanyInfo();
         model.addAttribute("company", company);
-        return "employee_details";
+        return "details-employee";
     }
 
     @PostMapping("/addEmployee")
