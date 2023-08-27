@@ -1,11 +1,12 @@
 package com.hei.project2p1.controller.mapper.utils;
 
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Base64;
+
 @Component
 public class ConvertInputTypeToDomain {
     private ConvertInputTypeToDomain(){
@@ -20,8 +21,7 @@ public class ConvertInputTypeToDomain {
     public static String multipartImageToString(MultipartFile multipartFile) {
         String result;
         try {
-            byte[] image = Base64.encodeBase64(multipartFile.getBytes(),true);
-            result = new String(image);
+            result = Base64.getEncoder().encodeToString(multipartFile.getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

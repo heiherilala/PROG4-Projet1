@@ -42,12 +42,15 @@
             <p><strong>Departure Date:</strong> <span th:utext="${employee.departureDate} ?: 'Not Specified'"></span></p>
             <p><strong>Socio-Professional Category:</strong> <span th:utext="${employee.socioProfessionalCategory} ?: 'Not Specified'"></span></p>
             <p><strong>CNAPS Number:</strong> <span th:utext="${employee.cnapsNumber} ?: 'Not Specified'"></span></p>
+            <p><strong>Monthly Salary (Ar):</strong> <span th:utext="${employee.monthlySalary} ?: 'Not specified'"></span></p>
         </div>
     </div>
     <div class="container d-flex justify-content-center align-items-center min-vh-40">
         <a th:href="@{/employees/{id}/update(id=${employee.id})}" class="btn btn-primary custom-button">Update</a>
     </div>
-
+    <div class="container d-flex justify-content-center align-items-center min-vh-40">
+        <a th:href="@{/employees/{id}/pdf(id=${employee.id})}" class="btn btn-primary custom-button">Get in pdf</a>
+    </div>
     <div th:insert="~{fragments/footer :: footer}"></div>
 </body>
 </html>

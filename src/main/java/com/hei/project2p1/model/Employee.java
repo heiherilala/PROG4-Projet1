@@ -41,6 +41,7 @@ public class Employee implements Serializable {
     private String cnapsNumber;
     private String photo;
     private String endToEndId;
+    private Integer monthlySalary;
 
     public enum Gender {
         H, F

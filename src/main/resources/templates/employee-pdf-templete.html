@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Fiche Employé</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .container {
+            width: 100vw;
+            height: 1000px;
+        }
+
+        /*.employee-header {*/
+        /*    display: flex;*/
+        /*    flex-direction: column;*/
+        /*    align-items: center;*/
+        /*}*/
+
+        .employee-photo img {
+            width: 30%;
+
+            position: absolute;
+            top: calc(30% + 10px);
+            left: 5%
+        }
+
+        .employee-info {
+            width: 300px;
+            position: relative;
+            /*height: 400px;*/
+            top: calc(0% + 10px);
+            left: 400px;
+            text-align: left;
+            margin-bottom: 100px;
+        }
+
+        h1{
+            text-align: center;
+            margin: 0;
+        }
+        h2 {
+            margin: 20px;
+        }
+        p {
+            font-family: DejaVu Serif;
+            /*src: url(fonts/DejaVuSerif.ttf);*/
+            -fs-pdf-font-embed: embed;
+            -fs-pdf-font-encoding: Identity-H;
+            margin: 5px 0;
+        }
+
+        .company-logo img {
+            width: auto;
+            height: 80px;
+        }
+
+        .company-details {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #ccc;
+            margin-top: 20px;
+            padding-top: 50px;
+            padding-bottom: 50vh;
+            width: 90%;
+            position: absolute;
+            bottom: 200px;
+            left: 5%;
+        }
+
+        .company-fist {
+            position: absolute;
+            width: 25%;
+            left: 5%;
+            transform: translateX(-20%);
+        }
+        .company-center {
+            position: absolute;
+            width: 30%;
+            left: 35%;
+            transform: translateX(-20%);
+        }
+        .company-last {
+            position: absolute;
+            width: 25%;
+            left: 70%;
+            transform: translateX(-20%);
+        }
+        .logo {
+            width: 80%;
+        }
+
+        .marging-left {
+            margin-left: 50px;
+        }
+        .marging-top {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="employee-header">
+        <div class="employee-photo">
+            <img th:src="'data:image/png;base64,' + ${employee.photo}" alt="Photo" />
+        </div>
+        <div class="employee-info">
+            <h1>FICHE EMPLOYÉ</h1>
+            <p>Numéro matricule: <span th:text="${employee.getRegistrationNo() ?: 'Not Specified'}"></span></p>
+            <p>Noms: <span th:text="${employee.getLastName() ?: 'Not Specified'}"></span></p>
+            <p>Prénoms: <span th:text="${employee.getFirstName() ?: 'Not Specified'}"></span></p>
+            <p>Âge: <span th:text="${employee.getBirthDate() ?: 'Not Specified'}"></span> ans</p>
+            <p>Date d'embauche: <span th:text="${employee.getHiringDate() ?: 'Not Specified'}"></span></p>
+            <p>Date de départ: <span th:text="${employee.getDepartureDate() ?: 'Not Specified'}"></span></p>
+            <p>Numéro CNAPS: <span th:text="${employee.getCnapsNumber() ?: 'Not Specified'}"></span></p>
+        </div>
+    </div>
+
+    <div>
+        <p>Informations sur le salaire</p>
+        <span class="marging-left marging-top" th:if="${employee.monthlySalary == null}">Not specified</span>
+        <span class="marging-left marging-top" th:if="${employee.monthlySalary != null}" th:text="${'Salaire brute actuel :' + employee.monthlySalary + ' Ariary / mois'}"></span>
+    </div>
+
+    <div class="company-details">
+        <div class="company-fist">
+            <img class="logo" th:src="'data:image/png;base64,' + ${logo}" alt="Company Logo" />
+        </div>
+        <div class="company-center">
+            <p><span th:text="${company.getCompanyName() ?: 'Nom entrepise ot Specified'}"></span></p>
+            <p>NIF: <span th:text="${company.getNif() ?: 'Not Specified'}"></span></p>
+            <p>STAT: <span th:text="${company.getStat() ?: 'Not Specified'}"></span></p>
+        </div>
+        <div class="company-last">
+            <p> <span th:text="${company.getAddress() ?: 'Adresse not Specified'}"></span></p>
+<!--            <span th:if="${company.getPhones() == null}">Not specified</span>-->
+            <p th:each="phone : ${company.getPhones()}"><span th:text="${phone.getCountryCode() + ' ' + phone.getNumber()}"></span></p>
+<!--            <p th:if="${company.getPhones() != null}"> <span th:text="${company.getPhones()}"></span></p>-->
+
+            <p> <span th:text="${company.getContactEmail() ?: 'Email not Specified'}"></span></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

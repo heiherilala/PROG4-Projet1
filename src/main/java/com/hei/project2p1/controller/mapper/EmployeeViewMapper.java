@@ -43,6 +43,7 @@ public class EmployeeViewMapper {
                 .phones(List.of())
                 .personalEmail(stringInputOfString(createEmployeeView.getPersonalEmail()))
                 .professionalEmail(stringInputOfString(createEmployeeView.getProfessionalEmail()))
+                .monthlySalary(createEmployeeView.getMonthlySalary())
                 .build();
     }
 
@@ -71,6 +72,7 @@ public class EmployeeViewMapper {
                         :employee.getPhones().stream().map(phone -> phone.getCountryCode()+","+phone.getNumber()).toList())
                 .personalEmail(employee.getPersonalEmail())
                 .professionalEmail(employee.getProfessionalEmail())
+                .monthlySalary(employee.getMonthlySalary())
                 .build();
     }
 
@@ -81,6 +83,5 @@ public class EmployeeViewMapper {
         }
         return employeeViews;
     }
-
 }
 

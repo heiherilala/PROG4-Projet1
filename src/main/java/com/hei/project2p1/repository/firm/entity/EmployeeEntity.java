@@ -95,6 +95,9 @@ public class EmployeeEntity implements Serializable {
 
     private String endToEndId;
 
+    @Min(value = 0, message = "Salary must be non-negative")
+    private Integer monthlySalary;
+
     public enum Gender {
         H, F
     }

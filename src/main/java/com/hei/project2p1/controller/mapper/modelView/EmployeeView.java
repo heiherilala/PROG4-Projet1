@@ -36,4 +36,5 @@ public class EmployeeView {
     private String departureDate;
     private String socioProfessionalCategory;
     private String cnapsNumber;
+    private Integer monthlySalary;
 }
