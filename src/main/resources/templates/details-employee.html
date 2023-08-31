@@ -49,7 +49,14 @@
         <a th:href="@{/employees/{id}/update(id=${employee.id})}" class="btn btn-primary custom-button">Update</a>
     </div>
     <div class="container d-flex justify-content-center align-items-center min-vh-40">
-        <a th:href="@{/employees/{id}/pdf(id=${employee.id})}" class="btn btn-primary custom-button">Get in pdf</a>
+        <form th:action="@{/employees/{id}/pdf(id=${employee.id})}" method="get" enctype="multipart/form-data" class="employeePdf">
+            <label class="col-sm-2 col-form-label">Option:</label>
+            <select class="form-control" name="option">
+                <option th:each="option: ${options}"
+                        th:value="${option}" th:text="${option}"></option>
+            </select><br/>
+            <div class="col-sm-10"><input type="submit" value="Create" class="Get in pdf"/></div>
+        </form>
     </div>
     <div th:insert="~{fragments/footer :: footer}"></div>
 </body>

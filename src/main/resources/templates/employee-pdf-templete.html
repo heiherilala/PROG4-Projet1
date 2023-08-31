@@ -115,7 +115,7 @@
             <p>Numéro matricule: <span th:text="${employee.getRegistrationNo() ?: 'Not Specified'}"></span></p>
             <p>Noms: <span th:text="${employee.getLastName() ?: 'Not Specified'}"></span></p>
             <p>Prénoms: <span th:text="${employee.getFirstName() ?: 'Not Specified'}"></span></p>
-            <p>Âge: <span th:text="${employee.getBirthDate() ?: 'Not Specified'}"></span> ans</p>
+            <p>Âge: <span th:text="${employee.getAge() ?: 'Not Specified'}"></span> ans</p>
             <p>Date d'embauche: <span th:text="${employee.getHiringDate() ?: 'Not Specified'}"></span></p>
             <p>Date de départ: <span th:text="${employee.getDepartureDate() ?: 'Not Specified'}"></span></p>
             <p>Numéro CNAPS: <span th:text="${employee.getCnapsNumber() ?: 'Not Specified'}"></span></p>

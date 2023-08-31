@@ -52,10 +52,14 @@ import static com.hei.project2p1.controller.utils.CustomResponse.convertHtmlToPd
 
 
     @GetMapping(value = "/employees/{id}/pdf")
-    public void getEmployeeSheetPdf(@PathVariable("id") String id, HttpServletResponse response) {
+    public void getEmployeeSheetPdf(
+            @PathVariable("id") String id,
+            @RequestParam("option") String option,
+            HttpServletResponse response
+    ) {
 
         Employee employee = employeeService.getEmployeeById(id);
-        EmployeeView employeeView = employeeViewMapper.toView(employee);
+        EmployeeView employeeView = employeeViewMapper.toView(employee, option);
         Company company = companyService.getCompanyInfo();
         String logo = getImageAsBase64("static/image/logo.png");
 
@@ -100,7 +104,7 @@ import static com.hei.project2p1.controller.utils.CustomResponse.convertHtmlToPd
                 firstName, lastName, function, countryCode, gender, entranceDateAfter, entranceDateBefore,
                 leaveDateAfter, leaveDateBefore, pageNo, pageSize, sortBy, sortOrder);
         long totalPages = employeeService.getTotalPages(pageSize);
-        List<EmployeeView> employeesView = employeeViewMapper.toView(employees);
+        List<EmployeeView> employeesView = employeeViewMapper.toView(employees, null);
         List<String> genderList = Stream.of(Employee.Gender.values()).map(Enum::name).toList();
 
         for (EmployeeView ev:employeesView) {
@@ -150,7 +154,7 @@ import static com.hei.project2p1.controller.utils.CustomResponse.convertHtmlToPd
     public String modifyEmployeePage( Model model, @PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
 
-        model.addAttribute("employee", employeeViewMapper.toView(employee));
+        model.addAttribute("employee", employeeViewMapper.toView(employee, null));
 
         List<String> categories = Stream.of(Employee.SocioProfessionalCategory.values()).map(Enum::name).toList();
         model.addAttribute("categories", categories);
@@ -164,11 +168,13 @@ import static com.hei.project2p1.controller.utils.CustomResponse.convertHtmlToPd
     @GetMapping(value = EmployeeUrl.EMPLOYEES_DETAILS)
     public String details(Model model, @PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
-        EmployeeView employeeView = employeeViewMapper.toView(employee);
+        EmployeeView employeeView = employeeViewMapper.toView(employee, null);
         employeeView.setPhones(employeeView.getPhones().stream().map(PhoneFormatting::reformatPhoneNumber).toList());
         model.addAttribute("employee", employeeView);
         Company company = companyService.getCompanyInfo();
         model.addAttribute("company", company);
+        List<String> optionList= Stream.of(EmployeeViewMapper.AgeOption.values()).map(Enum::name).toList();
+        model.addAttribute("options", optionList);
         return "details-employee";
     }
 
@@ -314,7 +320,7 @@ import static com.hei.project2p1.controller.utils.CustomResponse.convertHtmlToPd
                 entranceDateAfter, entranceDateBefore,
                 leaveDateAfter, leaveDateBefore,
                 pageNo, pageSize, sortBy, sortOrder);
-        List<EmployeeView> employeesView = employeeViewMapper.toView(employees);
+        List<EmployeeView> employeesView = employeeViewMapper.toView(employees, null);
         for (EmployeeView ev:employeesView) {
             ev.setPhones(ev.getPhones().stream().map(PhoneFormatting::reformatPhoneNumber).toList());
         }

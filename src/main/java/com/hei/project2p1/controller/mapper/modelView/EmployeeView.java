@@ -20,6 +20,7 @@ public class EmployeeView {
     private String firstName;
     private String lastName;
     private String birthDate;
+    private String age;
     private String photo;
     private String gender;
     private List<String> phones;

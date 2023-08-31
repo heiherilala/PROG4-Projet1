@@ -10,6 +10,7 @@ import java.util.List;
 import static com.hei.project2p1.controller.mapper.utils.ConvertInputTypeToDomain.stringInputOfString;
 import static com.hei.project2p1.controller.mapper.utils.ConvertInputTypeToDomain.stringInputValueToLocalDate;
 import static com.hei.project2p1.controller.mapper.utils.ConvertNullValueToView.valueToView;
+import static com.hei.project2p1.utils.DateUtils.*;
 
 @Component
 public class EmployeeViewMapper {
@@ -48,13 +49,14 @@ public class EmployeeViewMapper {
     }
 
 
-    public EmployeeView toView(Employee employee){
+    public EmployeeView toView(Employee employee, String option){
 
-        return EmployeeView.builder()
+        EmployeeView employeeView = EmployeeView.builder()
                 .id(String.valueOf(employee.getId()))
                 .firstName(employee.getFirstName())
                 .lastName(employee.getLastName())
                 .birthDate(valueToView(employee.getBirthDate()))
+                .age(LocalDateToAge(employee.getBirthDate()))
                 .registrationNo(employee.getRegistrationNo())
                 .photo(employee.getPhoto())
                 .gender(String.valueOf(employee.getGender()))
@@ -74,14 +76,31 @@ public class EmployeeViewMapper {
                 .professionalEmail(employee.getProfessionalEmail())
                 .monthlySalary(employee.getMonthlySalary())
                 .build();
+
+        if (option != null) {
+            if (AgeOption.valueOf(option)  == AgeOption.BIRTHDAY) {
+                employeeView.setAge(LocalDateToAge(employee.getBirthDate()));
+            }
+            if (AgeOption.valueOf(option) == AgeOption.YEAR_ONLY) {
+                employeeView.setAge(LocalDateToAgeByYear(employee.getBirthDate()));
+            }
+            if (AgeOption.valueOf(option) == AgeOption.CUSTOM_DELAY) {
+                employeeView.setAge(LocalDateToAgeWithDay(employee.getBirthDate()));
+            }
+        }
+        return employeeView;
     }
 
-    public List<EmployeeView> toView(List<Employee> employees){
+    public List<EmployeeView> toView(List<Employee> employees, String option){
         List<EmployeeView> employeeViews = new ArrayList<>();
         for (Employee employee: employees){
-            employeeViews.add(toView(employee));
+            employeeViews.add(toView(employee,option));
         }
         return employeeViews;
+    }
+
+    public enum AgeOption {
+        BIRTHDAY, YEAR_ONLY, CUSTOM_DELAY
     }
 }
 
