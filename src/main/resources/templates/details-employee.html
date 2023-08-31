@@ -50,6 +50,9 @@
     </div>
     <div class="container d-flex justify-content-center align-items-center min-vh-40">
         <form th:action="@{/employees/{id}/pdf(id=${employee.id})}" method="get" enctype="multipart/form-data" class="employeePdf">
+            <label class="col-sm-2 col-form-label">day:</label>
+            <div class="col-sm-10"><input type="number" class="form-control" name="day"  min="0"/></div>
+            <br>
             <label class="col-sm-2 col-form-label">Option:</label>
             <select class="form-control" name="option">
                 <option th:each="option: ${options}"

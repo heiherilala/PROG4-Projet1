@@ -49,7 +49,7 @@ public class EmployeeViewMapper {
     }
 
 
-    public EmployeeView toView(Employee employee, String option){
+    public EmployeeView toView(Employee employee, String option, Long day){
 
         EmployeeView employeeView = EmployeeView.builder()
                 .id(String.valueOf(employee.getId()))
@@ -85,7 +85,7 @@ public class EmployeeViewMapper {
                 employeeView.setAge(LocalDateToAgeByYear(employee.getBirthDate()));
             }
             if (AgeOption.valueOf(option) == AgeOption.CUSTOM_DELAY) {
-                employeeView.setAge(LocalDateToAgeWithDay(employee.getBirthDate()));
+                employeeView.setAge(LocalDateToAgeWithDay(employee.getBirthDate(), day));
             }
         }
         return employeeView;
@@ -94,7 +94,7 @@ public class EmployeeViewMapper {
     public List<EmployeeView> toView(List<Employee> employees, String option){
         List<EmployeeView> employeeViews = new ArrayList<>();
         for (Employee employee: employees){
-            employeeViews.add(toView(employee,option));
+            employeeViews.add(toView(employee,option, 0L));
         }
         return employeeViews;
     }

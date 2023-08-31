@@ -55,11 +55,12 @@ import static com.hei.project2p1.controller.utils.CustomResponse.convertHtmlToPd
     public void getEmployeeSheetPdf(
             @PathVariable("id") String id,
             @RequestParam("option") String option,
+            @RequestParam("day") Long day,
             HttpServletResponse response
     ) {
 
         Employee employee = employeeService.getEmployeeById(id);
-        EmployeeView employeeView = employeeViewMapper.toView(employee, option);
+        EmployeeView employeeView = employeeViewMapper.toView(employee, option, day);
         Company company = companyService.getCompanyInfo();
         String logo = getImageAsBase64("static/image/logo.png");
 
@@ -154,7 +155,7 @@ import static com.hei.project2p1.controller.utils.CustomResponse.convertHtmlToPd
     public String modifyEmployeePage( Model model, @PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
 
-        model.addAttribute("employee", employeeViewMapper.toView(employee, null));
+        model.addAttribute("employee", employeeViewMapper.toView(employee, null, 0L));
 
         List<String> categories = Stream.of(Employee.SocioProfessionalCategory.values()).map(Enum::name).toList();
         model.addAttribute("categories", categories);
@@ -168,7 +169,7 @@ import static com.hei.project2p1.controller.utils.CustomResponse.convertHtmlToPd
     @GetMapping(value = EmployeeUrl.EMPLOYEES_DETAILS)
     public String details(Model model, @PathVariable("id") String id) {
         Employee employee = employeeService.getEmployeeById(id);
-        EmployeeView employeeView = employeeViewMapper.toView(employee, null);
+        EmployeeView employeeView = employeeViewMapper.toView(employee, null, 0L);
         employeeView.setPhones(employeeView.getPhones().stream().map(PhoneFormatting::reformatPhoneNumber).toList());
         model.addAttribute("employee", employeeView);
         Company company = companyService.getCompanyInfo();
